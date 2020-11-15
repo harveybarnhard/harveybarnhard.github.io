@@ -40,10 +40,10 @@ blockquote {
   font-style: italic;
 }
 hr.small {
-  max-width: 100px;
+  max-width: 300px;
   margin: 15px auto;
-  border-width: 4px;
-  border-color: white;
+  border-width: 3px;
+  border-color: black;
 }
 .navbar-custom {
   position: absolute;
@@ -52,10 +52,9 @@ hr.small {
   width: 100%;
   z-index: 3;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: black;
 }
-.navbar-custom .navbar-brand {
-  font-weight: 800;
-}
+
 .navbar-custom .navbar-header .navbar-toggle {
   color: #777777;
   font-weight: 800;
@@ -74,20 +73,21 @@ hr.small {
     border-bottom: 1px solid transparent;
   }
   .navbar-custom .navbar-brand {
-    color: white;
+    color: black;
     padding: 20px;
   }
+
   .navbar-custom .navbar-brand:hover,
   .navbar-custom .navbar-brand:focus {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(192,192,192,0.3);
   }
   .navbar-custom .nav li a {
-    color: white;
+    color: black;
     padding: 20px;
   }
   .navbar-custom .nav li a:hover,
   .navbar-custom .nav li a:focus {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(192,192,192,0.3);
   }
   .navbar-custom .nav li ul.dropdown-menu a {
     color: #333333;
