@@ -241,20 +241,20 @@ hr.small {
   color: #0085A1;
 }
 .post-preview > a > .post-title {
+  margin: 30px 20px 10px 20px;
   font-size: 30px;
-  margin-top: 30px;
-  margin-bottom: 10px;
 }
 .post-preview > a > .post-subtitle {
-  margin: 0;
+  margin: 0 30px 10px 30px;
   font-weight: 300;
-  margin-bottom: 10px;
 }
 .post-preview > .post-meta {
   color: #777777;
   font-size: 18px;
   font-style: italic;
   margin-top: 0;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 .post-preview > .post-meta > a {
   text-decoration: none;
@@ -425,4 +425,11 @@ img::-moz-selection {
 }
 body {
   -webkit-tap-highlight-color: #0085A1;
+}
+
+code {
+    background-color: #eee;
+    border-radius: 3px;
+    font-family: Consolas,Monaco,Lucida Console,Liberation Mono, monospace;
+    padding: 0 3px;
 }
