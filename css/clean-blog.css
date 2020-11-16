@@ -238,7 +238,7 @@ hr.small {
 .post-preview > a:hover,
 .post-preview > a:focus {
   text-decoration: none;
-  color: #0085A1;
+  color: rgba(192,192,192,0.9);;
 }
 .post-preview > a > .post-title {
   margin: 30px 20px 10px 20px;
