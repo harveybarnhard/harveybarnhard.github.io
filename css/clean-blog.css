@@ -212,7 +212,7 @@ hr.small {
   font-size: 20px;
 }
 .intro-header .post-heading .meta a {
-  color: white;
+  color: black;
 }
 @media only screen and (min-width: 768px) {
   .intro-header .post-heading h1 {
@@ -383,6 +383,17 @@ form .row:first-child .floating-label-form-group {
   color: #777777;
   background-color: #333333;
   cursor: not-allowed;
+}
+.column {
+  float: left;
+  width: 50.00%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 ::-moz-selection {
   color: white;
