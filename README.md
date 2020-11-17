@@ -1,4 +1,4 @@
-# harveybarnhard.github.io
+# [harveybarnhard.com](harveybarnhard.com)
 
-Style using [a clean blog](http://startbootstrap.com/template-overviews/clean-blog/)
-format under MIT open license.
+Style using a heavily modified [clean blog](http://startbootstrap.com/template-overviews/clean-blog/)
+template under MIT open license.
