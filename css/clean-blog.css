@@ -56,12 +56,37 @@ hr.small {
   color: black;
 }
 
-.navbar-custom .navbar-header .navbar-toggle {
-  color: #777777;
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 12px;
+.navbar-default {
+  background-color: rgba(255,255,255,0);
+  border: none;
 }
+
+.navbar-toggle {
+  border: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar-toggle:focus {
+    background-color: rgba(255,255,255,0);
+  }
+
+  .navbar-custom .navbar-header .navbar-toggle {
+    color: black;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+    background-color: rgba(255,255,255,0);
+    outline: none;
+    box-shadow: none;
+  }
+
+  #bs-example-navbar-collapse-1 ul{
+    background-color: rgba(255,255,255,0.9);
+    text-align: right;
+    margin-top: 0;
+  }
+}
+
 .navbar-custom .nav li a {
   text-transform: uppercase;
   font-size: 12px;
@@ -210,6 +235,7 @@ hr.small {
 @media only screen and (max-width: 768px) {
   .intro-header .page-heading h1 {
     font-size: 30px;
+    margin-bottom: 50px;
   }
 }
 .intro-header .post-heading h1 {
@@ -255,20 +281,20 @@ hr.small {
 .nav-tabs > li > a:hover {
   color: black;
 }
-
 .post-preview {
   display: flex;
   align-items: center;
   flex-direction: row;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
 }
 .post-preview > .post-text {
   width: 70%;
 }
 
 .post-preview > .post-text > p {
+  max-width: 800px;
   padding: 0;
   margin-left: 0;
   margin-right: 30px;
@@ -386,6 +412,17 @@ hr.small {
 @media only screen and (min-width: 768px) {
   .post-preview > a > .post-title {
     font-size: 36px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .post-preview {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
   }
 }
 .section-heading {
@@ -542,7 +579,7 @@ img::-moz-selection {
   background: transparent;
 }
 body {
-  -webkit-tap-highlight-color: #0085A1;
+  -webkit-tap-highlight-color: #99999940;
 }
 
 code {
