@@ -457,8 +457,10 @@ hr.small {
     max-width: none;
   }
   .post-preview > .post-image > a {
-    height: 40px;
+    height: 30px;
     width: 400px;
+    max-width: none;
+    line-height: 30px;
   }
   .post-preview > .post-text > .post-title {
     text-align: center;
