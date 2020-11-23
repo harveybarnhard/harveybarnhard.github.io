@@ -648,6 +648,43 @@ form .row:first-child .floating-label-form-group {
   width: 50.00%;
 }
 
+/* Blog Posts */
+.proof {
+  margin: 0px;
+}
+
+.proof > button {
+  background-color: rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+  border-radius: 3px;
+  border-color: #333333;
+  color: #333333;
+  font-family:'Roboto',sans-serif;
+  font-size: 15px;
+  font-weight:400;
+  text-decoration:none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.proof > button:hover {
+  background-color: #333333;
+  color: white;
+}
+
+.proof > p {
+  font-size: 15px;
+  margin: 15px;
+  padding: 5px;
+  border: 2px solid #333333;
+  background-color: #ededed;
+}
+
+/* Inline code */
+p > code.hljs {
+   display: inline;
+}
+
 /* Clear floats after the columns */
 .row:after {
   content: "";
