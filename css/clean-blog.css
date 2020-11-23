@@ -672,13 +672,17 @@ form .row:first-child .floating-label-form-group {
   color: white;
 }
 
-
 .proof > p {
   font-size: 15px;
   margin: 15px;
   padding: 5px;
   border: 2px solid #333333;
   background-color: #ededed;
+}
+
+/* Inline code */
+p > code.hljs {
+   display: inline;
 }
 
 /* Clear floats after the columns */

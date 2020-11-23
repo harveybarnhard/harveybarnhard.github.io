@@ -89,18 +89,75 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-              <h1>The Astounding Formula</h1>
+              <h1>Prediction Error</h1>
+              We run an OLS regression of a response vector \(Y\) on
+              a data matrix \(X\), estimating a coefficient vector \(\hat{\beta}\).
+              \[
+                Y = X\beta + \epsilon
+              \]
+              We want to know how well our model is predicting \(Y\) for the
+              \(i\)th observation. We could just analyze the \(i\)th residual
+              from the fitted values:
+              \[
+                \hat{\epsilon}_i = y_i - \hat{y}_i = y_i - x_i^\top \hat{\beta}
+              \]
+              where \(x_i\) is the \(i\)th row of \(X\). However, if
+              the \(i\)th has a considerable effect \(\hat{\beta}\) when we
+              remove or include that observation (a high-leverage observation),
+              then analyzing residuals isn't sufficient. A high leverage observation
+              may have a small residual when that observation is included in the
+              regression simply because the observation pulls the line of best
+              fit closer. But if you were to leave out the high-leverage
+              observation when running the regression, estimating \(\hat{\beta}_{-i}\)
+              and predict the response \(\hat{y}_{i}\) for the left-out observation,
+              and calculate the residual (now the prediction error) you get
+              \[
+                \hat{\epsilon}_i^{\text{pred}} = y_i - \hat{y}_{-i}
+                = y_i - x_i^\top \hat{\beta}_{-i}
+              \]
+              This is simple enough to perform. But let's say you wanted to
+              estimate the leave-one-out prediction error for each observation
+              is a dataset of size \(n\). Well, then you'd have to run
+              \(n\) separate regressions, each with \(n-1\) observations.
+              For small \(n\) this isn't much of
+              a problem, but for big datasets, this procedure can become very
+              computationally expensive.
+              <h1> The Astounding Formula </h1>
+              Fortunately, by a miracle of linear algebra, we can estimate all
+              \(n\) leave-one-out errors using only one regression.
+              Better yet, we don't even need to run a new regression, we can
+              estimate the leave-one-out errors using the original regression using
+              all !
+              <div style="text-align: center;">
+              <div style="border: 2px solid red; width: fit-content; padding: 5px; padding-top: 5px; margin-top: 8px; margin-bottom: 8px; display: inline-block;">
+              \[
+              \hat{\epsilon}_i^{\text{pred}} = \frac{y-\hat{y}}{1-h_{ii}}
+              = y_i - x_i^\top \hat{\beta}_{-i}
+              \]
+              </div>
+              </div>
+              where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\)
+              from the original regression.
+              \[
+                H = X(X^\top X)^{-1}X^\top Y
+              \]
+              </thead>
               <h1> Linear Smoothers</h1>
               <p>
+                The miracle formula is a gift that just keeps on giving, because
+                the formula holds not just , but a large family of predictive
+                models called linear smoothers. The family of linear smoothers
+                includes linear regression, local linear regression, and splines.
+
                 A linear smoother is a transformation of the observed data
                 \(X\) and \(Y\) that \(\hat{Y}\)
                 can be expressed as a linear combination of \(Y\):
-                \[ \hat{Y} = LY\]
-                where \(L\) is a \(n \times n\) matrix that
+                \[ \hat{Y} = HY\]
+                where \(H\) is a \(n \times n\) matrix that
                 takes the
                 following form as a function of \(X\):
                 \[
-                  L =
+                  H =
                   \begin{bmatrix}
                   \ell(X_1)^\top\\
                   \vdots \\
@@ -117,10 +174,10 @@
                 and \(x_i\) is the \(i\)th row of the \(n\times p\)
                 data matrix \(X\).
 
-                Letting \(L_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
-                \(L\), we can express the LOOCV score as
+                Letting \(h_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
+                \(H\), we can express the LOOCV score as
                 \[
-                  \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-L_{ii}}\right)^2
+                  \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-h_{ii}}\right)^2
                 \]
               </p>
               <h1>Putting the Theory to Work</h1>
@@ -163,12 +220,12 @@
               <div class="proof">
                 <button onclick="hideElement('proof2')"> Show Proof </button>
                 <p id="proof2" style="display: none;">
-                  Let \(Q\tilde{R}=XP\) be the QR decomposition of X where
+                  Let \(QR'=XP\) be the QR decomposition of X where
                   \(Q\) is an \(n\times n\) orthogonal matrix,
                   \(R\) is an \(n\times n\) upper triangular matrix, and
                   \(P\) is a permutation matrix so that
                   \[
-                    Q\tilde{R}
+                    QR'
                     = Q \begin{bmatrix} R \\ 0 \end{bmatrix}
                     = XP
                   \]
@@ -189,7 +246,7 @@
                     \begin{align}
                       ||X\beta - y||_2^2
                       &= ||Q^\top(X\beta-y)||_2^2\\
-                      &= ||Q^\top(Q\tilde{R}\beta - y)||_2^2 \\
+                      &= ||Q^\top(QR'\beta - y)||_2^2 \\
                       &= \left|\left|\begin{bmatrix} R \\ 0 \end{bmatrix}\beta - Q^\top y\right|\right|_2^2
                     \end{align}
                   $$
@@ -215,19 +272,50 @@
                     &= \arg \min_{\beta}|| R\beta - Q_1^\top y||_2^2
                     \end{align}
                   $$
+                  The solution to this problem is simply
+                  \[
+                    \hat{\beta} = R^{-1}Q_1^\top y
+                  \]
+                  Though in pratice we would never take the inverse of
+                  \(R\) but instead solve the system of linear equations
+                  \(R\beta = Q_1^\top y\) by running
+                  <code class="cpp">solve(R, (Q.t()*y)) </code>
                 </p>
               </div>
               <p>
+                To calculate the leave-one-out prediction error \(  \hat{\epsilon}_i^{\text{pred}}\)
+                we take the diagonal of the hat matrix
+                \[
+                  H= X(X^\top X)^{-1}X^\top
+                \]
+                and the residuals \(Y - \hat{Y}\), then calculate the
+                LOO error using the astounding formula
+                \[
+                  \hat{\epsilon}_i^{\text{pred}} = \frac{y_i-\hat{y}}{1-h_{ii}}
+                \]
+                But computing the hat matrix \(H\) through brute force
+                linear algebra is both time intensive and can lead to
+                the same numerical imprecision as we were trying to avoid when
+                solving the least squares problem. Instead, we are able
+                to reuse \(Q\) from the QR decomposition we have already
+                performed to find the diagonal of the hat matrix.
               </p>
+              <div class="proof">
+                <button onclick="hideElement('proof3')"> Show Proof </button>
+                <p id="proof3" style="display: none;">
+                  \[
+                    \text{Proof here}
+                  \]
+                </p>
               <h3> Linear Regression </h3>
               <pre><code class="cpp">
-                Rcpp::List fastols(arma::mat& X, arma::vec& y, arma::vec& w) {
+                Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
                   // Solve OLS using fast QR decomposition
                   arma::mat Q, R;
                   arma::qr_econ(Q, R, X);
                   arma::vec beta = solve(R, (Q.t()*y));
                   // Find diagonal of hat matrix given the Q of the QR factorization above
-                  arma::vec hat = sum(Q%Q.t(),1);
+                  arma::vec hat = sum(Q%Q,1);
                   // Find LOO prediction error
                   arma::vec fittedy = X*beta;
                   arma::vec pred_err = (y - fittedy) / (1 - hat);
@@ -240,7 +328,9 @@
               </code></pre>
               <h3> Weighted Linear Regression </h3>
               <pre><code class="cpp">
-                Rcpp::List fastwls(arma::mat& X, arma::vec& y, arma::vec& w) {
+                Rcpp::List fastwls(arma::mat const &X,
+                                   arma::vec const &y,
+                                   arma::vec const &w){
                   // Solve OLS using fast QR decomposition
                   arma::mat Q, R;
                   arma::qr_econ(Q, R, X.each_col() % sqrt(w));
