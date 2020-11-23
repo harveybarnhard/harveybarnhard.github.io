@@ -108,12 +108,12 @@
               may have a small residual when that observation is included in the
               regression simply because the observation pulls the line of best
               fit closer. But if you were to leave out the high-leverage
-              observation when running the regression, estimating \(\hat{\beta}_{-i}\)
-              and predict the response \(\hat{y}_{i}\) for the left-out observation,
+              observation when running the regression, estimating \(\hat{\beta}_{-i}^\text{leaveout}\)
+              and predict the response \(\hat{y}_{i}^\text{leaveout}\) for the left-out observation,
               and calculate the residual (now the prediction error) you get
               \[
-                \hat{\epsilon}_i^{\text{pred}} = y_i - \hat{y}_{-i}
-                = y_i - x_i^\top \hat{\beta}_{-i}
+                \hat{\epsilon}_i^{\text{leaveout}} = y_i - \hat{y}_{-i}^\text{leaveout}
+                = y_i - x_i^\top \hat{\beta}_{-i}^\text{leaveout}
               \]
               This is simple enough to perform. But let's say you wanted to
               estimate the leave-one-out prediction error for each observation
@@ -131,8 +131,9 @@
               <div style="text-align: center;">
               <div style="border: 2px solid red; width: fit-content; padding: 5px; padding-top: 5px; margin-top: 8px; margin-bottom: 8px; display: inline-block;">
               \[
-              \hat{\epsilon}_i^{\text{pred}} = \frac{y-\hat{y}}{1-h_{ii}}
-              = y_i - x_i^\top \hat{\beta}_{-i}
+              \hat{\epsilon}_i^{\text{leaveout}}
+              = y_i - x_i^\top \hat{\beta}_{-i}^{\text{leaveout}}
+              = \frac{y_i-\hat{y}_i}{1-h_{ii}}
               \]
               </div>
               </div>
@@ -141,7 +142,8 @@
               \[
                 H = X(X^\top X)^{-1}X^\top Y
               \]
-              </thead>
+              If you instead wanted to know the leave-out prediction value,
+              you can just add b
               <h1> Linear Smoothers</h1>
               <p>
                 The miracle formula is a gift that just keeps on giving, because
