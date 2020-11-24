@@ -418,35 +418,48 @@
                 the same numerical imprecision as we were trying to avoid when
                 solving the least squares problem. Instead, we are able
                 to reuse \(Q\) from the QR decomposition we have already
-                performed to find the diagonal of the hat matrix.
+                performed to find the diagonal of the hat matrix. In fact,
+                we can simply write
+                \[
+                  H = QQ^\top
+                \]
               </p>
               <div class="proof">
-                <button onclick="hideElement('proof3')"> Show Proof </button>
-                <p id="proof3" style="display: none;">
-                  \[
-                    \text{Proof here}
-                  \]
+                <button onclick="hideElement('linearQR')"> Show Proof </button>
+                <p id="linearQR" style="display: none;">
+                  \begin{align}
+                  X(X^\top X)^{-1}X^\top
+                  &= QR\left((QR)^\top QR\right)^{-1}\left(QR\right)^\top\\
+                  &= QR\left(R^\top Q^\top Q R\right)^{-1}R^\top Q^\top\\
+                  &= QR(R^\top R)^{-1}R^\top Q^\top\\
+                  &= QRR^{-1}R^{-\top}R^\top Q^\top\\
+                  &= QQ^\top
+                  \end{align}
                 </p>
-              <pre><code class="cpp">
-                Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
-                  // Solve OLS using fast QR decomposition
-                  arma::mat Q, R;
-                  arma::qr_econ(Q, R, X);
-                  arma::vec beta = solve(R, (Q.t()*y));
+              </div>
+              <div class="blog-code">
+                <button onclick="hideElement('regcode')"> Show C++ Code </button>
+                <pre><code class="cpp" id="regcode">
+                  Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
+                    // Solve OLS using fast QR decomposition
+                    arma::mat Q, R;
+                    arma::qr_econ(Q, R, X);
+                    arma::vec beta = solve(R, (Q.t()*y));
 
-                  // Find diagonal of hat matrix given the Q of the QR factorization above
-                  arma::vec hat = sum(Q%Q,1);
+                    // Find diagonal of hat matrix given the Q of the QR factorization above
+                    arma::vec hat = sum(Q%Q,1);
 
-                  // Find LOO prediction error
-                  arma::vec fittedy = X*beta;
-                  arma::vec pred_err = (y - fittedy) / (1 - hat);
-                  List listout = List::create(Named("beta")          = beta,
-                                              Named("hatdiag")       = hat,
-                                              Named("loo_pred_err")  = pred_err,
-                                              Named("fitted.values") = fittedy);
-                  return listout;
-                }
-              </code></pre>
+                    // Find LOO prediction error
+                    arma::vec fittedy = X*beta;
+                    arma::vec pred_err = (y - fittedy) / (1 - hat);
+                    List listout = List::create(Named("beta")          = beta,
+                                                Named("hatdiag")       = hat,
+                                                Named("loo_pred_err")  = pred_err,
+                                                Named("fitted.values") = fittedy);
+                    return listout;
+                  }
+                </code></pre>
+              </div>
               <h3> Weighted Linear Regression </h3>
               While estimating coefficients in weighted linear regression is as
               easy as multiplying \(Y\) and \(X\) be the square root of the
@@ -468,7 +481,7 @@
 
               This means that the hat matrix is
               \[
-              H = X(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top
+              H^{\text{correct}} = X(\tilde{X}^\top \tilde{X})^{-1}X^\top W
               \]
               and <b>not</b>
               \[
@@ -476,24 +489,40 @@
               \]
               which is asymmetric in comparison to the hat matrix without
               weights (which has no tildes).
-
-              Writing out the matrix, we get
-              \begin{align*}
-                H
-                &= X(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top\\
-                &= X((\sqrt{W}X)^\top \sqrt{W}X)^{-1}(\sqrt{W}X)^\top \\
-                &= X\left(X^\top\sqrt{W}^\top \sqrt{W}X\right)^{-1}X^\top\sqrt{W}^\top\\
-                &= X\left(X^\top\sqrt{W} \sqrt{W}X\right)^{-1}X^\top\sqrt{W}\\
-                &= X\left(X^\top W X\right)^{-1}X^\top\sqrt{W}\\
-                &= \sqrt{W}^{-1}X\left(X^\top W X\right)^{-1}X^\top\sqrt{W}\\
-              \end{align*}
               If we perform a QR decomposition on \(\tilde{X}\), with
               \(\tilde{X}=QR\) then we can rewrite the hat matrix as
-              \begin{align}
-                \sqrt{W}^{-1}X\left(X^\top W X\right)^{-1}X^\top\sqrt{W}
-                &= \sqrt{W}^{-1}X\left(R^\top Q^\top W QR\right)^{-1}R^\top Q^\top\sqrt{W}
-              \end{align}
-              <pre><code class="cpp">
+              \[
+                H = \sqrt{W}^{-1}QQ^\top \sqrt{W}
+              \]
+              <div class="proof">
+                <button onclick="hideElement('proofweightedQR')"> Show Proof </button>
+                <p id="proofweightedQR" style="display: none;">
+                  We can rewrite the hat matrix as
+                  \begin{align}
+                    H
+                    &= X(\tilde{X}^\top \tilde{X})^{-1}X^\top W\\
+                    &= \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+                  \end{align}
+                  Letting \(X=QR\) be the QR decomposition ox \(X\) without column
+                  pivoting.
+                  \begin{align}
+                    \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+                    &= \sqrt{W}^{-1}QR(R^\top Q^\top QR)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QRR^{-1}R^{-\top}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QQ^\top \sqrt{W}\\
+                  \end{align}
+                </p>
+              </div>
+              Letting \(Q_1 = \sqrt{W}^{-1}Q\) and \(Q_2 = \sqrt{W} Q\),
+              we can calculate the diagonal of the hat matrix as before with
+              \[
+              h_{ii} = \sum_{j=1}^{n}[Q_1]_{ij}[Q_2]_{ji}
+              \]
+              <div class="blog-code">
+                <button onclick="hideElement('weightedregcode')"> Show C++ Code </button>
+                <pre><code class="cpp" id="weightedregcode">
                 Rcpp::List fastwls(arma::mat const &X,
                                    arma::vec const &y,
                                    arma::vec const &w){
@@ -516,7 +545,8 @@
                                               Named("fitted.values") = fittedy);
                   return listout;
                 }
-              </code></pre>
+                </code></pre>
+              </div>
               <h3> Local Linear Regression </h3>
             </div>
         </div>
