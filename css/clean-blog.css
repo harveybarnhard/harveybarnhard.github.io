@@ -680,6 +680,40 @@ form .row:first-child .floating-label-form-group {
   background-color: #ededed;
 }
 
+.blog-image {
+  image-rendering: crisp-edges;
+  object-fit: contain;
+  text-align: center;
+  height: 100%;
+  width: auto;
+}
+
+.blog-image > img {
+  image-rendering: crisp-edges;
+  object-fit: contain;
+  height: auto;
+  width: 100%;
+}
+
+.blog-code > button {
+  background-color: rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+  border-radius: 3px;
+  border-color: #333333;
+  color: #333333;
+  font-family:'Roboto',sans-serif;
+  font-size: 15px;
+  font-weight:400;
+  text-decoration:none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.blog-code > button:hover {
+  background-color: #333333;
+  color: white;
+}
+
 /* Inline code */
 p > code.hljs {
    display: inline;
