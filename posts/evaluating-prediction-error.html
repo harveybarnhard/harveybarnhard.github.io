@@ -123,7 +123,7 @@
               </div>
               <div class="blog-code">
                 <button onclick="hideElement('leverageplotcode')"> Show R Code </button>
-                <pre><code class="r" id="leverageplotcode" style="display: none;">
+                <pre id="leverageplotcode" style="display: none;"><code class="r">
                   library(pBrackets)
                   library(ggplot2)
                   library(latex2exp)
@@ -439,7 +439,7 @@
               </div>
               <div class="blog-code">
                 <button onclick="hideElement('regcode')"> Show C++ Code </button>
-                <pre><code class="cpp" id="regcode">
+                <pre  id="regcode"><code class="cpp">
                   Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
                     // Solve OLS using fast QR decomposition
                     arma::mat Q, R;
@@ -522,7 +522,7 @@
               \]
               <div class="blog-code">
                 <button onclick="hideElement('weightedregcode')"> Show C++ Code </button>
-                <pre><code class="cpp" id="weightedregcode">
+                <pre id="weightedregcode"><code class="cpp">
                 Rcpp::List fastwls(arma::mat const &X,
                                    arma::vec const &y,
                                    arma::vec const &w){
