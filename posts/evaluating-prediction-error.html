@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Harvey Barnhard">
+
+    <title>Harvey - Blog Post</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="../css/clean-blog.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <script src="https://kit.fontawesome.com/b89efab99d.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- LaTeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- code block Rendering -->
+    <link rel="stylesheet" href="../css/androidstudio.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom">
+      <div class="container-fluid">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle x collapsed" data-toggle="collapse" data-target="#navbar-collapse-x">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-x">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="../projects.html">projects</a>
+            </li>
+            <li>
+              <a href="../about.html">about</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('../img/looperr-preview.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Evaluating Prediction Error</h1>
+                        <h2 class="subheading"></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- main text -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+              <h1>Prediction Error</h1>
+              We run an OLS regression of a response vector \(Y\) on
+              a data matrix \(X\), estimating a coefficient vector \(\hat{\beta}\).
+              \[
+                Y = X\beta + \varepsilon
+              \]
+              We want to know how well our model is predicting \(Y\) for the
+              \(i\)th observation. We could just analyze the \(i\)th residual
+              from the fitted values:
+              \[
+                \hat{\varepsilon}_i = y_i - \hat{y}_i = y_i - x_i^\top \hat{\beta}
+              \]
+              where \(x_i\) is the \(i\)th row of \(X\). However, if
+              the \(i\)th has a considerable effect \(\hat{\beta}\) when we
+              remove or include that observation (a high-leverage observation),
+              then analyzing residuals isn't sufficient. A high leverage observation
+              may have a small residual when that observation is included in the
+              regression simply because the observation pulls the line of best
+              fit closer. But if you were to leave out the high-leverage
+              observation when running the regression, estimating \(\hat{\beta}_{-i}^\text{leaveout}\)
+              and predict the response \(\hat{y}_{i}^\text{leaveout}\) for the left-out observation,
+              and calculate the residual (now the prediction error) you get
+              \[
+                \hat{\varepsilon}_i^{\text{leaveout}} = y_i - \hat{y}_{i}^\text{leaveout}
+                = y_i - x_i^\top \hat{\beta}_{-i}^\text{leaveout}
+              \]
+              In the example below, the observation with high leverage
+              has a much larger leave-one-out prediction error than
+              it does a residual, \(\hat{\varepsilon}_i < \hat{\varepsilon}_i^{\text{leaveout}}\).
+              <div class="blog-image">
+                <img src="../img/high-leverage.svg" alt="">
+              </div>
+              <div class="blog-code">
+                <button onclick="hideElement('leverageplotcode')"> Show R Code </button>
+                <pre id="leverageplotcode" style="display: none;"><code class="r">
+                  library(pBrackets)
+                  library(ggplot2)
+                  library(latex2exp)
+
+                  # Simulate data
+                  set.seed(123)
+                  n = 20
+                  X = rnorm(n, mean=0, sd=0.2)
+                  beta = 0.5
+                  Y = X*beta + rnorm(n, mean=0, sd=0.1)
+
+                  # Create a high-leverage point
+                  Y[18] = Y[18] + .5
+                  X[18] = X[18] + .2
+
+                  # Plot the regression
+                  ggplot(data.frame(X, Y), aes(x=X, y=Y)) +
+                    geom_point() +
+                    geom_smooth(method="lm", formula="y~x", se=FALSE,
+                                aes(color="With High-Leverage Point")) +
+                    geom_smooth(data=data.frame(X=X[-18], Y=Y[-18]),
+                                method="lm", formula="y~x", se=FALSE,
+                                aes(x=X, y=Y,color="Without High-Leverage Point"),
+                                fullrange=TRUE) +
+                    coord_cartesian(xlim=c(min(X), max(X))) +
+                    geom_curve(aes(x = X[18]+0.1, y = Y[18]-0.1,
+                                   xend = X[18]+0.01, yend = Y[18]-0.008),
+                               colour = "#CC0000", size=1, curvature = 0.1,
+                               arrow = arrow(length = unit(0.03, "npc"))) +
+                    annotate(geom="text",x=X[18]+0.11, y=Y[18]-0.11,
+                             label="High Leverage Point",
+                             size=6) +
+                    annotate(geom="text",x=-0.225, y=0.137,
+                             label=latex2exp::TeX("$\\hat{\\epsilon}_i$"),
+                             size=6, parse=TRUE) +
+                    annotate(geom="text",x=-0.146 , y=0.1067,
+                             label=latex2exp::TeX("$\\hat{\\epsilon}_i^{leaveout}$"),
+                             size=6, parse=TRUE) +
+                    scale_colour_manual(name="", values=c("#CC0000", "#00CCCC")) +
+                    theme_void() +
+                    theme(legend.position=c(0.8, 0.15),
+                          legend.text=element_text(size=16))
+                  grid.brackets(158, 474, 158, 32)
+                  grid.brackets(165, 32, 165, 546)
+                </code></pre>
+              </div>
+              In fact, all leave-one-out prediction errors are larger than the
+              residuals for the respective observations, as the astounding
+              formula below will show.
+              <p>
+              This leave-one-out error analysis is simple enough to perform.
+              Just leave an observation out, run a regression, then predict the
+              response for the left-out observation
+              But let's say you wanted to
+              estimate the leave-one-out prediction error for each observation
+              is a dataset of size \(n\). Well, then you'd have to run
+              \(n\) separate regressions, each with \(n-1\) observations.
+              For small \(n\) this isn't much of
+              a problem, but for big datasets, this procedure can become very
+              computationally expensive.
+            </p>
+              <h1> The Astounding Formula </h1>
+              Fortunately, by a miracle of linear algebra, we can estimate all
+              \(n\) leave-one-out errors using only one regression.
+              Better yet, we don't even need to run a new regression, we can
+              estimate the leave-one-out errors using only the
+              computations from the original regression!
+              <div style="text-align: center;">
+              <div style="border: 2px solid red; width: fit-content; padding: 5px; padding-top: 5px; margin-top: 8px; margin-bottom: 8px; display: inline-block;">
+              \[
+              \hat{\varepsilon}_i^{\text{leaveout}}
+              = y_i - \hat{y}_i^{\text{leaveout}}
+              = \frac{y_i-\hat{y}_i}{1-h_{ii}}
+              \]
+              </div>
+              </div>
+              where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\)
+              from the original regression.
+              \[
+                H = X(X^\top X)^{-1}X^\top Y
+              \]
+              </thead>
+              If you instead wanted to know the leave-out prediction value,
+              you can just add the prediction error to the original value.
+              \[
+                \hat{y}_i^{\text{leaveout}} = y_i + \hat{\varepsilon}_i^{\text{leaveout}}
+              \]
+              <p>
+              The key to interpreting this formula is understanding what
+              the leverage of the \(i\)th observation, \(h_{ii}\), represents.
+              And to best understand what \(h_{ii}\) represents we consider the
+              extreme values \(h_{ii}\) can take. We can show that \(h_{ii}\) is
+              contained in  \([0,1]\), with higher values representing higher
+              leverage on the line of best fit.
+              </p>
+              <div class="proof">
+                <button onclick="hideElement('proofhii')"> Show Proof </button>
+                <p id="proofhii" style="display: none;">
+                  Suppose that \(H=H^2\), i.e. \(H\) is idempotent. If that is
+                  the case, then the diagonals of \(H\) are non-negative,
+                  because
+                  the \(i\)th diagonal of \(H\) is \(h_{ii}\) and the
+                  \(i\)th diagonal of \(H^2\), a symmetric matrix, is
+                  \[
+                    (H^2)_{ii} = h_{ii}^2 + \sum_{j\neq i}h_{ij}^2
+                  \]
+                  And because the right hand side is the sum of squares,
+                  it is necessarily non-negative, so by our assumption
+                  that \(H=H^2\) we get that \(h_{ii} = (H^2)_{ii}\geq 0\).
+                  Moreover,
+                  \[
+                  \sum_{j\neq i}h_{ij}^2 \geq 0
+                  \implies (H^2)_{ii} \geq h_{ii}^2
+                  \]
+                  which can only occur if \(h_{ii} \leq 1\). This means
+                  \(h_{ii}\in [0,1]\). Now showing that \(H\) is idempotent,
+                  \begin{align}
+                    H^2
+                    &= X(X^\top X)^{-1}X^\top X(X^\top X)^{-1}X^\top\\
+                    &= X(X^\top X)^{-1}X^\top\\
+                    &= H
+                  \end{align}
+                </p>
+              </div>
+              <p>
+              If \(h_{ii}=0\), then the \(i\)th observation has zero leverage,
+              and \(\hat{\varepsilon}_i = \hat{\varepsilon}_i^{\text{leaveout}}\).
+              That is, if an observation doesn't effect the line of best fit,
+              then removing it won't change the predicted value,
+              \(\hat{y}_i = \hat{y}_i^{\text{leaveout}}\).
+            </p>
+              If \(h_{ii}\to 1\), then
+              \(\hat{\varepsilon}_i^{\text{leaveout}}\to \infty \). That is,
+              if an observation approaches total leverage over a model, then
+              removing that observation will lead to a wild change in the
+              line of best fit.
+              <h1> Linear Smoothers</h1>
+              <p>
+                The astounding formula is a gift that just keeps on giving, because
+                the formula holds not just for ordinary least squares
+                regression, but a large family of predictive
+                models called linear smoothers. The family of linear smoothers
+                includes linear regression, weighted linear regression,
+                local linear regression, and splines.
+
+                A linear smoother is a transformation of the observed data
+                \(X\) and \(Y\) that \(\hat{Y}\)
+                can be expressed as a linear combination of \(Y\):
+                \[ \hat{Y} = HY\]
+                where \(H\) is a \(n \times n\) matrix that
+                takes the
+                following form as a function of \(X\):
+                \[
+                  H =
+                  \begin{bmatrix}
+                  \ell(X_1)^\top\\
+                  \vdots \\
+                  \ell(X_n)^\top
+                  \end{bmatrix}
+                  =
+                  \begin{bmatrix}
+                    \ell_1(x_1) & \ell_2(x_1) & \cdots & \ell_n(x_1)\\
+                    \ell_1(x_2) & \ell_2(x_2) & \cdots & \ell_n(x_2)\\
+                    \vdots & \vdots & \ddots & \vdots \\
+                    \ell_1(x_n) & \ell_2(x_n) & \cdots & \ell_n(x_n)
+                  \end{bmatrix}
+                \]
+                and \(x_i\) is the \(i\)th row of the \(n\times p\)
+                data matrix \(X\).
+
+                Letting \(h_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
+                \(H\), we can express the LOOCV score as
+                \[
+                  \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-h_{ii}}\right)^2
+                \]
+              </p>
+              <div class="proof">
+                <button onclick="hideElement('proofhii')"> Show Proof </button>
+                <p id="proofhii" style="display: none;">
+                  Suppose that \(H=H^2\), i.e. \(H\) is idempotent. If that is
+                  the case, then the diagonals of \(H\) are non-negative,
+                  because
+                  the \(i\)th diagonal of \(H\) is \(h_{ii}\) and the
+                  \(i\)th diagonal of \(H^2\), a symmetric matrix, is
+                  \[
+                    (H^2)_{ii} = h_{ii}^2 + \sum_{j\neq i}h_{ij}^2
+                  \]
+                  And because the right hand side is the sum of squares,
+                  it is necessarily non-negative, so by our assumption
+                  that \(H=H^2\) we get that \(h_{ii} = (H^2)_{ii}\geq 0\).
+                  Moreover,
+                  \[
+                  \sum_{j\neq i}h_{ij}^2 \geq 0
+                  \implies (H^2)_{ii} \geq h_{ii}^2
+                  \]
+                  which can only occur if \(h_{ii} \leq 1\). This means
+                  \(h_{ii}\in [0,1]\). Now showing that \(H\) is idempotent,
+                  \begin{align}
+                    H^2
+                    &= X(X^\top X)^{-1}X^\top X(X^\top X)^{-1}X^\top\\
+                    &= X(X^\top X)^{-1}X^\top\\
+                    &= H
+                  \end{align}
+                </p>
+              </div>
+              <p>
+              If \(h_{ii}=0\), then the \(i\)th observation has zero leverage,
+              and \(\hat{\varepsilon}_i = \hat{\varepsilon}_i^{\text{leaveout}}\).
+              That is, if an observation doesn't effect the line of best fit,
+              then removing it won't change the predicted value,
+              \(\hat{y}_i = \hat{y}_i^{\text{leaveout}}\).
+            </p>
+              If \(h_{ii}\to 1\), then
+              \(\hat{\varepsilon}_i^{\text{leaveout}}\to \infty \). That is,
+              if an observation approaches total leverage over a model, then
+              removing that observation will lead to a wild change in the
+              line of best fit.
+
+              <h1>Putting the Theory to Work</h1>
+              <p>
+              In practice, the calculation of \(X^\top X\) should often be
+              avoided at all costs. Instead, we can use the \(QR\) factorization of
+              \(X\) to solve the least-squares problem without ever touching
+              \(X^\top X\). Because computational methods are always approximate,
+              problems that are
+              <a href="https://en.wikipedia.org/wiki/Condition_number">ill-conditioned</a>
+              can amplify the error in
+              \(X\), creating large innaccuracies in the solution \(\hat{\beta}\).
+              </p>
+              <div class="proof">
+                <button onclick="hideElement('proof1')"> Show Proof </button>
+                <p id="proof1" style="display: none;">
+                  If \(X\) is full rank with \(n>p\),
+                  $$
+                   \begin{align} \kappa\left(X^\top X\right)
+                   &= \left|\left|X^\top X\right|\right|_2\left|\left|\left(X^\top X\right)^{\dagger}\right|\right|_2  \\
+                   &= \left|\left|X^\top X\right|\right|_2\left|\left|X^{\dagger} \left(X^{\dagger}\right)^{\top}\right|\right|_2  \\
+                   &\leq ||X^\top||_2 ||X||_2 ||X^\dagger||_2 ||X^{{\dagger}^\top}||_2 \\
+                   &= ||X||_2^2 ||X^\dagger||_2^2 \\
+                   &= \kappa(X)^2
+                   \end{align}
+                  $$
+                  Where the penultimate step uses the fact that \(||A^\top||_2 = ||A||_2\).
+                  The "\(\leq\)" step comes from the submultiplicativity of
+                  the matrix 2-norm.
+                  \[
+                    ||AB||_2 \leq ||A||_2||B||_2
+                  \]
+                </p>
+              </div>
+              <p>
+              To stave off numerical innaccuracies arising from calculating
+              \(X^\top X\), we can instead use the QR decomposition of \(X\) to
+              derive the least squares solution \(\hat{\beta}\).
+              </p>
+              <div class="proof">
+                <button onclick="hideElement('proof2')"> Show Proof </button>
+                <p id="proof2" style="display: none;">
+                  Let \(QR'=XP\) be the QR decomposition of X where
+                  \(Q\) is an \(n\times n\) orthogonal matrix,
+                  \(R\) is an \(n\times n\) upper triangular matrix, and
+                  \(P\) is a permutation matrix so that
+                  \[
+                    QR'
+                    = Q \begin{bmatrix} R \\ 0 \end{bmatrix}
+                    = XP
+                  \]
+                  If \(X\) is full-rank, then \(R\) has full rank and is
+                  thus invertible. Since \(Q^\top Q=I\), for any matrix \(A\)
+                  we get
+                  \[
+                    ||QA||_2
+                    = \sqrt{\langle QA, QA\rangle}
+                    = \sqrt{\langle Q^\top QA, A\rangle}
+                    = \sqrt{\langle A, A\rangle}
+                    = ||A||_2^2
+                  \]
+                  This is called the unitarily invariant property of the
+                  induced operator norm. Without loss of generality,
+                  assume \(P=I\). Using the properties above we can write
+                  $$
+                    \begin{align}
+                      ||X\beta - y||_2^2
+                      &= ||Q^\top(X\beta-y)||_2^2\\
+                      &= ||Q^\top(QR'\beta - y)||_2^2 \\
+                      &= \left|\left|\begin{bmatrix} R \\ 0 \end{bmatrix}\beta - Q^\top y\right|\right|_2^2
+                    \end{align}
+                  $$
+                  Writing
+                  \[
+                    Q^\top y = \begin{bmatrix} Q_1^\top y\\ Q_2^\top y \end{bmatrix}
+                  \]
+                  We can express the equation above as
+                  \[
+                    \left|\left|\begin{bmatrix} R \\ 0 \end{bmatrix}\beta - Q^\top y\right|\right|_2^2
+                    = \left|\left|\begin{bmatrix} R\beta \\ 0 \end{bmatrix}
+                     - \begin{bmatrix} Q_1^\top y\\ Q_2^\top y \end{bmatrix}\right|\right|_2^2
+                     = \left|\left|\begin{bmatrix} R\beta - Q_1^\top y\\ - Q_2^\top y \end{bmatrix}\right|\right|_2^2
+                    = || R\beta - Q_1^\top y||_2^2 + ||Q_2^\top y||_2^2
+                  \]
+                  Which means that the original least-squares problem can
+                  be rewritten as follows:
+                  $$
+                  \begin{align}
+                    \hat{\beta}
+                    &= \arg \min_{\beta}||X\beta - y||_2^2\\
+                    &= \arg \min_{\beta}|| R\beta - Q_1^\top y||_2^2 + ||Q_2^\top y||_2^2\\
+                    &= \arg \min_{\beta}|| R\beta - Q_1^\top y||_2^2
+                    \end{align}
+                  $$
+                  The solution to this problem is simply
+                  \[
+                    \hat{\beta} = R^{-1}Q_1^\top y
+                  \]
+                  Though in pratice we would never take the inverse of
+                  \(R\) but instead solve the system of linear equations
+                  \(R\beta = Q_1^\top y\) by running
+                  <code class="cpp">solve(R, (Q.t()*y)) </code>
+                </p>
+              </div>
+              <h3> Linear Regression </h3>
+              <p>
+                To calculate the leave-one-out prediction error \(  \hat{\varepsilon}_i^{\text{pred}}\)
+                we take the diagonal of the hat matrix
+                \[
+                  H= X(X^\top X)^{-1}X^\top
+                \]
+                and the residuals \(Y - \hat{Y}\), then calculate the
+                LOO error using the astounding formula
+                \[
+                  \hat{\varepsilon}_i^{\text{pred}} = \frac{y_i-\hat{y}}{1-h_{ii}}
+                \]
+                But computing the hat matrix \(H\) through brute force
+                linear algebra is both time intensive and can lead to
+                the same numerical imprecision as we were trying to avoid when
+                solving the least squares problem. Instead, we are able
+                to reuse \(Q\) from the QR decomposition we have already
+                performed to find the diagonal of the hat matrix. In fact,
+                we can simply write
+                \[
+                  H = QQ^\top
+                \]
+              </p>
+              <div class="proof">
+                <button onclick="hideElement('linearQR')"> Show Proof </button>
+                <p id="linearQR" style="display: none;">
+                  \begin{align}
+                  X(X^\top X)^{-1}X^\top
+                  &= QR\left((QR)^\top QR\right)^{-1}\left(QR\right)^\top\\
+                  &= QR\left(R^\top Q^\top Q R\right)^{-1}R^\top Q^\top\\
+                  &= QR(R^\top R)^{-1}R^\top Q^\top\\
+                  &= QRR^{-1}R^{-\top}R^\top Q^\top\\
+                  &= QQ^\top
+                  \end{align}
+                </p>
+              </div>
+              <div class="blog-code">
+                <button onclick="hideElement('regcode')"> Show C++ Code </button>
+                <pre  id="regcode"><code class="cpp">
+                  Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
+                    // Solve OLS using fast QR decomposition
+                    arma::mat Q, R;
+                    arma::qr_econ(Q, R, X);
+                    arma::vec beta = solve(R, (Q.t()*y));
+
+                    // Find diagonal of hat matrix given the Q of the QR factorization above
+                    arma::vec hat = sum(Q%Q,1);
+
+                    // Find LOO prediction error
+                    arma::vec fittedy = X*beta;
+                    arma::vec pred_err = (y - fittedy) / (1 - hat);
+                    List listout = List::create(Named("beta")          = beta,
+                                                Named("hatdiag")       = hat,
+                                                Named("loo_pred_err")  = pred_err,
+                                                Named("fitted.values") = fittedy);
+                    return listout;
+                  }
+                </code></pre>
+              </div>
+              <h3> Weighted Linear Regression </h3>
+              While estimating coefficients in weighted linear regression is as
+              easy as multiplying \(Y\) and \(X\) be the square root of the
+              weight matrix, which is a diagonal matrix of non-negative weights,
+              so the matrix square root is just the square root of the diagonal.
+              \[
+                \tilde{Y} = \sqrt{W}Y \qquad \tilde{X}=\sqrt{W}X
+              \]
+              then running OLS using \(\tilde{X}\) and \(\tilde{Y}\),
+              \[
+                \hat{\beta}^{WLS} = \left(\tilde{X}^\top \tilde{X}\right)^{-1}\tilde{X}\tilde{Y}
+              \]
+              so that
+              \[
+              \hat{Y} = X\hat{\beta}
+              \]
+              Notice that it is \(X\hat{\beta}\) and <b>not</b>
+              \(\tilde{X}\hat{\beta}\).
+
+              This means that the hat matrix is
+              \[
+              H^{\text{correct}} = X(\tilde{X}^\top \tilde{X})^{-1}X^\top W
+              \]
+              and <b>not</b>
+              \[
+              H^{\text{wrong}} = \tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top
+              \]
+              which is asymmetric in comparison to the hat matrix without
+              weights (which has no tildes).
+              If we perform a QR decomposition on \(\tilde{X}\), with
+              \(\tilde{X}=QR\) then we can rewrite the hat matrix as
+              \[
+                H = \sqrt{W}^{-1}QQ^\top \sqrt{W}
+              \]
+              <div class="proof">
+                <button onclick="hideElement('proofweightedQR')"> Show Proof </button>
+                <p id="proofweightedQR" style="display: none;">
+                  We can rewrite the hat matrix as
+                  \begin{align}
+                    H
+                    &= X(\tilde{X}^\top \tilde{X})^{-1}X^\top W\\
+                    &= \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+                  \end{align}
+                  Letting \(X=QR\) be the QR decomposition ox \(X\) without column
+                  pivoting.
+                  \begin{align}
+                    \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+                    &= \sqrt{W}^{-1}QR(R^\top Q^\top QR)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QRR^{-1}R^{-\top}R^\top Q^\top \sqrt{W}\\
+                    &= \sqrt{W}^{-1}QQ^\top \sqrt{W}\\
+                  \end{align}
+                </p>
+              </div>
+              Letting \(Q_1 = \sqrt{W}^{-1}Q\) and \(Q_2 = \sqrt{W} Q\),
+              we can calculate the diagonal of the hat matrix as before with
+              \[
+              h_{ii} = \sum_{j=1}^{n}[Q_1]_{ij}[Q_2]_{ji}
+              \]
+              <div class="blog-code">
+                <button onclick="hideElement('weightedregcode')"> Show C++ Code </button>
+                <pre id="weightedregcode"><code class="cpp">
+                Rcpp::List fastwls(arma::mat const &X,
+                                   arma::vec const &y,
+                                   arma::vec const &w){
+                  // Solve OLS using fast QR decomposition
+                  arma::mat Q, R;
+                  arma::qr_econ(Q, R, X.each_col() % sqrt(w));
+                  arma::vec beta = solve(R, (Q.t()*(y % sqrt(w))));
+
+                  // Find diagonal of hat matrix given the Q of the QR factorization above
+                  arma::mat Q1 = Q.each_col() / sqrt(w);
+                  arma::mat Q2 = Q.each_col() % sqrt(w);
+                  arma::vec hat = sum(Q1%Q2,1);
+
+                  // Find LOO prediction error
+                  arma::vec fittedy = X*beta;
+                  arma::vec pred_err = (y - fittedy) / (1 - hat);
+                  List listout = List::create(Named("beta")          = beta,
+                                              Named("hatdiag")       = hat,
+                                              Named("loo_pred_err")  = pred_err,
+                                              Named("fitted.values") = fittedy);
+                  return listout;
+                }
+                </code></pre>
+              </div>
+              <h3> Local Linear Regression </h3>
+              <p>
+                The astounding formula is a gift that just keeps on giving, because
+                the formula holds not just for ordinary least squares
+                regression, but a large family of predictive
+                models called linear smoothers. The family of linear smoothers
+                includes linear regression, weighted linear regression,
+                local linear regression, and splines.
+
+                A linear smoother is a transformation of the observed data
+                \(X\) and \(Y\) that \(\hat{Y}\)
+                can be expressed as a linear combination of \(Y\):
+                \[ \hat{Y} = HY\]
+                where \(H\) is a \(n \times n\) matrix that
+                takes the
+                following form as a function of \(X\):
+                \[
+                  H =
+                  \begin{bmatrix}
+                  \ell(X_1)^\top\\
+                  \vdots \\
+                  \ell(X_n)^\top
+                  \end{bmatrix}
+                  =
+                  \begin{bmatrix}
+                    \ell_1(x_1) & \ell_2(x_1) & \cdots & \ell_n(x_1)\\
+                    \ell_1(x_2) & \ell_2(x_2) & \cdots & \ell_n(x_2)\\
+                    \vdots & \vdots & \ddots & \vdots \\
+                    \ell_1(x_n) & \ell_2(x_n) & \cdots & \ell_n(x_n)
+                  \end{bmatrix}
+                \]
+                and \(x_i\) is the \(i\)th row of the \(n\times p\)
+                data matrix \(X\).
+
+                Letting \(h_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
+                \(H\), we can express the LOOCV score as
+                \[
+                  \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-h_{ii}}\right)^2
+                \]
+              </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://github.com/harveybarnhard">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://strava.com/athletes/16562005">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted"></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="../js/jqBootstrapValidation.js"></script>
+    <script src="../js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="../js/clean-blog.min.js"></script>
+
+    <!-- Button to show and hide elements -->
+    <script>
+    function hideElement(id) {
+      var x = document.getElementById(id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+      x.scrollTop = x.scrollHeight;
+    }
+  </script>
+
+
+</body>
+
+</html>
