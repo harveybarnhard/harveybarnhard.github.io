@@ -6,7 +6,8 @@
   <link href="css/main.css" rel="stylesheet">
 
   <!-- Load d3.js & color scale-->
-  <script src="https://d3js.org/d3.v4.js"></script>
+  <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+  <script TYPE="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
 
   <!-- Routing js -->
@@ -37,7 +38,32 @@
         </ul>
     </nav>
   </div>
-  <ng-view></ng-view>
+
+
+  <!-- Content Injection -->
+  <div ng-view></div>
+
+  <!-- Footer -->
+  <footer class="footer-default">
+    <ul>
+        <li>
+            <a href="https://github.com/harveybarnhard">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+        </li>
+        <li>
+            <a href="https://strava.com/athletes/16562005">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+        </li>
+    </ul>
+  </footer>
 
   <!-- jQuery -->
   <script src="vendor/jquery/jquery.min.js"></script>
