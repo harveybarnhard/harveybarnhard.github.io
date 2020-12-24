@@ -1,0 +1,148 @@
+body {
+	font-family: 'Lora', 'Times New Roman', serif;
+	font-size: 20px;
+	color: #333333;
+}
+
+/* ------ */
+/* navbar */
+/* ------ */
+
+.navbar-container {
+	height: 50px;
+	margin-top: 0px;
+	margin-bottom: 40px;
+}
+
+.navbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: black;
+}
+
+.navbar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-size: 15px;
+}
+
+.navbar ul li {
+	float: right;
+}
+
+.navbar ul li a {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 7px 20px;
+	text-decoration: none;
+}
+
+.navbar ul .about {
+	float: left;
+	background-image: linear-gradient(to right, black,  white);
+	background-position: bottom left;
+	background-repeat: no-repeat;
+	background-size: 0% 2px;
+	transition: background-size .3s ease;
+	font-size: 25px;
+}
+
+.navbar ul .about:hover:not(.active) {
+	background-size: 100% 2px;
+}
+
+.navbar ul li {
+	background-image: linear-gradient(to right, white, black,  white);
+	background-position: bottom center;
+	background-repeat: no-repeat;
+	background-size: 0% 2px;
+	transition: background-size .3s ease;
+}
+
+.navbar ul li:hover:not(.active) {
+	background-size: 80% 2px;
+}
+
+.navbar ul .active:hover {
+	color: #444444;
+}
+
+.navbar ul .about .active {
+	background-image: linear-gradient(to right, black,  white);
+	background-position: bottom center;
+	background-repeat: no-repeat;
+	background-size: 100% 2px;
+}
+
+.navbar ul .active {
+	background-image: linear-gradient(to right, white, black,  white);
+	background-position: bottom center;
+	background-repeat: no-repeat;
+	background-size: 100% 2px;
+}
+
+/* ------ */
+/* footer */
+/* ------ */
+
+.footer-default {
+	float: left;
+	width: 100%;
+	position: relative;
+}
+
+.footer-default ul {
+	clear: left;
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	left: 50%;
+	text-align: center;
+}
+
+.footer-default ul li {
+	display: block;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	right: 50%;
+}
+
+.footer-default ul li a {
+	color: #333333;
+}
+
+/* ------- */
+/* content */
+/* ------- */
+
+.main-content {
+	display: block;
+	max-width: 800px;
+	margin: 0px 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.main-content img {
+	display: block;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.main-content svg {
+	display: block;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
