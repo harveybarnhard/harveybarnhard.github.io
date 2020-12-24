@@ -51,20 +51,35 @@ function Items3($http, $q){
 };
 
 app.controller('enduranceCtrl', function($scope,$http) {
-		$scope.barData = [
-    {"name": "A", "count": 300},
-    {"name": "B", "count": 150},
-    {"name": "C", "count": 400},
-    {"name": "D", "count": 300},
-    {"name": "E", "count": 100},
-    {"name": "F", "count": 200},
-    {"name": "G", "count": 420},
-    {"name": "H", "count": 320},
-    {"name": "I", "count": 250},
-    {"name": "J", "count": 210},
-    {"name": "K", "count": 180}
-];
+// 		$scope.barData = [
+//     {"name": "A", "count": 300},
+//     {"name": "B", "count": 150},
+//     {"name": "C", "count": 400},
+//     {"name": "D", "count": 300},
+//     {"name": "E", "count": 100},
+//     {"name": "F", "count": 200},
+//     {"name": "G", "count": 420},
+//     {"name": "H", "count": 320},
+//     {"name": "I", "count": 250},
+//     {"name": "J", "count": 210},
+//     {"name": "K", "count": 180}
+// ];
 console.log($scope.barData);
+// $scope.barData = $http.get("data.csv").then(function(response){
+// 	console.log(response.data)
+// 	return CSVtoArray(response.data)
+// });
+// $http.get("data.csv").then(function(response){
+// 	console.log(response.data)
+// 	$scope.barData = CSVtoArray(response.data)
+// 	console.log($scope.barData)
+// });
+d3.csv("data.csv", function(data){
+	console.log(data)
+	$scope.barData = data;
+	console.log($scope.barData)
+})
+console.log($scope.barData)
 	}).directive( 'dir1', [
   function () {
     return {
@@ -72,9 +87,7 @@ console.log($scope.barData);
       scope: { data: '='},
       link: barchart
     };
-		console.log($scope.barData);
 		function barchart(scope, element) {
-			console.log(scope.data);
 			var margin = {top: 20, right: 20, bottom: 30, left: 45},
 			width = 480 - margin.left - margin.right,
 			height = 360 - margin.top - margin.bottom;
@@ -117,6 +130,7 @@ console.log($scope.barData);
 			//Watch 'data' and run scope.render(newVal) whenever it changes
 			//Use true for 'objectEquality' property so comparisons are done on equality and not reference
 			scope.$watch('data', function(){
+				console.log(scope.data)
 				scope.render(scope.data);
 			}, true);
 		}
@@ -129,10 +143,10 @@ console.log($scope.barData);
 // 	// 	// console.log(parsedCsvData);
 //   // 	$scope.myData = parsedCsvData;
 // 	// });
-// 	// $scope.myData = $http.get("data.csv").then(function(response){
-// 	// 	console.log(response.data)
-// 	// 	return CSVtoArray(response.data)
-// 	// });
+	// $scope.myData = $http.get("data.csv").then(function(response){
+	// 	console.log(response.data)
+	// 	return CSVtoArray(response.data)
+	// });
 // 	// console.log($scope.myData);
 // 	$scope.myData = [10,20,30,40,60,50,80,90];
 // 	console.log($scope.myData);
