@@ -1,72 +1,23 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app='sampleApp'>
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Harvey Barnhard's personal website.">
-    <meta name="author" content="Harvey Barnhard">
-
-    <title>Harvey Barnhard</title>
-
-    <!-- Theme CSS -->
-    <link href="css/main.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <script src="https://kit.fontawesome.com/b89efab99d.js" crossorigin="anonymous"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+  <!-- Theme CSS -->
+  <link href="css/main.css" rel="stylesheet">
+  <!-- Routing js -->
+  <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9"></script>
+  <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular-route.js" data-semver="1.4.9"></script>
+  <script src="js/route-config.js"></script>
+  <script src="js/headerController.js"></script>
 </head>
 
 <body>
-
-    <!-- Navigation -->
-    
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="https://github.com/harveybarnhard">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://strava.com/athletes/16562005">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-
+    <nav class="navbar navbar-default" ng-controller="HeaderController">
+        <ul class="nav navbar-nav">
+          <li ng-class="{ active: isActive('/')}"><a href="#/">Endurance</a></li>
+          <li ng-class="{ active: isActive('/test2')}"><a href="#/test2">About</a></li>
+        </ul>
+    </nav>
+  <ng-view></ng-view>
 </body>
-
 </html>

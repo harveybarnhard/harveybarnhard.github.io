@@ -121,6 +121,10 @@ body {
 	color: #333333;
 }
 
+.footer-default ul li a:hover {
+	color: #b61c20;
+}
+
 /* ------- */
 /* content */
 /* ------- */
