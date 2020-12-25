@@ -1,14 +1,11 @@
+/* Default light theme colors */
 :root {
-  --main-bg-color: white;
-	--accent-bg-color: black;
+  --main-bg-color: #e6e6e6;
+	--accent-bg-color: #333333;
 	--text-color: #333333;
 	--hover-color: #b61c20;
-}
-button {
-	border: none;
-	background-color: transparent;
-	outline: none;
-	color: var(--text-color);
+	--link-color: #222222;
+	--link-hover-color: #949494;
 }
 /* ---- */
 /* body */
@@ -59,6 +56,12 @@ body {
 	text-decoration: none;
 }
 
+#theme-toggle i:hover {
+	color: gold;
+	transition: 1s ease;
+	cursor: pointer;
+}
+
 .navbar ul .about {
 	float: left;
 	background-image: linear-gradient(to right, var(--accent-bg-color),  var(--main-bg-color));
@@ -69,6 +72,7 @@ body {
 	font-size: 25px;
 }
 
+/* Handling inactive pages */
 .navbar ul .about:hover:not(.active) {
 	background-size: 100% 2px;
 }
@@ -84,23 +88,26 @@ body {
 .navbar ul li:hover:not(.active) {
 	background-size: 80% 2px;
 }
-
-.navbar ul .active:hover {
-	color: #444444;
+/* no underline for dark mode switch */
+.navbar ul .mode-switch {
+	background-image: none;
+	background-color: none;
 }
 
-.navbar ul .about .active {
-	background-image: linear-gradient(to right, var(--accent-bg-color),  var(--main-bg-color));
-	background-position: bottom center;
-	background-repeat: no-repeat;
-	background-size: 100% 2px;
-}
+/* Handling active page */
 
 .navbar ul .active {
 	background-image: linear-gradient(to right, var(--main-bg-color), var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom center;
 	background-repeat: no-repeat;
-	background-size: 100% 2px;
+	background-size: 80% 2px;
+}
+
+.navbar button {
+	border: none;
+	background-color: transparent;
+	outline: none;
+	color: var(--text-color);
 }
 
 /* ------ */
@@ -168,4 +175,23 @@ body {
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.main-content p a {
+	color: var(--link-color);
+	font-weight: bold;
+	text-decoration: none;
+}
+.main-content p a:hover {
+	color: var(--link-hover-color);
+}
+
+#img-headshot {
+	height: 217px;
+	width: auto;
+	float: left;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
 }

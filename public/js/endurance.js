@@ -20,7 +20,7 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_
 			// append the svg object to the body of the page
 			var svg = d3.select(element[0])
 				.append("svg")
-					.attr("viewBox", "0 0 960 500")
+					.attr("viewBox", "0 0 1000 400")
 				.append("g")
 					.attr("transform",
 								"translate(" + margin.left + "," + margin.top + ")");

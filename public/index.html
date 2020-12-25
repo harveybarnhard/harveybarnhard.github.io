@@ -32,12 +32,12 @@
     <nav class="navbar" ng-controller="HeaderController">
         <ul>
           <li class="about" ng-class="{ active: isActive('/')}"><a href="#/">Harvey Barnhard</a></li>
-          <li>
-            <a class="mode-switch">
-            <button id="theme-toggle" class="light">
+          <li class="mode-switch">
+            <a>
+              <button id="theme-toggle" class="light">
                   <i class="fa fa-sun fa-2x"></i>
-            </button>
-          </a>
+              </button>
+            </a>
           </li>
           <li ng-class="{ active: isActive('/endurance')}"><a href="#/endurance">endurance</a></li>
           <li ng-class="{ active: isActive('/blog')}"><a href="#/blog">blog</a></li>
@@ -86,16 +86,18 @@
           // if it's light -> go dark
           if(themeToggle.className.includes('light')){
             document.querySelector(":root").style.setProperty('--main-bg-color', "#333333");
-            document.querySelector(":root").style.setProperty('--accent-bg-color', "white");
-            document.querySelector(":root").style.setProperty('--text-color', "white");
+            document.querySelector(":root").style.setProperty('--accent-bg-color', "#c7c7c7");
+            document.querySelector(":root").style.setProperty('--text-color', "#c7c7c7");
+            document.querySelector(":root").style.setProperty('--link-color', "#f5f5f5");
             themeToggle.innerHTML = '<i class="fa fa-moon-o fa-2x"></i>';
             themeToggle.className = 'dark';
           } else {
             // if it's dark -> go light
             themeStylesheet.href = 'css/light-main.css';
-            document.querySelector(":root").style.setProperty('--main-bg-color', "white");
-            document.querySelector(":root").style.setProperty('--accent-bg-color', "black");
+            document.querySelector(":root").style.setProperty('--main-bg-color', "#e6e6e6");
+            document.querySelector(":root").style.setProperty('--accent-bg-color', "#333333");
             document.querySelector(":root").style.setProperty('--text-color', "#333333");
+            document.querySelector(":root").style.setProperty('--link-color', "#222222");
             themeToggle.innerHTML = '<i class="fa fa-sun fa-2x"></i>';
             themeToggle.className = 'light';
           }
