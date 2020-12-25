@@ -75,10 +75,10 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_
 					.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b-%Y")))
 				// Add Y axis
 				var y = d3.scaleLinear()
-					.domain([0, 20])
+					.domain([0, 24])
 					.range([ height, 0 ]);
 				svg.append("g")
-					.call(d3.axisLeft(y).ticks(5))
+					.call(d3.axisLeft(y).ticks(6))
 				// -------- //
 				// Brushing //
 				// -------- //
