@@ -48,32 +48,6 @@ d3.csv("data.csv", function(data){
 				bars
 				.attr('height', function(d) { return height - y(d.count); })
 				.attr("y", function(d) { return y(d.count); })
-
-				//Render graph based on 'data'
-				// scope.render = function(data) {
-				// 	console.log(data)
-				// 	//Set our scale's domains
-				// 	x.domain(data.map(function(d) { return d.name; }));
-				// 	y.domain([0, d3.max(data, function(d) { return d.count; })]);
-				// 	var bars = svg.selectAll(".bar").data(data);
-				// 	bars.enter()
-				// 	.append("rect")
-				// 	.attr("class", "bar")
-				// 	.attr("x", function(d) { return x(d.name); })
-				// 	.attr("width", x.rangeBand());
-				//
-				// 	//Animate bars
-				// 	bars
-				// 	.attr('height', function(d) { return height - y(d.count); })
-				// 	.attr("y", function(d) { return y(d.count); })
-				// };
-
-				//Watch 'data' and run scope.render(newVal) whenever it changes
-				//Use true for 'objectEquality' property so comparisons are done on equality and not reference
-				// scope.$watch('data', function(){
-				// 	console.log(scope.data)
-				// 	scope.render(scope.data);
-				// }, true);
 			})
 		}
 	}
