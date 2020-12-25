@@ -1,7 +1,23 @@
+:root {
+  --main-bg-color: white;
+	--accent-bg-color: black;
+	--text-color: #333333;
+	--hover-color: #b61c20;
+}
+button {
+	border: none;
+	background-color: transparent;
+	outline: none;
+	color: var(--text-color);
+}
+/* ---- */
+/* body */
+/* ---- */
 body {
 	font-family: 'Lora', 'Times New Roman', serif;
 	font-size: 20px;
-	color: #333333;
+	color: var(--text-color);
+	background-color: var(--main-bg-color);
 }
 
 /* ------ */
@@ -20,7 +36,7 @@ body {
 	left: 0;
 	width: 100%;
 	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	color: black;
+	color: var(--accent-bg-color);
 }
 
 .navbar ul {
@@ -37,7 +53,7 @@ body {
 
 .navbar ul li a {
 	display: block;
-	color: black;
+	color: var(--accent-bg-color);
 	text-align: center;
 	padding: 7px 20px;
 	text-decoration: none;
@@ -45,7 +61,7 @@ body {
 
 .navbar ul .about {
 	float: left;
-	background-image: linear-gradient(to right, black,  white);
+	background-image: linear-gradient(to right, var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom left;
 	background-repeat: no-repeat;
 	background-size: 0% 2px;
@@ -58,7 +74,7 @@ body {
 }
 
 .navbar ul li {
-	background-image: linear-gradient(to right, white, black,  white);
+	background-image: linear-gradient(to right, var(--main-bg-color), var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom center;
 	background-repeat: no-repeat;
 	background-size: 0% 2px;
@@ -74,14 +90,14 @@ body {
 }
 
 .navbar ul .about .active {
-	background-image: linear-gradient(to right, black,  white);
+	background-image: linear-gradient(to right, var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom center;
 	background-repeat: no-repeat;
 	background-size: 100% 2px;
 }
 
 .navbar ul .active {
-	background-image: linear-gradient(to right, white, black,  white);
+	background-image: linear-gradient(to right, var(--main-bg-color), var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom center;
 	background-repeat: no-repeat;
 	background-size: 100% 2px;
@@ -118,11 +134,14 @@ body {
 }
 
 .footer-default ul li a {
-	color: #333333;
+	color: var(--text-color);
+}
+.footer-default ul li a .fab {
+	color: var(--main-bg-color);
 }
 
 .footer-default ul li a:hover {
-	color: #b61c20;
+	color: var(--hover-color);
 }
 
 /* ------- */

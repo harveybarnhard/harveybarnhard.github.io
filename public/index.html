@@ -2,11 +2,10 @@
 <html ng-app='sampleApp'>
 
 <head>
-  <!-- Theme CSS -->
-  <link href="css/main.css" rel="stylesheet">
+  <!-- Theme CSS, default to light color scheme -->
+  <link id="theme" type="text/css" href="css/light-main.css" rel="stylesheet">
 
   <!-- Load d3.js & color scale-->
-  <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
   <script TYPE="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script TYPE="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
@@ -33,6 +32,13 @@
     <nav class="navbar" ng-controller="HeaderController">
         <ul>
           <li class="about" ng-class="{ active: isActive('/')}"><a href="#/">Harvey Barnhard</a></li>
+          <li>
+            <a class="mode-switch">
+            <button id="theme-toggle" class="light">
+                  <i class="fa fa-sun fa-2x"></i>
+            </button>
+          </a>
+          </li>
           <li ng-class="{ active: isActive('/endurance')}"><a href="#/endurance">endurance</a></li>
           <li ng-class="{ active: isActive('/blog')}"><a href="#/blog">blog</a></li>
           <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">projects</a></li>
@@ -52,7 +58,7 @@
             <a href="https://github.com/harveybarnhard">
                 <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                 </span>
             </a>
         </li>
@@ -69,5 +75,32 @@
 
   <!-- jQuery -->
   <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Dark Mode -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+      const themeStylesheet = document.getElementById('theme');
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
+          // if it's light -> go dark
+          if(themeToggle.className.includes('light')){
+            document.querySelector(":root").style.setProperty('--main-bg-color', "#333333");
+            document.querySelector(":root").style.setProperty('--accent-bg-color', "white");
+            document.querySelector(":root").style.setProperty('--text-color', "white");
+            themeToggle.innerHTML = '<i class="fa fa-moon-o fa-2x"></i>';
+            themeToggle.className = 'dark';
+          } else {
+            // if it's dark -> go light
+            themeStylesheet.href = 'css/light-main.css';
+            document.querySelector(":root").style.setProperty('--main-bg-color', "white");
+            document.querySelector(":root").style.setProperty('--accent-bg-color', "black");
+            document.querySelector(":root").style.setProperty('--text-color', "#333333");
+            themeToggle.innerHTML = '<i class="fa fa-sun fa-2x"></i>';
+            themeToggle.className = 'light';
+          }
+      })
+  })
+</script>
 </body>
 </html>
