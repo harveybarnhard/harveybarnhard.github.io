@@ -1,7 +1,7 @@
 app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
-d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv", function(data){
-	$rootScope.$broadcast("Data_Ready", data)
-})
+	d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv", function(data){
+		$rootScope.$broadcast("Data_Ready", data)
+	})
 }).directive( 'dir1', [
   function () {
     return {
@@ -34,8 +34,8 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_
 						select3 = "VirtualRide_moving_time",
 						select4 = "Other_moving_time";
 				var title1 = "Run",
-						title2 = "Ride",
-						title3 = "VirtualRide",
+						title2 = "Cycle",
+						title3 = "Zwift",
 						title4 = "Other"
 				headerBar = ["monday"];
 				headerBar.push(title1, title2, title3, title4);
@@ -142,6 +142,8 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_
 					.data(stackedData)
 					.enter()
 					.append("path")
+						.attr("stroke", "var(--text-color)")
+						.attr("stroke-width", .2)
 						.attr("class", function(d) { return "myArea " + d.key })
 						.style("fill", function(d) { return color(d.key); })
 						.attr("d", area)
@@ -176,29 +178,37 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_
 		    // LEGEND //
 		    // ------ //
 		    // Add one square in the legend for each name.
-		    var size = 20
-		    svg.selectAll("myrect")
-		      .data(keys)
-		      .enter()
-		      .append("rect")
-		        .attr("x", 30)
-		        .attr("y", function(d,i){ return 10 + i*(size+5)}) // 5 is where the first square appears. size*5 is the distance between dots
-		        .attr("width", size)
-		        .attr("height", size)
-		        .style("fill", function(d){ return color(d)})
-		        .on("mouseover", highlight)
-		        .on("mouseleave", noHighlight)
-		    // Add labels to squares
+		    var size = 100
+				svg.selectAll("myrect")
+					.data(keys)
+					.enter()
+					.append("rect")
+						.attr("x", function(d,i){ return 320 + i*size})
+						.attr("y", -35)
+						.attr("width", 20)
+						.attr("height", 20)
+						.style("fill", function(d){ return color(d)})
+						.on("mouseover", highlight)
+						.on("mouseleave", noHighlight)
 		    svg.selectAll("mylabels")
 		      .data(keys)
 		      .enter()
 		      .append("text")
-		        .attr("x", 30 + size*1.2)
-		        .attr("y", function(d,i){ return 10 + i*(size+5) + (size/2)})
+		        .attr("y", -23)
+		        .attr("x", function(d,i){ return 345 + i*size })
 		        .style("fill", function(d){ return color(d)})
 		        .text(function(d){ return d})
 		        .attr("text-anchor", "left")
 		        .style("alignment-baseline", "middle")
+						.style("font-weight", "bold")
+				svg.append("text")
+		      .attr("text-anchor", "end")
+		      .attr("x", 140)
+		      .attr("y", -19.4 )
+		      .text("Hours per week I")
+		      .attr("text-anchor", "start")
+					.style("font-weight", "bold")
+					.style("fill", "var(--text-color)")
 			})
 		}
 	}
