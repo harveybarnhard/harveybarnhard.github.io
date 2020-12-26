@@ -63,6 +63,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				var stackedData = d3.stack()
 					.keys(keys)
 					(data)
+
 				// -----//
 				// Axis //
 				// ---- //
@@ -106,6 +107,15 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					.y0(function(d) { return y(d[0]); })
 					.y1(function(d) { return y(d[1]); })
 					.curve(d3.curveMonotoneX) // Smooth it out a little
+
+				var tooltip = d3.select(element[0])
+      		.append("div")
+      		.attr("class", "tip")
+      		.style("position", "absolute")
+      		.style("z-index", "20")
+					.style("visibility", "hidden")
+					.style("top", "30px")
+					.style("left", "55px")
 				// --------------- //
 				// HIGHLIGHT GROUP //
 				// --------------- //
@@ -123,13 +133,29 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				var noHighlight = function(d){
 					d3.selectAll(".myArea")
 						.style("opacity", 1)
+					vertical.style("opacity", 0)
 				}
+				var vertical = svg.selectAll("tooltip")
+					.data(keys)
+					.enter()
+					.append("rect")
+						.attr("x", 100)
+						.attr("y", 0)
+						.attr("width", 0.5)
+						.attr("height", 290)
+						.style("fill", "var(--text-color)")
 				// What to do when one group is hovered in chart
 				var areaHighlight = function(d) {
-					console.log(d)
 					d3.selectAll(".myArea").style("opacity", .4)
-					d3.select(this)
-					.style("opacity", 1)
+					d3.select(this).style("opacity", 1)
+					vertical.style("opacity", 1)
+				}
+
+				var toolTip = function(d) {
+					mousex = d3.mouse(this);
+         	mousex = mousex[0];
+					console.log(mousex)
+					vertical.style("x", (mousex - 2) + "px" )
 				}
 				// Create chart. Note that brushing is applied BEFORE the actual creation of
 				// the chart and ".attr("pointer-events", "all")" is used so that the
@@ -149,6 +175,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.attr("d", area)
 						.attr("pointer-events", "all")
 						.on("mouseover", areaHighlight)
+						.on("mousemove", toolTip)
 						.on("mouseleave", noHighlight)
 				// ------------ //
 				// Update Chart //
