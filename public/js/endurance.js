@@ -41,6 +41,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				headerBar.push(title1, title2, title3, title4);
 				var data = data.map(function(d){
 						return {
+							date: d.monday,
 							monday:d.monday,
 							[title1]: d[select1],
 							[title2]: d[select2],
@@ -63,7 +64,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				var stackedData = d3.stack()
 					.keys(keys)
 					(data)
-
+				console.log(stackedData)
 				// -----//
 				// Axis //
 				// ---- //
@@ -87,8 +88,8 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 			  var clip = svg.append("defs").append("svg:clipPath")
 			      .attr("id", "clip")
 			      .append("svg:rect")
-			      .attr("width", width )
-			      .attr("height", height )
+			      .attr("width", width)
+			      .attr("height", height)
 			      .attr("x", 0)
 			      .attr("y", 0);
 			  // Add brushing, initializing by showing the entire plot
@@ -107,49 +108,65 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					.y0(function(d) { return y(d[0]); })
 					.y1(function(d) { return y(d[1]); })
 					.curve(d3.curveMonotoneX) // Smooth it out a little
+				var vertical = svg.append("rect")
+					.attr("x", 100)
+					.attr("y", 0)
+					.attr("width", 1)
+					.attr("height", 290)
+					.style("fill", "var(--text-color)")
+					.style("z-index", "19")
+					.style("opacity", 0)
+					.attr("pointer-events", "none")
+				var infobox = svg.append("text")
+					.attr("id", "infobox")
+					.attr("x", 15)
+					.attr("y", 15)
+					.attr("width", 1)
+					.style("opacity", 0)
 
 				// --------------- //
 				// HIGHLIGHT GROUP //
 				// --------------- //
 				// What to do when one group is hovered in legend
 				var highlight = function(d){
-					console.log(d)
 					// reduce opacity of all groups
 					d3.selectAll(".myArea").style("opacity", .4)
 					// except the one that is hovered
 					d3.select("."+d)
 						.style("opacity", 1)
-					}
+				}
 
 				// And when it is not hovered anymore in legend
 				var noHighlight = function(d){
 					d3.selectAll(".myArea")
 						.style("opacity", 1)
 					vertical.style("opacity", 0)
+					infobox.style("opacity", 0)
 				}
-				var vertical = svg.selectAll("tooltip")
-					.data(keys)
-					.enter()
-					.append("rect")
-						.attr("x", 100)
-						.attr("y", 0)
-						.attr("width", 0.5)
-						.attr("height", 290)
-						.style("fill", "var(--text-color)")
-						.style("z-index", "19")
-						.style("opacity", 0)
+
 				// What to do when one group is hovered in chart
 				var areaHighlight = function(d) {
 					d3.selectAll(".myArea").style("opacity", .4)
 					d3.select(this).style("opacity", 1)
 					vertical.style("opacity", 1)
+					infobox.style("opacity", 1)
 				}
 
 				var toolTip = function(d) {
+					// Invert mouse position to date
 					mousex = d3.mouse(this);
          	mousex = mousex[0];
-					console.log(mousex)
+					var invertedx = x.invert(mousex);
+					// Invert date to day of week
+					invertedx = d3.timeMonday(invertedx)
+					formatDate = d3.time.format("%m/%d/%Y")
+					mondayx = formatDate(invertedx)
 					vertical.style("x", (mousex - 2) + "px" )
+					infobox.text("Week of: " + mondayx)
+					infobox.append('svg:tspan')
+						.attr('x', 15)
+						.attr('dy', 20)
+						.text("Hours: " + invertedx)
 				}
 				// Create chart. Note that brushing is applied BEFORE the actual creation of
 				// the chart and ".attr("pointer-events", "all")" is used so that the

@@ -219,3 +219,8 @@ g line {
 g .domain {
   stroke: var(--text-color);
 }
+
+text {
+  fill: var(--text-color);
+  font-weight: bold;
+}
