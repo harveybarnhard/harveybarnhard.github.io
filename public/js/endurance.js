@@ -108,14 +108,6 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					.y1(function(d) { return y(d[1]); })
 					.curve(d3.curveMonotoneX) // Smooth it out a little
 
-				var tooltip = d3.select(element[0])
-      		.append("div")
-      		.attr("class", "tip")
-      		.style("position", "absolute")
-      		.style("z-index", "20")
-					.style("visibility", "hidden")
-					.style("top", "30px")
-					.style("left", "55px")
 				// --------------- //
 				// HIGHLIGHT GROUP //
 				// --------------- //
@@ -144,6 +136,8 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.attr("width", 0.5)
 						.attr("height", 290)
 						.style("fill", "var(--text-color)")
+						.style("z-index", "19")
+						.style("opacity", 0)
 				// What to do when one group is hovered in chart
 				var areaHighlight = function(d) {
 					d3.selectAll(".myArea").style("opacity", .4)
