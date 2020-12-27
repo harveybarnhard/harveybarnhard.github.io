@@ -151,7 +151,10 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					vertical.style("opacity", 1)
 					infobox.style("opacity", 1)
 				}
-
+				// how to format hours and dates?
+				var formatHour = d3.format(".1f")
+				var formatDate = d3.time.format("%B %d, %Y")
+				// Vertical line and tooltip
 				var toolTip = function(d) {
 					// Invert mouse position to date
 					mousex = d3.mouse(this);
@@ -159,18 +162,41 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					var invertedx = x.invert(mousex);
 					// Invert date to day of week
 					invertedx = d3.timeMonday(invertedx)
-					formatDate = d3.time.format("%m/%d/%Y")
 					mondayx = formatDate(invertedx)
-					vertical.style("x", (mousex - 2) + "px" )
-					infobox.text("Week of: " + mondayx)
+					// Not the best way to get difference in dates...
+					rowind = Math.floor((invertedx - d[0].data.monday)/86400000/7)
+					hours = d[rowind].data[d.key] // Just need to replace 1 with proper index
+					// Fill out infobox
+					infobox.text("Week of " + mondayx)
 					infobox.append('svg:tspan')
 						.attr('x', 15)
 						.attr('dy', 20)
-						.text("Hours: " + invertedx)
+						.text(d.key + " hours: " + formatHour(hours))
+					// Create vertical line
+					vertical.style("x", (mousex - 1) + "px" )
 				}
 				// Create chart. Note that brushing is applied BEFORE the actual creation of
 				// the chart and ".attr("pointer-events", "all")" is used so that the
 				// highlighting even still occurs even after brush is applied
+			// 	areaChart
+			// 		.append("g")
+			// 		.attr("class", "brush")
+			// 		.call(brush)
+			// 		.selectAll("mylayers")
+			// 		.data(stackedData)
+			// 		.enter().append("g")
+      // 		.attr("fill", function(d) { return color(d.key); })
+      // 		.selectAll("rect")
+      // 		// enter a second time = loop subgroup per subgroup to add all rectangles
+      // .data(function(d) { return d; })
+      // .enter().append("rect")
+      //   .attr("x", function(d) { return x(d.data.monday); })
+      //   .attr("y", function(d) { return y(d[1]); })
+      //   .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      //   .attr("width",6)
+			// 	.on("mouseover", areaHighlight)
+			// 	.on("mousemove", toolTip)
+			// 	.on("mouseleave", noHighlight)
 				areaChart
 					.append("g")
 					.attr("class", "brush")
@@ -215,7 +241,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				// ------ //
 		    // LEGEND //
 		    // ------ //
-		    // Add one square in the legend for each name.
+		    // Add one square in the legend for each name
 		    var size = 100
 				svg.selectAll("myrect")
 					.data(keys)
@@ -228,6 +254,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.style("fill", function(d){ return color(d)})
 						.on("mouseover", highlight)
 						.on("mouseleave", noHighlight)
+				// Add one label for each name
 		    svg.selectAll("mylabels")
 		      .data(keys)
 		      .enter()
