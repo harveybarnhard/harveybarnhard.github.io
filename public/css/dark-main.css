@@ -170,6 +170,17 @@ body {
   font-size: 17px;
 }
 
+.main-content-blog {
+	display: block;
+	max-width: 800px;
+	margin: 0px 20px;
+	margin-left: auto;
+	margin-right: auto;
+  text-align: justify;
+  font-size: 17px;
+}
+
+
 .main-content img {
 	display: block;
 	width: 100%;
@@ -224,3 +235,45 @@ text {
   fill: var(--text-color);
   font-weight: bold;
 }
+
+/* ------------------ */
+/* Sidebar Navigation */
+/* ------------------ */
+.sidebar {
+  top: 100px;
+  left: 5%;
+  width: 130px;
+  z-index: 1;
+  background-color: none;
+  position: fixed;
+  color: var(--text-color);
+}
+
+.barlink {
+  font-size:20px;
+  cursor: auto;
+	border: none;
+	background-color: transparent;
+	outline: none;
+  color: var(--text-color);
+}
+
+.barlink-item {
+  font-size:15px;
+	border: none;
+	background-color: transparent;
+	outline: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.barlink-item:before {
+  content: "\00a0 \00a0 ";
+}
+.barlink:hover {
+  cursor: pointer;
+}
+.bar-underline {
+  font-weight: bold;
+}
+.fade-anim{animation:opac 0.8s}
+@keyframes opac{from{opacity:0} to{opacity:1}}

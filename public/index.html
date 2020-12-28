@@ -28,17 +28,16 @@
   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-  <!-- LaTeX Rendering -->
-      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-      <!-- code block Rendering -->
-        <link rel="stylesheet" href="../css/androidstudio.css">
-        <script src="../js/highlight.pack.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
-
   <!-- favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+  <!-- LaTeX Rendering -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <!-- code block Rendering -->
+  <link rel="stylesheet" href="../css/androidstudio.css">
+  <script src="../js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body>
@@ -92,33 +91,8 @@
   <script src="vendor/jquery/jquery.min.js"></script>
 
   <!-- Dark Mode -->
+  <script src="js/dark-mode.js"></script>
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-
-      const themeStylesheet = document.getElementById('theme');
-      const themeToggle = document.getElementById('theme-toggle');
-      themeToggle.addEventListener('click', () => {
-          // if it's light -> go dark
-          if(themeToggle.className.includes('light')){
-            document.querySelector(":root").style.setProperty('--main-bg-color', "#333333");
-            document.querySelector(":root").style.setProperty('--accent-bg-color', "#e3e3e3");
-            document.querySelector(":root").style.setProperty('--text-color', "#e3e3e3");
-            document.querySelector(":root").style.setProperty('--link-color', "white");
-            document.querySelector(":root").style.setProperty('--link-hover-color', "#00aae8");
-            themeToggle.innerHTML = '<i class="fa fa-moon-o fa-2x"></i>';
-            themeToggle.className = 'dark';
-          } else {
-            // if it's dark -> go light
-            document.querySelector(":root").style.setProperty('--main-bg-color', "#e6e6e6");
-            document.querySelector(":root").style.setProperty('--accent-bg-color', "#333333");
-            document.querySelector(":root").style.setProperty('--text-color', "#333333");
-            document.querySelector(":root").style.setProperty('--link-color', "#222222");
-            document.querySelector(":root").style.setProperty('--link-hover-color', "#949494");
-            themeToggle.innerHTML = '<i class="fa fa-sun fa-2x"></i>';
-            themeToggle.className = 'light';
-          }
-      })
-  })
   // Button to show and hide elements -->
     function hideElement(id) {
       var x = document.getElementById(id);
@@ -130,6 +104,22 @@
       x.scrollTop = x.scrollHeight;
     }
   </script>
-</script>
+
+  <script>
+  // Copied from: https://www.w3schools.com/w3css/w3css_tabulators.asp
+  function openLink(evt, animName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("category");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    barlinks = document.getElementsByClassName("barlink-item");
+    for (i = 0; i < x.length; i++) {
+      barlinks[i].className = barlinks[i].className.replace(" bar-underline", "");
+    }
+    document.getElementById(animName).style.display = "block";
+    evt.currentTarget.className += " bar-underline";
+  }
+  </script>
 </body>
 </html>
