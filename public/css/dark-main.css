@@ -269,11 +269,14 @@ text {
 .barlink-item:before {
   content: "\00a0 \00a0 ";
 }
+.barlink-item:hover{
+  color: var(--link-hover-color);
+}
 .barlink:hover {
   cursor: pointer;
 }
-.bar-underline {
-  font-weight: bold;
+.bar-active:before {
+  content: "| ";
 }
 .fade-anim{animation:opac 0.8s}
 @keyframes opac{from{opacity:0} to{opacity:1}}

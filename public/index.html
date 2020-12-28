@@ -115,10 +115,10 @@
     }
     barlinks = document.getElementsByClassName("barlink-item");
     for (i = 0; i < x.length; i++) {
-      barlinks[i].className = barlinks[i].className.replace(" bar-underline", "");
+      barlinks[i].className = barlinks[i].className.replace(" bar-active", "");
     }
     document.getElementById(animName).style.display = "block";
-    evt.currentTarget.className += " bar-underline";
+    evt.currentTarget.className += " bar-active";
   }
   </script>
 </body>
