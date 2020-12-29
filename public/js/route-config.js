@@ -14,6 +14,7 @@ app.config(function ($routeProvider){
   })
   .when('/blog/evaluating-prediction-error',{
     templateUrl: 'posts/evaluating-prediction-error.html',
+    controller: 'mathRender'
   })
   .when('/projects',{
     templateUrl: 'projects.html',

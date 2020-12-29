@@ -64,7 +64,6 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				var stackedData = d3.stack()
 					.keys(keys)
 					(data)
-				console.log(stackedData)
 				// -----//
 				// Axis //
 				// ---- //

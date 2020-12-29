@@ -18,8 +18,8 @@ sidebar = raw(
 )
 
 # Create outer div
-outHTML = div()
-main = div(cls="main-content")
+outHTML = div(cls="main-content")
+main = div(cls="main-content-previews")
 
 # Create Programming div
 file_prog = pd.read_csv("../posts/programming.csv")
@@ -55,7 +55,6 @@ for index, row in file_papers.iterrows():
 # Add categories to main div
 main += div_prog
 main += div_paper
-
 # Append sidebar and main content
 outHTML += sidebar
 outHTML += main

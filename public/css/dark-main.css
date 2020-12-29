@@ -5,7 +5,7 @@
   --second-bg-color: #444444;
 	--text-color: #e3e3e3;
 	--hover-color: #b61c20;
-	--link-hover-color: white;
+	--link-hover-color: #6c7b80;
 	--link-color: #00aae8;
 }
 /* ---- */
@@ -25,7 +25,8 @@ body {
 .navbar-container {
 	height: 50px;
 	margin-top: 0px;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
+  border-bottom: 1px solid var(--second-bg-color);
 }
 
 .navbar {
@@ -116,9 +117,13 @@ body {
 /* ------ */
 
 .footer-default {
+  margin-top: 16px;
+  padding-top: 7px;
+  margin-bottom: 15px;
 	float: left;
 	width: 100%;
 	position: relative;
+  border-top: 1px solid var(--second-bg-color);
 }
 
 .footer-default ul {
@@ -163,39 +168,34 @@ body {
 
 .main-content {
 	display: block;
-	max-width: 800px;
+	max-width: 900px;
 	margin: 0px 20px;
 	margin-left: auto;
 	margin-right: auto;
   text-align: justify;
-  font-size: 17px;
+  font-size: 15px;
 }
-
-.main-content-blog {
-	display: block;
-	max-width: 800px;
-	margin: 0px 20px;
-	margin-left: auto;
-	margin-right: auto;
-  text-align: justify;
-  font-size: 17px;
+.main-content-previews {
+  margin: 0px;
+  padding: 0px;
+	margin-left: 130px;
+  padding-left: 30px;
+  position: relative;
+  height: 100%;
+  border-left: 10px solid var(--second-bg-color);
 }
-
-
 .main-content img {
 	display: block;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
-
 .main-content svg {
 	display: block;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
-
 .main-content a {
 	color: var(--link-color);
 	font-weight: bold;
@@ -204,7 +204,6 @@ body {
 .main-content a:hover {
 	color: var(--link-hover-color);
 }
-
 #img-headshot {
 	height: 180px;
 	width: auto;
@@ -241,13 +240,14 @@ text {
 /* Sidebar Navigation */
 /* ------------------ */
 .sidebar {
-  top: 100px;
-  left: 5%;
+  top: 150px;
   width: 130px;
-  z-index: 1;
+  height: 100%;
+  margin-right: 30px;
   background-color: none;
   position: fixed;
   color: var(--text-color);
+  box-sizing: border-box;
 }
 
 .barlink {
@@ -286,6 +286,8 @@ text {
 /* Post Previews */
 /* ------------- */
 .post-preview {
+  text-align: left;
+  padding-bottom: 2px;
   margin-bottom: 14px;
   border-left: 2px solid var(--accent-bg-color);
   padding-left: 5px;
