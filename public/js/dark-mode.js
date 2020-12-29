@@ -7,15 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
 				if(themeToggle.className.includes('light')){
 					document.querySelector(":root").style.setProperty('--main-bg-color', "#333333");
 					document.querySelector(":root").style.setProperty('--accent-bg-color', "#e3e3e3");
+					document.querySelector(":root").style.setProperty('--second-bg-color', "#444444");
 					document.querySelector(":root").style.setProperty('--text-color', "#e3e3e3");
-					document.querySelector(":root").style.setProperty('--link-color', "white");
-					document.querySelector(":root").style.setProperty('--link-hover-color', "#00aae8");
+					document.querySelector(":root").style.setProperty('--link-hover-color', "white");
+					document.querySelector(":root").style.setProperty('--link-color', "#00aae8");
 					themeToggle.innerHTML = '<i class="fa fa-moon-o fa-2x"></i>';
 					themeToggle.className = 'dark';
 				} else {
 					// if it's dark -> go light
 					document.querySelector(":root").style.setProperty('--main-bg-color', "#e6e6e6");
 					document.querySelector(":root").style.setProperty('--accent-bg-color', "#333333");
+					document.querySelector(":root").style.setProperty('--second-bg-color', "#dcdcdc");
 					document.querySelector(":root").style.setProperty('--text-color', "#333333");
 					document.querySelector(":root").style.setProperty('--link-color', "#222222");
 					document.querySelector(":root").style.setProperty('--link-hover-color', "#949494");

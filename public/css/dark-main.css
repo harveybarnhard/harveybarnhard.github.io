@@ -2,10 +2,11 @@
 :root {
   --main-bg-color: #333333;
 	--accent-bg-color: #e3e3e3;
+  --second-bg-color: #444444;
 	--text-color: #e3e3e3;
 	--hover-color: #b61c20;
-	--link-color: white;
-	--link-hover-color: #00aae8;
+	--link-hover-color: white;
+	--link-color: #00aae8;
 }
 /* ---- */
 /* body */
@@ -195,12 +196,12 @@ body {
 	margin-right: auto;
 }
 
-.main-content p a {
+.main-content a {
 	color: var(--link-color);
 	font-weight: bold;
 	text-decoration: none;
 }
-.main-content p a:hover {
+.main-content a:hover {
 	color: var(--link-hover-color);
 }
 
@@ -280,3 +281,47 @@ text {
 }
 .fade-anim{animation:opac 0.8s}
 @keyframes opac{from{opacity:0} to{opacity:1}}
+
+/* ------------- */
+/* Post Previews */
+/* ------------- */
+.post-preview {
+  margin-bottom: 14px;
+  border-left: 2px solid var(--accent-bg-color);
+  padding-left: 5px;
+  background-color: var(--second-bg-color);
+}
+.post-preview .post-title {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  display: inline;
+}
+.post-preview .link-github {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+.post-preview .link-blog {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+.post-preview .link-pdf {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+.post-preview .post-author {
+  font-size: 12px;
+}
+.post-preview .post-date {
+  font-style: italic;
+  font-size: 12px;
+}
+.post-preview p {
+  margin-top: 1px;
+  margin-bottom: 3px;
+  margin-right: 10px;
+  font-size: 15px;
+}
+.post-preview .post-context {
+  font-size: 12px;
+}

@@ -1,25 +1,54 @@
 <div>
-<div class="sidebar">
-  <button class="barlink" style="font-size:20px; cursor: auto;">Categories</button>
-  <button class="barlink-item bar-active" onclick="openLink(event, 'projects-programming')">Programming</button>
-  <button class="barlink-item" onclick="openLink(event, 'projects-papers')">Papers</button>
-	<button class="barlink-item" onclick="openLink(event, 'projects-other')">Miscellany</button>
-</div>
-<div class="main-content">
-  <div id="projects-programming" class="category fade-anim">
-    <h2>Programming</h2>
-    <p>London is the capital city of England.</p>
-    <p>It is the most populous city in the United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
+  <div class="sidebar">
+    <button class="barlink" style="font-size:20px; cursor: auto;">Categories</button>
+    <button class="barlink-item bar-active" onclick="openLink(event, 'projects-programming')">Programming</button>
+    <button class="barlink-item" onclick="openLink(event, 'projects-papers')">Papers</button>
   </div>
-
-  <div id="projects-papers" class="category fade-anim" style="display:none">
-    <h2>Papers</h2>
-    <p>Paris is the capital of France.</p>
-    <p>The Paris area is one of the largest population centers in Europe, with more than 12 million inhabitants.</p>
+  
+  <div class="main-content">
+    <div class="category fade-anim" id="projects-programming">
+      <h1>Programming</h1>
+      <div class="post-preview">
+        <div class="post-title">endur</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/endur">[GitHub]</a><br>
+        <p class="post-description">Python scripts to pull and clean Strava data for creating personalized reports for endurance activities.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">December 2020</span>
+      </div>
+      <div class="post-preview">
+        <div class="post-title">looperr</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/looperr">[GitHub]</a>
+        <a class="link-blog" href="#/blog/evaluating-prediction-error">[Blog Post]</a><br>
+        <p class="post-description">An R package for quickly running many regressions by group. Addional functionality includes quickly running local linear regressions and evaluating prediction error.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2020</span>
+      </div>
+      <div class="post-preview">
+        <div class="post-title">smoov</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/smoov">[GitHub]</a><br>
+        <p class="post-description">An R package for making mapping of basic United States geographies, such as census tracts, fast and easy.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2020</span>
+      </div>
+    </div>
+    <div class="category fade-anim" id="projects-papers" style="display:none">
+      <h1>Papers</h1>
+      <div class="post-preview">
+        <div class="post-title">Economic Shocks and Civil Conflict: Fifteen Years Later</div>
+        <a class="link-pdf" href="papers/hbarnhard_2019.pdf">[PDF]</a><br>
+        <p class="post-description">Revisiting Miguel, Satyanath, and Sergenti (2004), which aims to understand the causal effect of economic shocks on civil conflict in sub-Saharan Africa.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">March 2019</span>
+        <span class="post-context">(Undergraduate Honors Econometrics Final Project)</span>
+      </div>
+      <div class="post-preview">
+        <div class="post-title">Approximating Heavy Traffic with Brownian Motion</div>
+        <a class="link-pdf" href="papers/hbarnhard_2018.pdf">[PDF]</a><br>
+        <p class="post-description">This expository paper shows how waiting times of certain queuing systems can be approximated by Brownian motion. In particular, when customers exit a queue at a slightly faster rate than they enter, the waiting time of the nth customer can be approximated by the supremum of reflected Brownian motion with negative drift.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2018</span>
+        <span class="post-context">(UChicago Summer Math REU 2018)</span>
+      </div>
+    </div>
   </div>
-
-	<div id="projects-other" class="category fade-anim" style="display:none">
-    <h2>Miscellany</h2>
-  </div>
-</div>
 </div>
