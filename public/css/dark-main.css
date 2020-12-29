@@ -293,22 +293,22 @@ text {
   padding-left: 5px;
   background-color: var(--second-bg-color);
 }
-.post-preview .post-title {
+.post-preview > .post-title {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 22px;
   font-weight: bold;
   display: inline;
 }
-.post-preview .link-github {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.post-preview > .link-github {
+  font-family:'Roboto',sans-serif;
   font-size: 12px;
 }
-.post-preview .link-blog {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.post-preview > .link-blog {
+  font-family:'Roboto',sans-serif;
   font-size: 12px;
 }
-.post-preview .link-pdf {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.post-preview > .link-pdf {
+  font-family:'Roboto',sans-serif;
   font-size: 12px;
 }
 .post-preview .post-author {
@@ -326,4 +326,84 @@ text {
 }
 .post-preview .post-context {
   font-size: 12px;
+}
+
+/* ----- */
+/* Posts */
+/* ----- */
+.proof {
+  margin: 0px;
+}
+
+.proof > button {
+  background-color: rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+  border-radius: 3px;
+  border-color: #333333;
+  color: #333333;
+  font-family:'Roboto',sans-serif;
+  font-size: 15px;
+  font-weight:400;
+  text-decoration:none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.proof > button:hover {
+  background-color: #333333;
+  color: white;
+  cursor: pointer;
+}
+
+.proof > p {
+  font-size: 14px;
+  margin: 15px;
+  padding: 5px;
+  border: 2px solid black;
+  background-color: #ededed;
+}
+
+.blog-image {
+  image-rendering: crisp-edges;
+  object-fit: contain;
+  text-align: center;
+  height: 100%;
+  width: auto;
+}
+
+.blog-image > img {
+  image-rendering: crisp-edges;
+  object-fit: contain;
+  height: auto;
+  width: 100%;
+}
+
+.blog-code > button {
+  background-color: var(--second-bg-color);
+  border-radius: 3px;
+  border-color: var(--accent-bg-color);
+  color: var(--text-color);
+  font-family: 'Roboto',sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.blog-code > button:hover {
+  background-color: var(--text-color);
+  color: var(--second-bg-color);
+  cursor: pointer;
+}
+/* Inline code */
+p > code.hljs {
+   display: inline;
+}
+
+code {
+    background-color: #eee;
+    border-radius: 3px;
+    font-family: Consolas,Monaco,Lucida Console,Liberation Mono, monospace;
+    padding: 0 3px;
 }
