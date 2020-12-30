@@ -6,6 +6,5 @@
             return viewLocation === $location.path();
         };
     };
-
     angular.module('sampleApp').controller('HeaderController',headerController);
 }());

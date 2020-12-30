@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				document.querySelector(":root").style.setProperty('--second-bg-color', "#dcdcdc");
 				document.querySelector(":root").style.setProperty('--text-color', "#333333");
 				document.querySelector(":root").style.setProperty('--link-hover-color', "#949494");
+				document.querySelector(":root").style.setProperty('--main-bg-color-trans', "rgba(240,240,240,0.9)");
 				themeToggle.innerHTML = '<i class="fa fa-sun fa-2x"></i>';
 				themeToggle.className = 'light';
 			}
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					document.querySelector(":root").style.setProperty('--second-bg-color', "#444444");
 					document.querySelector(":root").style.setProperty('--text-color', "#e3e3e3");
 					document.querySelector(":root").style.setProperty('--link-hover-color', "#6c7b80");
+					document.querySelector(":root").style.setProperty('--main-bg-color-trans', "rgba(68,68,68,0.9)");
 					themeToggle.innerHTML = '<i class="fa fa-moon-o fa-2x"></i>';
 					themeToggle.className = 'dark';
 				} else {
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					document.querySelector(":root").style.setProperty('--second-bg-color', "#dcdcdc");
 					document.querySelector(":root").style.setProperty('--text-color', "#333333");
 					document.querySelector(":root").style.setProperty('--link-hover-color', "#949494");
+					document.querySelector(":root").style.setProperty('--main-bg-color-trans', "rgba(240,240,240,0.9)");
 					themeToggle.innerHTML = '<i class="fa fa-sun fa-2x"></i>';
 					themeToggle.className = 'light';
 				}

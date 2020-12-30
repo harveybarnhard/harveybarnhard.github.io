@@ -1,6 +1,7 @@
 /* Default dark theme colors */
 :root {
   --main-bg-color: #333333;
+  --main-bg-color-trans: rgba(68,68,68,0.5);
 	--accent-bg-color: #e3e3e3;
   --second-bg-color: #444444;
 	--text-color: #e3e3e3;
@@ -14,8 +15,10 @@
 body {
 	font-family: 'Lora', 'Times New Roman', serif;
 	font-size: 20px;
+  margin: 0px;
 	color: var(--text-color);
 	background-color: var(--main-bg-color);
+  min-height: 100vh;
 }
 
 /* ------ */
@@ -25,8 +28,11 @@ body {
 .navbar-container {
 	height: 50px;
 	margin-top: 0px;
-	margin-bottom: 30px;
-  border-bottom: 1px solid var(--second-bg-color);
+}
+@media only screen and (max-width: 700px) {
+  .navbar-container {
+    margin-bottom: 10px;
+  }
 }
 
 .navbar {
@@ -39,12 +45,21 @@ body {
   overflow: hidden;
 }
 
+.navbar.ng-scope {
+  background-color: var(--main-bg-color);
+  padding: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 .navbar ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	font-size: 15px;
+  border-bottom: 1px solid var(--second-bg-color);
+  background-color: var(--main-bg-color-trans);
 }
 
 .navbar ul li {
@@ -67,17 +82,13 @@ body {
 
 .navbar ul .about {
 	float: left;
-	background-image: linear-gradient(to right, var(--accent-bg-color),  var(--main-bg-color));
-	background-position: bottom left;
-	background-repeat: no-repeat;
-	background-size: 0% 2px;
-	transition: background-size .3s ease;
+	background-image: none;
 	font-size: 25px;
 }
 
 /* Handling inactive pages */
-.navbar ul .about:hover:not(.active) {
-	background-size: 100% 2px;
+.navbar ul .about:hover {
+	background-image: none;
 }
 
 .navbar ul li {
@@ -99,7 +110,7 @@ body {
 
 /* Handling active page */
 
-.navbar ul .active {
+.navbar ul .active:not(.about) {
 	background-image: linear-gradient(to right, var(--main-bg-color), var(--accent-bg-color),  var(--main-bg-color));
 	background-position: bottom center;
 	background-repeat: no-repeat;
@@ -114,30 +125,63 @@ body {
 }
 #menu-icon {
   display: none;
-  color: var(--text-color);
+  color: none;
+  fill: none;
 }
 
 @media only screen and (max-width: 700px) {
   .navbar-list li:not(:first-child) {
     display: none;
   }
+  .navbar-list li:first-child .active {
+    background-image: none;
+  }
   #menu-icon {
+    z-index: 2000;
     float: right;
     display: block;
     position: absolute;
-    right: 30px;
-    top: 15px;
+    right: 0px;
+    top: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 11px;
+    padding-bottom: 10px;
   }
-  #menu-icon:hover {
-    color: var(--link-hover-color);
-  }
-  .navbar-list.responsive {
+}
+@media only screen and (max-width: 700px) {
+  .navbar-list-responsive {
     position: relative;
+    z-index: 1500;
   }
-  .navbar-list.responsive li {
+  .navbar-list-responsive li:not(:first-child) {
+    z-index: 1505;
     float: none;
     display: block;
-    text-align: left;
+    text-align: center;
+    background-image: none;
+    padding-bottom: 10px;
+  }
+  .navbar-list-responsive li:first-child {
+    font-size: 18px;
+    position: relative;
+    z-index: 1505;
+    float: none;
+    display: none;
+    text-align: center;
+    background-image: none;
+  }
+  .navbar-list-responsive li:nth-child(3) {
+    margin-top: 12px;
+  }
+  .navbar-list-responsive .mode-switch {
+    border-bottom: none;
+    position: absolute;
+    top: 4px;
+    left: 0px;
+  }
+  .navbar ul .active:not(.about) {
+    background-image: none;
   }
 }
 
@@ -146,12 +190,20 @@ body {
 /* ------ */
 
 .footer-default {
-  margin-top: 16px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
   padding-top: 7px;
-  margin-bottom: 15px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 7px;
 	float: left;
 	width: 100%;
-	position: relative;
+	position: -webkit-sticky;
+  position: sticky;
+  top: 100vh;
+  background-color: var(--main-bg-color-trans);
   border-top: 1px solid var(--second-bg-color);
 }
 
@@ -198,11 +250,21 @@ body {
 .main-content {
 	display: block;
 	max-width: 900px;
-	margin: 0px 20px;
 	margin-left: auto;
 	margin-right: auto;
+  margin-top: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
   text-align: justify;
   font-size: 15px;
+  z-index: 1;
+  position: relative;
+  background-color: var(--main-bg-color);
+}
+@media only screen and (max-width: 700px) {
+  .main-content {
+  	text-align: left;
+  }
 }
 .main-content-previews {
   margin: 0px;
@@ -212,6 +274,14 @@ body {
   position: relative;
   height: 100%;
   border-left: 10px solid var(--second-bg-color);
+}
+@media only screen and (max-width: 700px) {
+  .main-content-previews {
+    margin: 0px;
+    padding-left: 0px;
+    border-left: none;
+    padding-left: none;
+  }
 }
 .main-content img {
 	display: block;
@@ -278,7 +348,6 @@ text {
   color: var(--text-color);
   box-sizing: border-box;
 }
-
 .barlink {
   font-size:20px;
   cursor: auto;
@@ -308,9 +377,24 @@ text {
 .bar-active:before {
   content: "| ";
 }
+@media only screen and (max-width: 700px) {
+  .sidebar {
+    top: 0px;
+    width: 100%;
+    position: relative;
+  }
+  .barlink-item:before {
+    content: "";
+  }
+  .bar-active:before {
+    content: "";
+  }
+  .bar-active {
+    text-decoration: underline;
+  }
+}
 .fade-anim{animation:opac 0.8s}
 @keyframes opac{from{opacity:0} to{opacity:1}}
-
 /* ------------- */
 /* Post Previews */
 /* ------------- */
@@ -465,19 +549,56 @@ code {
 span.hover-image a img {
     display: none;
     position: absolute;
-    left: -130px;
+    left: 0px;
     top: 30px;
 }
 span.hover-image a {
     display: inline-block;
     position: relative;
     cursor: pointer;
+    z-index: 10;
 }
 span.hover-image a img{
     display: none;
 }
 span.hover-image a:hover img{
   width: 300px;
-  z-index: 1000;
+  z-index: 10;
   display: inherit;
+}
+/* CSS for menu icon */
+/* https://css-tricks.com/line-animated-hamburger-menu/ */
+.line {
+  fill: none;
+  stroke: var(--text-color);
+  stroke-width: 6;
+  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.line1 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+}
+.line2 {
+  stroke-dasharray: 60 60;
+  stroke-width: 6;
+}
+.line3 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+}
+.opened .line1 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
+}
+.opened .line2 {
+  stroke-dasharray: 1 60;
+  stroke-dashoffset: -30;
+  stroke-width: 6;
+}
+.opened .line3 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
 }
