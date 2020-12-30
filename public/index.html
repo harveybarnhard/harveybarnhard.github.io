@@ -1,134 +1,147 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app='sampleApp'>
 
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Harvey Barnhard's personal website.">
+  <meta name="author" content="Harvey Barnhard">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Harvey Barnhard's personal website.">
-    <meta name="author" content="Harvey Barnhard">
+  <!-- Theme CSS, default to light color scheme -->
+  <link id="theme" type="text/css" href="css/dark-main.css" rel="stylesheet">
+  <link type="text/css" href="css/androidstudio.css" rel="stylesheet">
+  <!-- Load d3.js & color scale-->
+  <script TYPE="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script TYPE="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
 
-    <title>Harvey Barnhard</title>
+  <!-- Routing js -->
+  <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9"></script>
+  <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular-route.js" data-semver="1.4.9"></script>
+  <script src="js/route-config.js"></script>
+  <script src="js/headerController.js"></script>
+  <script src="js/endurance.js"></script>
+  <script src="js/math-render.js"></script>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Fonts -->
+  <script src="https://kit.fontawesome.com/b89efab99d.js" crossorigin="anonymous"></script>
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-    <!-- Theme CSS -->
-    <link href="css/clean-blog.css" rel="stylesheet">
+  <!-- favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
-    <!-- Custom Fonts -->
-    <script src="https://kit.fontawesome.com/b89efab99d.js" crossorigin="anonymous"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <!-- LaTeX Rendering -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
 
-    <!-- favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+  <!-- code block Rendering -->
+  <link rel="stylesheet" href="../css/androidstudio.css">
+  <script src="../js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom">
-      <div class="container-fluid">
-        <div class="navbar-header page-scroll">
-          <button type="button" class="navbar-toggle x collapsed" data-toggle="collapse" data-target="#navbar-collapse-x">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-x">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="projects.html">projects</a>
-            </li>
-            <li>
-              <a href="blog.html">blog</a>
-            </li>
-            <li>
-              <a href="about.html">about</a>
-            </li>
-          </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-      </div>
-      <!-- /.container -->
+   <!-- Navigation -->
+  <div class="navbar-container">
+    <nav class="navbar" ng-controller="HeaderController">
+        <ul id="navbar-list" class="navbar-list">
+          <li class="about" ng-class="{ active: isActive('/')}"><a href="#/">Harvey Barnhard</a></li>
+          <li class="mode-switch">
+            <a>
+              <button id="theme-toggle" class="dark">
+                  <i class="fa fa-moon-o fa-2x"></i>
+              </button>
+            </a>
+          </li>
+          <li ng-class="{ active: isActive('/endurance')}"><a href="#/endurance">endurance</a></li>
+          <li ng-class="{ active: isActive('/blog')}"><a href="#/blog">blog</a></li>
+          <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">projects</a></li>
+          <li ng-class="{ active: isActive('/about')}"><a href="#/about">about</a></li>
+        </ul>
+        <a href="javascript:void(0);" id="menu-icon" onclick="mobileMenu();this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))">
+          <svg width="30" height="30" viewBox="0 0 100 100">
+            <path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+            <path class="line line2" d="M 20,50 H 80" />
+            <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+          </svg>
+        </a>
     </nav>
+  </div>
 
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1><a href="about.html">Harvey Barnhard</a></h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+  <!-- Content Injection -->
+  <div ng-view></div>
+  <!-- Footer -->
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            </div>
-        </div>
-    </div>
+  <footer class="footer-default">
+    <ul>
+        <li>
+            <a id="footer-github" href="https://github.com/harveybarnhard">
+                <span class="fa-stack fa-sm">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+        </li>
+        <li>
+            <a id="footer-strava" href="https://strava.com/athletes/16562005">
+                <span class="fa-stack fa-sm">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+        </li>
+    </ul>
+  </footer>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="https://github.com/harveybarnhard">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://strava.com/athletes/16562005">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted"></p>
-                </div>
-            </div>
-        </div>
-    </footer>
+  <!-- jQuery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+  <!-- Dark Mode -->
+  <script src="js/dark-mode.js"></script>
+  <script>
+  // Button to show and hide elements -->
+    function hideElement(id) {
+      var x = document.getElementById(id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+      x.scrollTop = x.scrollHeight;
+    }
+  </script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+  // Copied from: https://www.w3schools.com/w3css/w3css_tabulators.asp
+  function openLink(evt, animName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("category");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    barlinks = document.getElementsByClassName("barlink-item");
+    for (i = 0; i < x.length; i++) {
+      barlinks[i].className = barlinks[i].className.replace(" bar-active", "");
+    }
+    document.getElementById(animName).style.display = "block";
+    evt.currentTarget.className += " bar-active";
+  }
+  </script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
-
-    <!-- Theme JavaScript -->
-    <script src="js/clean-blog.min.js"></script>
-
+  <script>
+  // Copied from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_topnav
+function mobileMenu() {
+  var x = document.getElementById("navbar-list");
+  var menuIcon = document.getElementById('menu-icon');
+  console.log(x)
+  if (x.className === "navbar-list") {
+    x.className += "-responsive";
+  } else {
+    x.className = "navbar-list";
+  }
+}
+</script>
 </body>
-
 </html>
