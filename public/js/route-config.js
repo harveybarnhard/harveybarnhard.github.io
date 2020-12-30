@@ -12,8 +12,12 @@ app.config(function ($routeProvider){
   .when('/blog',{
     templateUrl: 'blog.html',
   })
-  .when('/blog/evaluating-prediction-error',{
-    templateUrl: 'posts/evaluating-prediction-error.html',
+  .when('/blog/no-analyzing-residuals',{
+    templateUrl: 'posts/no-analyzing-residuals.html',
+    controller: 'mathRender'
+  })
+  .when('/blog/calculating-diagonal-of-hat-matrix',{
+    templateUrl: 'posts/calculating-diagonal-of-hat-matrix.html',
     controller: 'mathRender'
   })
   .when('/projects',{
@@ -22,5 +26,8 @@ app.config(function ($routeProvider){
   .when('/about',{
     templateUrl: 'about.html',
   })
-  .otherwise({ redirectTo:'/'});
+  .when('/you-are-lost',{
+    templateUrl: 'you-are-lost.html'
+  })
+  .otherwise({ redirectTo:'/you-are-lost'});
 })

@@ -1,183 +1,33 @@
 <div class="main-content" elem-ready="loadMath()" style="max-width: 700px;">
   <div class="blog-info">
-    <h1 class="blog-title">Evaluating Prediction Error</h1>
+    <h1 class="blog-title">Calculating the Diagonal of the Hat Matrix</h1>
     <span class="blog-author"> Harvey Barnhard</span>
-    <span class="blog-date"> November 22, 2020</span>
+    <span class="blog-date"> December 28, 2020</span>
   </div>
   <div class="main-content-blog">
-  We run an OLS regression of a response vector \(Y\) on
-  a data matrix \(X\), estimating a coefficient vector \(\hat{\beta}\).
-  \[
-  Y = X\beta + \varepsilon
-  \]
-  We want to know how well our model is predicting \(Y\) for the
-  \(i\)th observation. We could just analyze the \(i\)th residual
-  from the fitted values:
-  \[
-  \hat{\varepsilon}_i = y_i - \hat{y}_i = y_i - x_i^\top \hat{\beta}
-  \]
-  where \(x_i\) is the \(i\)th row of \(X\). However, if
-  the \(i\)th has a considerable effect \(\hat{\beta}\) when we
-  remove or include that observation (a high-leverage observation),
-  then analyzing residuals isn't sufficient. A high leverage observation
-  may have a small residual when that observation is included in the
-  regression simply because the observation pulls the line of best
-  fit closer. But if you were to leave out the high-leverage
-  observation when running the regression, estimating \(\hat{\beta}_{-i}^\text{leaveout}\)
-  and predict the response \(\hat{y}_{i}^\text{leaveout}\) for the left-out observation,
-  and calculate the residual (now the prediction error) you get
-  \[
-  \hat{\varepsilon}_i^{\text{leaveout}} = y_i - \hat{y}_{i}^\text{leaveout}
-  = y_i - x_i^\top \hat{\beta}_{-i}^\text{leaveout}
-  \]
-  In the example below, the observation with high leverage
-  has a much larger leave-one-out prediction error than
-  it does a residual, \(\hat{\varepsilon}_i < \hat{\varepsilon}_i^{\text{leaveout}}\).
-  <div class="blog-image">
-    <img src="../img/high-leverage.svg" alt=""  style="height: 300px;">
-  </div>
-  <div class="blog-code">
-    <button onclick="hideElement('leverageplotcode')"> Show R Code for Plot </button>
-    <pre id="leverageplotcode" style="display: none;"><code class="r">
-      library(pBrackets)
-      library(ggplot2)
-      library(latex2exp)
-
-      # Simulate data
-      set.seed(123)
-      n = 20
-      X = rnorm(n, mean=0, sd=0.2)
-      beta = 0.5
-      Y = X*beta + rnorm(n, mean=0, sd=0.1)
-
-      # Create a high-leverage point
-      Y[18] = Y[18] + .5
-      X[18] = X[18] + .2
-
-      # Plot the regression
-      ggplot(data.frame(X, Y), aes(x=X, y=Y)) +
-        geom_point() +
-        geom_smooth(method="lm", formula="y~x", se=FALSE,
-                    aes(color="With High-Leverage Point")) +
-        geom_smooth(data=data.frame(X=X[-18], Y=Y[-18]),
-                    method="lm", formula="y~x", se=FALSE,
-                    aes(x=X, y=Y,color="Without High-Leverage Point"),
-                    fullrange=TRUE) +
-        coord_cartesian(xlim=c(min(X), max(X))) +
-        geom_curve(aes(x = X[18]+0.1, y = Y[18]-0.1,
-                       xend = X[18]+0.01, yend = Y[18]-0.008),
-                   colour = "#CC0000", size=1, curvature = 0.1,
-                   arrow = arrow(length = unit(0.03, "npc"))) +
-        annotate(geom="text",x=X[18]+0.11, y=Y[18]-0.11,
-                 label="High Leverage Point", size=6) +
-        annotate(geom="text",x=-0.225, y=0.137,
-                 label=latex2exp::TeX("$\\hat{\\epsilon}_i$"),
-                 size=6, parse=TRUE) +
-        annotate(geom="text",x=-0.146 , y=0.1067,
-        label=latex2exp::TeX("$\\hat{\\epsilon}_i^{leaveout}$"),
-                             size=6, parse=TRUE) +
-        scale_colour_manual(name="", values=c("#CC0000", "#00CCCC")) +
-        theme_void() +
-        theme(legend.position=c(0.8, 0.15),
-        legend.text=element_text(size=16))
-        grid.brackets(158, 474, 158, 32)
-        grid.brackets(165, 32, 165, 546)
-    </code></pre>
-  </div>
-  In fact, all leave-one-out prediction errors are larger than the
-  residuals for the respective observations, as the astounding
-  formula below will show.
   <p>
-    This leave-one-out error analysis is simple enough to perform.
-    Just leave an observation out, run a regression, then predict the
-    response for the left-out observation
-    But let's say you wanted to
-    estimate the leave-one-out prediction error for each observation
-    is a dataset of size \(n\). Well, then you'd have to run
-    \(n\) separate regressions, each with \(n-1\) observations.
-    For small \(n\) this isn't much of
-    a problem, but for big datasets, this procedure can become very
-    computationally expensive.
-  </p>
-  <h1> The Astounding Formula </h1>
-  Fortunately, by a miracle of linear algebra, we can estimate all
-  \(n\) leave-one-out errors using only one regression.
-  Better yet, we don't even need to run a new regression, we can
-  estimate the leave-one-out errors using only the
-  computations from the original regression!
-  <div style="text-align: center;">
-    <div style="border: 2px solid red; width: fit-content; padding: 5px; padding-top: 5px; margin-top: 8px; margin-bottom: 8px; display: inline-block;">
-      \[
-      \hat{\varepsilon}_i^{\text{leaveout}}
-      = y_i - \hat{y}_i^{\text{leaveout}}
-      = \frac{y_i-\hat{y}_i}{1-h_{ii}}
-      \]
-    </div>
-  </div>
-  where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\)
-  from the original regression.
-  \[
-  H = X(X^\top X)^{-1}X^\top Y
-  \]
-</thead>
-If you instead wanted to know the leave-out prediction value,
-you can just add the prediction error to the original value.
-\[
-\hat{y}_i^{\text{leaveout}} = y_i + \hat{\varepsilon}_i^{\text{leaveout}}
-\]
-<p>
-  The key to interpreting this formula is understanding what
-  the leverage of the \(i\)th observation, \(h_{ii}\), represents.
-  And to best understand what \(h_{ii}\) represents we consider the
-  extreme values \(h_{ii}\) can take. We can show that \(h_{ii}\) is
-  contained in  \([0,1]\), with higher values representing higher
-  leverage on the line of best fit.
-</p>
-<div class="proof">
-  <button onclick="hideElement('proofhii')"> Show Proof </button>
-  <p id="proofhii" style="display: none;">
-    Suppose that \(H=H^2\), i.e. \(H\) is idempotent. If that is
-    the case, then the diagonals of \(H\) are non-negative,
-    because
-    the \(i\)th diagonal of \(H\) is \(h_{ii}\) and the
-    \(i\)th diagonal of \(H^2\), a symmetric matrix, is
+    In my <a href="#/blog/no-analyzing-residuals">previous blog post</a>,
+    I showed how to analyze leave-one-out prediction error of linear models
+    using the following astounding formula:
     \[
-    (H^2)_{ii} = h_{ii}^2 + \sum_{j\neq i}h_{ij}^2
+    \hat{\varepsilon}_i^{\text{leaveout}}
+    = y_i - \hat{y}_i^{\text{leaveout}}
+    = \frac{y_i-\hat{y}_i}{1-h_{ii}}
     \]
-    And because the right hand side is the sum of squares,
-    it is necessarily non-negative, so by our assumption
-    that \(H=H^2\) we get that \(h_{ii} = (H^2)_{ii}\geq 0\).
-    Moreover,
+    where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\) which
+    can be explictly calculated as:
     \[
-    \sum_{j\neq i}h_{ij}^2 \geq 0
-    \implies (H^2)_{ii} \geq h_{ii}^2
+    H = X(X^\top X)^{-1}X^\top Y
     \]
-    which can only occur if \(h_{ii} \leq 1\). This means
-    \(h_{ii}\in [0,1]\). Now showing that \(H\) is idempotent,
-    \begin{align}
-    H^2
-    &= X(X^\top X)^{-1}X^\top X(X^\top X)^{-1}X^\top\\
-    &= X(X^\top X)^{-1}X^\top\\
-    &= H
-    \end{align}
   </p>
-</div>
+  <p>
+    In practice, calculating \(X^\top X\) should be
+    avoided at all costs. Don't even <b>think</b> for a minute about calculating
+    \((X^\top X)^{-1}\). These methods are slow and numerically innacurate.
+  </p>
+<h2>A Faster Method</h2>
 <p>
-  If \(h_{ii}=0\), then the \(i\)th observation has zero leverage,
-  and \(\hat{\varepsilon}_i = \hat{\varepsilon}_i^{\text{leaveout}}\).
-  That is, if an observation doesn't effect the line of best fit,
-  then removing it won't change the predicted value,
-  \(\hat{y}_i = \hat{y}_i^{\text{leaveout}}\).
-</p>
-If \(h_{ii}\to 1\), then
-\(\hat{\varepsilon}_i^{\text{leaveout}}\to \infty \). That is,
-if an observation approaches total leverage over a model, then
-removing that observation will lead to a wild change in the
-line of best fit.
-<h1>Putting the Theory to Work</h1>
-<p>
-  In practice, the calculation of \(X^\top X\) should often be
-  avoided at all costs. Instead, we can use the \(QR\) factorization of
+  We can use the \(QR\) factorization of
   \(X\) to solve the least-squares problem without ever touching
   \(X^\top X\). Because computational methods are always approximate,
   problems that are
@@ -337,7 +187,7 @@ line of best fit.
 </div>
 <h3> Weighted Linear Regression </h3>
 While estimating coefficients in weighted linear regression is as
-easy as multiplying \(Y\) and \(X\) be the square root of the
+easy as multiplying \(Y\) and \(X\) by the square root of the
 weight matrix, which is a diagonal matrix of non-negative weights,
 so the matrix square root is just the square root of the diagonal.
 \[
@@ -457,7 +307,7 @@ h_{ii} = \sum_{j=1}^{n}[Q_1]_{ij}[Q_2]_{ji}
   data matrix \(X\).
 
   Letting \(h_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
-  \(H\), we can express the LOOCV score as
+  \(H\), we can express the leave-one-out cross-validation score (LOOCV) as
   \[
   \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-h_{ii}}\right)^2
   \]

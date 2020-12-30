@@ -1,4 +1,6 @@
 app.controller('mathRender', function() {
+	// Scroll to top
+	window.scrollTo(0, 0)
 	// Load LaTeX rendering
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	// Load code highlighting

@@ -1,4 +1,5 @@
 app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
+	window.scrollTo(0, 0)
 	d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv", function(data){
 		$rootScope.$broadcast("Data_Ready", data)
 	})

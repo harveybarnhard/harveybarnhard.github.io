@@ -298,6 +298,7 @@ text {
   font-size: 22px;
   font-weight: bold;
   display: inline;
+  color: var(--text-color);
 }
 .post-preview > .link-github {
   font-family:'Roboto',sans-serif;
@@ -333,7 +334,7 @@ text {
 /* ----- */
 .blog-info {
   border-bottom: 1px solid var(--accent-bg-color);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   padding-bottom: 3px;
 }
 .blog-info h1 {
@@ -345,6 +346,11 @@ text {
 .blog-info .blog-date {
   font-style: italic;
 }
+.main-content-blog h2 {
+  padding: 2px;
+  border-bottom: 1px solid var(--accent-bg-color);
+  margin: 2px;
+}
 .main-content-blog button {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -355,7 +361,7 @@ text {
   font-family:'Roboto',sans-serif;
   font-size: 15px;
   font-weight:400;
-  text-decoration:none;
+  text-decoration: none;
   text-align: center;
   transition: all 0.2s;
 }
@@ -399,4 +405,50 @@ code {
     border-radius: 3px;
     font-family: Consolas,Monaco,Lucida Console,Liberation Mono, monospace;
     padding: 0 3px;
+}
+.post-preview .tag-list {
+  list-style-type: none;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  padding: 0;
+}
+.tag-list .tag {
+  margin: 0;
+  display: inline;
+  font-family:'Railway',sans-serif;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 8px;
+  border-radius: 16px;
+  background-color: #949494;
+  color: var(--main-bg-color);
+}
+.tag-list .tag:before {
+  content: "#"
+}
+
+/* ----- */
+/* Extra */
+/* ----- */
+span.hover-image a img {
+    display: none;
+    position: absolute;
+    left: -130px;
+    top: 30px;
+}
+span.hover-image a {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+span.hover-image a img{
+    display: none;
+}
+span.hover-image a:hover img{
+  width: 300px;
+  z-index: 1000;
+  display: inherit;
 }
