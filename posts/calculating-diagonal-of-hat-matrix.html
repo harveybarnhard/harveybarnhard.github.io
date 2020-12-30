@@ -1,0 +1,316 @@
+<div class="main-content" elem-ready="loadMath()" style="max-width: 700px;">
+  <div class="blog-info">
+    <h1 class="blog-title">Calculating the Diagonal of the Hat Matrix</h1>
+    <span class="blog-author"> Harvey Barnhard</span>
+    <span class="blog-date"> December 28, 2020</span>
+  </div>
+  <div class="main-content-blog">
+  <p>
+    In my <a href="#/blog/no-analyzing-residuals">previous blog post</a>,
+    I showed how to analyze leave-one-out prediction error of linear models
+    using the following astounding formula:
+    \[
+    \hat{\varepsilon}_i^{\text{leaveout}}
+    = y_i - \hat{y}_i^{\text{leaveout}}
+    = \frac{y_i-\hat{y}_i}{1-h_{ii}}
+    \]
+    where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\) which
+    can be explictly calculated as:
+    \[
+    H = X(X^\top X)^{-1}X^\top Y
+    \]
+  </p>
+  <p>
+    In practice, calculating \(X^\top X\) should be
+    avoided at all costs. Don't even <b>think</b> for a minute about calculating
+    \((X^\top X)^{-1}\). These methods are slow and numerically innacurate.
+  </p>
+<h2>A Faster Method</h2>
+<p>
+  We can use the \(QR\) factorization of
+  \(X\) to solve the least-squares problem without ever touching
+  \(X^\top X\). Because computational methods are always approximate,
+  problems that are
+  <a href="https://en.wikipedia.org/wiki/Condition_number">ill-conditioned</a>
+  can amplify the error in
+  \(X\), creating large innaccuracies in the solution \(\hat{\beta}\).
+</p>
+<div class="proof">
+  <button onclick="hideElement('proof1')"> Show Proof </button>
+  <p id="proof1" style="display: none;">
+    If \(X\) is full rank with \(n>p\),
+    $$
+    \begin{align} \kappa\left(X^\top X\right)
+    &= \left|\left|X^\top X\right|\right|_2\left|\left|\left(X^\top X\right)^{\dagger}\right|\right|_2  \\
+    &= \left|\left|X^\top X\right|\right|_2\left|\left|X^{\dagger} \left(X^{\dagger}\right)^{\top}\right|\right|_2  \\
+    &\leq ||X^\top||_2 ||X||_2 ||X^\dagger||_2 ||X^{{\dagger}^\top}||_2 \\
+    &= ||X||_2^2 ||X^\dagger||_2^2 \\
+    &= \kappa(X)^2
+    \end{align}
+    $$
+    Where the penultimate step uses the fact that \(||A^\top||_2 = ||A||_2\).
+    The "\(\leq\)" step comes from the submultiplicativity of
+    the matrix 2-norm.
+    \[
+    ||AB||_2 \leq ||A||_2||B||_2
+    \]
+  </p>
+</div>
+<p>
+  To stave off numerical innaccuracies arising from calculating
+  \(X^\top X\), we can instead use the QR decomposition of \(X\) to
+  derive the least squares solution \(\hat{\beta}\).
+</p>
+<div class="proof">
+  <button onclick="hideElement('proof2')"> Show Proof </button>
+  <p id="proof2" style="display: none;">
+    Let \(QR'=XP\) be the QR decomposition of X where
+    \(Q\) is an \(n\times n\) orthogonal matrix,
+    \(R\) is an \(n\times n\) upper triangular matrix, and
+    \(P\) is a permutation matrix so that
+    \[
+    QR'
+    = Q \begin{bmatrix} R \\ 0 \end{bmatrix}
+    = XP
+    \]
+    If \(X\) is full-rank, then \(R\) has full rank and is
+    thus invertible. Since \(Q^\top Q=I\), for any matrix \(A\)
+    we get
+    \[
+    ||QA||_2
+    = \sqrt{\langle QA, QA\rangle}
+    = \sqrt{\langle Q^\top QA, A\rangle}
+    = \sqrt{\langle A, A\rangle}
+    = ||A||_2^2
+    \]
+    This is called the unitarily invariant property of the
+    induced operator norm. Without loss of generality,
+    assume \(P=I\). Using the properties above we can write
+    $$
+    \begin{align}
+    ||X\beta - y||_2^2
+    &= ||Q^\top(X\beta-y)||_2^2\\
+    &= ||Q^\top(QR'\beta - y)||_2^2 \\
+    &= \left|\left|\begin{bmatrix} R \\ 0 \end{bmatrix}\beta - Q^\top y\right|\right|_2^2
+    \end{align}
+    $$
+    Writing
+    \[
+    Q^\top y = \begin{bmatrix} Q_1^\top y\\ Q_2^\top y \end{bmatrix}
+    \]
+    We can express the equation above as
+    \[
+    \left|\left|\begin{bmatrix} R \\ 0 \end{bmatrix}\beta - Q^\top y\right|\right|_2^2
+    = \left|\left|\begin{bmatrix} R\beta \\ 0 \end{bmatrix}
+    - \begin{bmatrix} Q_1^\top y\\ Q_2^\top y \end{bmatrix}\right|\right|_2^2
+    = \left|\left|\begin{bmatrix} R\beta - Q_1^\top y\\ - Q_2^\top y \end{bmatrix}\right|\right|_2^2
+    = || R\beta - Q_1^\top y||_2^2 + ||Q_2^\top y||_2^2
+    \]
+    Which means that the original least-squares problem can
+    be rewritten as follows:
+    $$
+    \begin{align}
+    \hat{\beta}
+    &= \arg \min_{\beta}||X\beta - y||_2^2\\
+    &= \arg \min_{\beta}|| R\beta - Q_1^\top y||_2^2 + ||Q_2^\top y||_2^2\\
+    &= \arg \min_{\beta}|| R\beta - Q_1^\top y||_2^2
+    \end{align}
+    $$
+    The solution to this problem is simply
+    \[
+    \hat{\beta} = R^{-1}Q_1^\top y
+    \]
+    Though in pratice we would never take the inverse of
+    \(R\) but instead solve the system of linear equations
+    \(R\beta = Q_1^\top y\) by running
+    <code class="cpp">solve(R, (Q.t()*y)) </code>
+  </p>
+</div>
+<h3> Linear Regression </h3>
+<p>
+  To calculate the leave-one-out prediction error \(  \hat{\varepsilon}_i^{\text{pred}}\)
+  we take the diagonal of the hat matrix
+  \[
+  H= X(X^\top X)^{-1}X^\top
+  \]
+  and the residuals \(Y - \hat{Y}\), then calculate the
+  LOO error using the astounding formula
+  \[
+  \hat{\varepsilon}_i^{\text{pred}} = \frac{y_i-\hat{y}}{1-h_{ii}}
+  \]
+  But computing the hat matrix \(H\) through brute force
+  linear algebra is both time intensive and can lead to
+  the same numerical imprecision as we were trying to avoid when
+  solving the least squares problem. Instead, we are able
+  to reuse \(Q\) from the QR decomposition we have already
+  performed to find the diagonal of the hat matrix. In fact,
+  we can simply write
+  \[
+  H = QQ^\top
+  \]
+</p>
+<div class="proof">
+  <button onclick="hideElement('linearQR')"> Show Proof </button>
+  <p id="linearQR" style="display: none;">
+    \begin{align}
+    X(X^\top X)^{-1}X^\top
+    &= QR\left((QR)^\top QR\right)^{-1}\left(QR\right)^\top\\
+    &= QR\left(R^\top Q^\top Q R\right)^{-1}R^\top Q^\top\\
+    &= QR(R^\top R)^{-1}R^\top Q^\top\\
+    &= QRR^{-1}R^{-\top}R^\top Q^\top\\
+    &= QQ^\top
+    \end{align}
+  </p>
+</div>
+<div class="blog-code">
+  <button onclick="hideElement('regcode')"> Show C++ Code </button>
+  <pre id="regcode" style="display: none;"><code class="cpp">
+    Rcpp::List fastols(arma::mat const &X, arma::vec const &y) {
+      // Solve OLS using fast QR decomposition
+      arma::mat Q, R;
+      arma::qr_econ(Q, R, X);
+      arma::vec beta = solve(R, (Q.t()*y));
+
+      // Find diagonal of hat matrix given the Q of the QR factorization above
+      arma::vec hat = sum(Q%Q,1);
+
+      // Find LOO prediction error
+      arma::vec fittedy = X*beta;
+      arma::vec pred_err = (y - fittedy) / (1 - hat);
+      List listout = List::create(Named("beta")          = beta,
+      Named("hatdiag")       = hat,
+      Named("loo_pred_err")  = pred_err,
+      Named("fitted.values") = fittedy);
+      return listout;
+    }
+  </code></pre>
+</div>
+<h3> Weighted Linear Regression </h3>
+While estimating coefficients in weighted linear regression is as
+easy as multiplying \(Y\) and \(X\) by the square root of the
+weight matrix, which is a diagonal matrix of non-negative weights,
+so the matrix square root is just the square root of the diagonal.
+\[
+\tilde{Y} = \sqrt{W}Y \qquad \tilde{X}=\sqrt{W}X
+\]
+then running OLS using \(\tilde{X}\) and \(\tilde{Y}\),
+\[
+\hat{\beta}^{WLS} = \left(\tilde{X}^\top \tilde{X}\right)^{-1}\tilde{X}\tilde{Y}
+\]
+so that
+\[
+\hat{Y} = X\hat{\beta}
+\]
+Notice that it is \(X\hat{\beta}\) and <b>not</b>
+\(\tilde{X}\hat{\beta}\).
+
+This means that the hat matrix is
+\[
+H^{\text{correct}} = X(\tilde{X}^\top \tilde{X})^{-1}X^\top W
+\]
+and <b>not</b>
+\[
+H^{\text{wrong}} = \tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top
+\]
+which is asymmetric in comparison to the hat matrix without
+weights (which has no tildes).
+If we perform a QR decomposition on \(\tilde{X}\), with
+\(\tilde{X}=QR\) then we can rewrite the hat matrix as
+\[
+H = \sqrt{W}^{-1}QQ^\top \sqrt{W}
+\]
+<div class="proof">
+  <button onclick="hideElement('proofweightedQR')"> Show Proof </button>
+  <p id="proofweightedQR" style="display: none;">
+    We can rewrite the hat matrix as
+    \begin{align}
+    H
+    &= X(\tilde{X}^\top \tilde{X})^{-1}X^\top W\\
+    &= \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+    \end{align}
+    Letting \(X=QR\) be the QR decomposition ox \(X\) without column
+    pivoting.
+    \begin{align}
+    \sqrt{W}^{-1}\tilde{X}(\tilde{X}^\top \tilde{X})^{-1}\tilde{X}^\top \sqrt{W}
+    &= \sqrt{W}^{-1}QR(R^\top Q^\top QR)^{-1}R^\top Q^\top \sqrt{W}\\
+    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+    &= \sqrt{W}^{-1}QR(R^\top R)^{-1}R^\top Q^\top \sqrt{W}\\
+    &= \sqrt{W}^{-1}QRR^{-1}R^{-\top}R^\top Q^\top \sqrt{W}\\
+    &= \sqrt{W}^{-1}QQ^\top \sqrt{W}\\
+    \end{align}
+  </p>
+</div>
+Letting \(Q_1 = \sqrt{W}^{-1}Q\) and \(Q_2 = \sqrt{W} Q\),
+we can calculate the diagonal of the hat matrix as before with
+\[
+h_{ii} = \sum_{j=1}^{n}[Q_1]_{ij}[Q_2]_{ji}
+\]
+<div class="blog-code">
+  <button onclick="hideElement('weightedregcode')"> Show C++ Code </button>
+  <pre id="weightedregcode" style="display: none;"><code class="cpp">
+    Rcpp::List fastwls(arma::mat const &X,
+    arma::vec const &y,
+    arma::vec const &w){
+      // Solve OLS using fast QR decomposition
+      arma::mat Q, R;
+      arma::qr_econ(Q, R, X.each_col() % sqrt(w));
+      arma::vec beta = solve(R, (Q.t()*(y % sqrt(w))));
+
+      // Find diagonal of hat matrix given the Q of the QR factorization above
+      arma::mat Q1 = Q.each_col() / sqrt(w);
+      arma::mat Q2 = Q.each_col() % sqrt(w);
+      arma::vec hat = sum(Q1%Q2,1);
+
+      // Find LOO prediction error
+      arma::vec fittedy = X*beta;
+      arma::vec pred_err = (y - fittedy) / (1 - hat);
+      List listout = List::create(Named("beta")          = beta,
+      Named("hatdiag")       = hat,
+      Named("loo_pred_err")  = pred_err,
+      Named("fitted.values") = fittedy);
+      return listout;
+    }
+  </code></pre>
+</div>
+<h3> Local Linear Regression </h3>
+<p>
+  The astounding formula is a gift that just keeps on giving, because
+  the formula holds not just for ordinary least squares
+  regression, but a large family of predictive
+  models called linear smoothers. The family of linear smoothers
+  includes linear regression, weighted linear regression,
+  local linear regression, and splines.
+
+  A linear smoother is a transformation of the observed data
+  \(X\) and \(Y\) that \(\hat{Y}\)
+  can be expressed as a linear combination of \(Y\):
+  \[ \hat{Y} = HY\]
+  where \(H\) is a \(n \times n\) matrix that
+  takes the
+  following form as a function of \(X\):
+  \[
+  H =
+  \begin{bmatrix}
+  \ell(X_1)^\top\\
+  \vdots \\
+  \ell(X_n)^\top
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  \ell_1(x_1) & \ell_2(x_1) & \cdots & \ell_n(x_1)\\
+  \ell_1(x_2) & \ell_2(x_2) & \cdots & \ell_n(x_2)\\
+  \vdots & \vdots & \ddots & \vdots \\
+  \ell_1(x_n) & \ell_2(x_n) & \cdots & \ell_n(x_n)
+  \end{bmatrix}
+  \]
+  and \(x_i\) is the \(i\)th row of the \(n\times p\)
+  data matrix \(X\).
+
+  Letting \(h_{ii}=\ell_1(X_1)\) be the \(i\)th diagonal element of
+  \(H\), we can express the leave-one-out cross-validation score (LOOCV) as
+  \[
+  \text{LOOCV} = \sum_{i=1}^n\left(\frac{y_i-\hat{m}(x_i)}{1-h_{ii}}\right)^2
+  \]
+</p>
+</div>
+</div>

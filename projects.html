@@ -1,273 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Harvey Barnhard">
-
-    <title>Harvey - Projects</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link href="css/clean-blog.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <script src="https://kit.fontawesome.com/b89efab99d.js" crossorigin="anonymous"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom">
-      <div class="container-fluid">
-        <div class="navbar-header page-scroll">
-          <button type="button" class="navbar-toggle x collapsed" data-toggle="collapse" data-target="#navbar-collapse-x">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-x">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="projects.html">projects</a>
-            </li>
-            <li>
-              <a href="blog.html">blog</a>
-            </li>
-            <li>
-              <a href="about.html">about</a>
-            </li>
-          </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+<div class="main-content">
+  <div class="sidebar">
+    <button class="barlink" style="font-size:20px; cursor: auto;">Categories</button>
+    <button class="barlink-item bar-active" onclick="openLink(event, 'projects-programming')">Programming</button>
+    <button class="barlink-item" onclick="openLink(event, 'projects-papers')">Papers</button>
+  </div>
+  
+  <div class="main-content-previews">
+    <div class="category fade-anim" id="projects-programming">
+      <h1>Programming</h1>
+      <div class="post-preview">
+        <div class="post-title">endur</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/endur">[GitHub]</a><br>
+        <p class="post-description">Python scripts to pull and clean Strava data for creating personalized reports for endurance activities.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">December 2020</span>
       </div>
-      <!-- /.container -->
-    </nav>
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="page-heading">
-                        <h1>Projects</h1>
-                        <h2 class="subheading"></h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-<ul class="nav nav-tabs nav-justified" id="myTabJust" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link" id="papers-tab-just" data-toggle="tab" href="#papers-just" role="tab" aria-controls="papers-just"
-      aria-selected="false">Papers</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="packages-tab-just" data-toggle="tab" href="#packages-just" role="tab" aria-controls="packages-just"
-      aria-selected="false">R Packages</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="misc-tab-just" data-toggle="tab" href="#misc-just" role="tab" aria-controls="misc-just"
-      aria-selected="false">Miscellany</a>
-  </li>
-</ul>
-<div class="tab-content card pt-5" id="myTabContentJust">
-  <div class="tab-pane fade" id="papers-just" role="tabpanel" aria-labelledby="papers-tab-just">
-    <section class="tabgroup">
-      <ul>
-        <li>
-          <div class="post-preview">
-            <div class="post-image">
-              <img src="img/hbarnhard_2019-preview.jpg" alt="">
-              <a href="papers/hbarnhard_2019.pdf">View PDF</a>
-            </div>
-            <div class="post-text">
-              <h2 class="post-title">
-                Economic Shocks and Civil Conflict: Fifteen Years Later
-              </h2>
-              <p>
-                Revisiting Miguel, Satyanath, and Sergenti (2004), which aims to
-                understand the causal effect of economic shocks on civil conflict in
-                sub-Saharan Africa.
-              </p>
-              <p class="post-meta">
-                <a href="about.html">Harvey Barnhard</a>, March 2019
-                (Undergraduate Honors Econometrics Final Project)
-              </p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="post-preview">
-            <div class="post-image">
-              <img src="img/heatmap_accent-2.png" alt="">
-              <a href="papers/hbarnhard_2018.pdf">View PDF</a>
-            </div>
-            <div class="post-text">
-              <h2 class="post-title">
-                Approximating Heavy Traffic with Brownian Motion
-              </h2>
-              <p>
-                This expository paper shows how waiting times of certain queuing
-                systems can be approximated by Brownian motion. In particular, when customers
-                exit a queue at a slightly faster rate than they enter, the waiting time
-                of the nth customer can be approximated by the supremum of reflected Brownian motion with negative drift.
-              </p>
-              <p class="post-meta">
-                <a href="about.html">Harvey Barnhard</a>, November 2018
-                (Written During UChicago Math REU 2018)
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </section>
-  </div>
-  <div class="tab-pane fade" id="packages-just" role="tabpanel" aria-labelledby="packages-tab-just">
-    <section class="tabgroup">
-      <ul>
-        <li>
-          <div class="post-preview">
-            <div class="post-image">
-              <img src="img/looperr-preview.png" alt="">
-              <a href="https://github.com/harveybarnhard/looperr">GitHub Repo</a>
-            </div>
-            <div class="post-text">
-              <h2 class="post-title">
-                <code>looperr</code>, Quickly Evaluating Prediction Error
-              </h2>
-              <p>
-                An R Package for evaluating <b>l</b>eave-<b>o</b>ne-<b>o</b>ut
-                <b>p</b>rediction <b>err</b>or
-                of linear smoothers (e.g. linear regression, local
-                polynomial regression, splines). Uses C++ and non-redundant
-                matrix decompositions for fast run-times.
-              </p>
-              <p class="post-meta">
-                <a href="about.html">Harvey Barnhard</a>, November 2020
-              </p>
-            </div>
-          </div>
-          <div class="post-preview">
-            <div class="post-image">
-              <img src="img/smoov-preview.png" alt="">
-              <a href="https://github.com/harveybarnhard/smoov">GitHub Repo</a>
-            </div>
-            <div class="post-text">
-              <h2 class="post-title">
-                <code>smoov</code>, Making Mapping Easier
-              </h2>
-              <p>
-                An R package that facilitates hassle-free, descriptive mapping.
-                This package handles the loading of shapefiles, merging data onto
-                shapefiles, subsetting to certain geographies, and creating maps
-                with sensible defaults. Aesthetics are easily customizable using
-                ggplot syntax.
-              </p>
-              <p class="post-meta">
-                <a href="about.html">Harvey Barnhard</a>, November 2020
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </section>
-  </div>
-  <div class="tab-pane fade" id="misc-just" role="tabpanel" aria-labelledby="misc-tab-just">
-    <section class="tabgroup">
-      <ul>
-        <li>
-          <div class="post-preview">
-            <div class="post-image">
-              <img src="img/heatmap_accent-2.png" alt="">
-              <a href="https://github.com/harveybarnhard/heatmap_accent">GitHub Repo</a>
-            </div>
-            <div class="post-text">
-              <h2 class="post-title">
-                <code>heatmap_accent</code>, Visualizing the places you've ran
-              </h2>
-              <p>
-                A python script to create plots of running and cycling routes using
-                bulk exported data from Strava (or Garmin Connect). Stands out from
-                the pack of route-plotting scripts by a feature to highlight routes
-                based on certain criteria.
-              </p>
-              <p class="post-meta">
-                <a href="about.html">Harvey Barnhard</a>, April 2019
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </section>
+      <div class="post-preview">
+        <div class="post-title">looperr</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/looperr">[GitHub]</a>
+        <a class="link-blog" href="#/blog/calculating-diagonal-of-hat-matrix">[Blog Post]</a><br>
+        <p class="post-description">An R package for quickly running many regressions by group. Addional functionality includes quickly running local linear regressions and evaluating prediction error.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2020</span>
+      </div>
+      <div class="post-preview">
+        <div class="post-title">smoov</div>
+        <a class="link-github" href="https://github.com/harveybarnhard/smoov">[GitHub]</a><br>
+        <p class="post-description">An R package for making mapping of basic United States geographies, such as census tracts, fast and easy.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2020</span>
+      </div>
+    </div>
+    <div class="category fade-anim" id="projects-papers" style="display:none">
+      <h1>Papers</h1>
+      <div class="post-preview">
+        <div class="post-title">Economic Shocks and Civil Conflict: Fifteen Years Later</div>
+        <a class="link-pdf" href="papers/hbarnhard_2019.pdf">[PDF]</a><br>
+        <p class="post-description">Revisiting Miguel, Satyanath, and Sergenti (2004), which aims to understand the causal effect of economic shocks on civil conflict in sub-Saharan Africa.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">March 2019</span>
+        <span class="post-context">(Undergraduate Honors Econometrics Final Project)</span>
+      </div>
+      <div class="post-preview">
+        <div class="post-title">Approximating Heavy Traffic with Brownian Motion</div>
+        <a class="link-pdf" href="papers/hbarnhard_2018.pdf">[PDF]</a><br>
+        <p class="post-description">This expository paper shows how waiting times of certain queuing systems can be approximated by Brownian motion. In particular, when customers exit a queue at a slightly faster rate than they enter, the waiting time of the nth customer can be approximated by the supremum of reflected Brownian motion with negative drift.</p>
+        <span class="post-author">Harvey Barnhard,</span>
+        <span class="post-date">November 2018</span>
+        <span class="post-context">(UChicago Summer Math REU 2018)</span>
+      </div>
+    </div>
   </div>
 </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="https://github.com/harveybarnhard">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://strava.com/athletes/16562005">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-strava fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted"></p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
-
-    <!-- Theme JavaScript -->
-    <script src="js/clean-blog.min.js"></script>
-
-</body>
-
-</html>
