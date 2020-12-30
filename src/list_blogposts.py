@@ -13,7 +13,7 @@ main = div()
 # Create blog div, post by post
 file_blog = pd.read_csv("../posts/blog_posts.csv")
 div_blog = div(id="projects-programming", cls="category fade-anim")
-div_blog += h1("Blog")
+div_blog += h1("Blog Posts")
 for index, row in file_blog.iterrows():
     # Parse tags
     tags = str.split(row['Tags'])
