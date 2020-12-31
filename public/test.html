@@ -77,10 +77,6 @@
 	    xOverview.domain(x.domain());
 	    yOverview.domain(y.domain());
 			// https://observablehq.com/@didoesdigital/22-june-2020-d3-bar-chart-brush-work-in-progress?collection=@didoesdigital/journal-getting-started-with-data-viz-collection
-			var mainXScale = d3.scaleBand()
-		    .range([xOverview.left, width - xOverview.right])
-		    .paddingInner(0);
-			console.log(xOverview)
 	    // data range for the bar colours
 	    // (essentially maps attribute names to colour values)
 	    colour.domain(data[0].counts);
@@ -191,9 +187,13 @@
 	function brushed() {
 	    // update the main chart's x axis data range
 	    x.domain(d3.event.selection === null ? xOverview.domain() : d3.event.selection.map(xOverview.invert))
+		// 604800000 is the number of milliseconds in a week
+			console.log((x.domain()[1] - x.domain()[0])/604800000)
 	  // redraw the bars on the main chart
 	    main.selectAll(".bar.stack")
 	            .attr("transform", function(d) { return "translate(" + x(d.monday) + ",0)"; })
+			main.selectAll(".bar")
+							.attr("width", 920/((x.domain()[1] - x.domain()[0])/604800000))
 	    // redraw the x axis of the main chart
 	    main.select(".x.axis").call(xAxis);
 	}
