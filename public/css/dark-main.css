@@ -21,6 +21,31 @@ body {
   min-height: 100vh;
 }
 
+.outer-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+@media only screen and (max-height: 600px)  {
+  .outer-center {
+    display: initial;
+    justify-content: initial;
+    align-items: initial;
+    height: initial;
+  }
+}
+
+@media only screen and (max-width: 330px)  {
+  .outer-center {
+    display: initial;
+    justify-content: initial;
+    align-items: initial;
+    height: initial;
+  }
+}
+
 /* ------ */
 /* navbar */
 /* ------ */
