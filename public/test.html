@@ -20,11 +20,11 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
 <script>
-	var margin =  { top: 20, right: 20, bottom: 100, left: 20 },
-	    width = 960 - margin.left - margin.right,
-	    height = 500 - margin.top - margin.bottom,
-	    marginOverview = { top: 430, right: margin.right, bottom: 20,  left: margin.left },
-	    heightOverview = 500 - marginOverview.top - marginOverview.bottom;
+	var margin = {top: 60, right: 50, bottom: 50, left: 50},
+			width = 1200 - margin.left - margin.right,
+			height = 500 - margin.top - margin.bottom;
+	    marginOverview = { top: 480, right: margin.right, bottom: 20,  left: margin.left },
+	    heightOverview = 600 - marginOverview.top - marginOverview.bottom;
 
 	// set up a date parsing function for future use
 	var parseDate = d3.timeParse("%m-%d-%Y");
@@ -54,7 +54,7 @@
 	var svg = d3.select("body")
 	                .append("svg") // the overall space
 	                    .attr("width", width + margin.left + margin.right)
-	                    .attr("height", height + margin.top + margin.bottom);
+	                    .attr("height", height + margin.top + margin.bottom + heightOverview + marginOverview.top + marginOverview.bottom);
 	var main = svg.append("g")
 	                .attr("class", "main")
 	                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -95,9 +95,15 @@
 	        .call(xAxisOverview);
 
 	    // draw the bars
+			main.append("defs").append("clipPath")
+			.attr("id", "clip")
+				.append("rect")
+			.attr("width", width)
+			.attr("height", height);
 	    main.append("g")
+							.attr("clip-path", "url(#clip)")
 	            .attr("class", "bars")
-	        // a group for each stack of bars, positioned in the correct x position
+	        // a group for each stack of bars, positioned with the left side on the date
 	        .selectAll(".bar.stack")
 	        .data(data)
 	        .enter().append("g")
@@ -108,11 +114,10 @@
 	        .data(function(d) { return d.counts; })
 	        .enter().append("rect")
 	            .attr("class", "bar")
-	            .attr("width", 6)
+	            .attr("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
 	            .attr("y", function(d) { return y(d.y1); })
 	            .attr("height", function(d) { return y(d.y0) - y(d.y1); })
 	            .style("fill", function(d) { return colour(d.name); });
-
 	    overview.append("g")
 	                .attr("class", "bars")
 	        .selectAll(".bar")
@@ -120,41 +125,41 @@
 	        .enter().append("rect")
 	            .attr("class", "bar")
 	            .attr("x", function(d) { return xOverview(d.monday) - 3; })
-	            .attr("width", 6)
+	            .attr("width", 10)
 	            .attr("y", function(d) { return yOverview(d.total); })
 	            .attr("height", function(d) { return heightOverview - yOverview(d.total); });
 
 	    // add the brush target area on the overview chart
 	    overview.append("g")
-	                .attr("class", "x brush")
-	                .call(brush)
-	                .selectAll("rect")
-	                    // -6 is magic number to offset positions for styling/interaction to feel right
-	                    .attr("y", -6)
-	                    // need to manually set the height because the brush has
-	                    // no y scale, i.e. we should see the extent being marked
-	                    // over the full height of the overview chart
-	                    .attr("height", heightOverview + 7);  // +7 is magic number for styling
-											var size = 100
-											svg.selectAll("myrect")
-												.data(["Run", "Ride", "Zwift", "Other"])
-												.enter()
-												.append("rect")
-													.attr("x", function(d,i){ return 320 + i*size})
-													.attr("y", 0)
-													.attr("width", 20)
-													.attr("height", 20)
-													.style("fill", function(d){ return colour(d)})
-													svg.selectAll("mylabels")
-														.data(["Run", "Ride", "Zwift", "Other"])
-														.enter()
-														.append("text")
-															.attr("y", 12)
-															.attr("x", function(d,i){ return 345 + i*size })
-															.style("fill", function(d){ return colour(d)})
-															.text(function(d){ return d})
-															.attr("text-anchor", "left")
-															.style("alignment-baseline", "middle")
+					.attr("class", "x brush")
+					.call(brush)
+					.selectAll("rect")
+					    // -6 is magic number to offset positions for styling/interaction to feel right
+					    .attr("y", -6)
+					    // need to manually set the height because the brush has
+					    // no y scale, i.e. we should see the extent being marked
+					    // over the full height of the overview chart
+					    .attr("height", heightOverview + 7);  // +7 is magic number for styling
+			var size = 100
+			svg.selectAll("myrect")
+					.data(["Run", "Ride", "Zwift", "Other"])
+					.enter()
+					.append("rect")
+						.attr("x", function(d,i){ return 320 + i*size})
+						.attr("y", 0)
+						.attr("width", 20)
+						.attr("height", 20)
+						.style("fill", function(d){ return colour(d)})
+			svg.selectAll("mylabels")
+					.data(["Run", "Ride", "Zwift", "Other"])
+					.enter()
+					.append("text")
+						.attr("y", 12)
+						.attr("x", function(d,i){ return 345 + i*size })
+						.style("fill", function(d){ return colour(d)})
+						.text(function(d){ return d})
+						.attr("text-anchor", "left")
+						.style("alignment-baseline", "middle")
 
 	});  // end data function
 
@@ -188,12 +193,11 @@
 	    // update the main chart's x axis data range
 	    x.domain(d3.event.selection === null ? xOverview.domain() : d3.event.selection.map(xOverview.invert))
 		// 604800000 is the number of milliseconds in a week
-			console.log((x.domain()[1] - x.domain()[0])/604800000)
 	  // redraw the bars on the main chart
 	    main.selectAll(".bar.stack")
 	            .attr("transform", function(d) { return "translate(" + x(d.monday) + ",0)"; })
 			main.selectAll(".bar")
-							.attr("width", 920/((x.domain()[1] - x.domain()[0])/604800000))
+							.attr("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
 	    // redraw the x axis of the main chart
 	    main.select(".x.axis").call(xAxis);
 	}
