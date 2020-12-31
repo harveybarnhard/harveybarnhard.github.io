@@ -153,7 +153,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				}
 				// how to format hours and dates?
 				var formatHour = d3.format(".1f")
-				var formatDate = d3.time.format("%B %d, %Y")
+				var formatDate = d3.timeFormat("%B %d, %Y")
 				// Vertical line and tooltip
 				var toolTip = function(d) {
 					// Invert mouse position to date
