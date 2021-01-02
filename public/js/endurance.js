@@ -1,8 +1,33 @@
 app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 	window.scrollTo(0, 0)
-	d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv", function(data){
+	d3.csv("https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv", parse, function(data){
 		$rootScope.$broadcast("Data_Ready", data)
 	})
+	// by habit, cleaning/parsing the data and return a new object to ensure/clarify data object structure
+	var parseDate = d3.timeParse("%m-%d-%Y");
+	function parse(d) {
+		console.log(d)
+		// turn the date string into a date object
+		var value = { monday: parseDate(d.monday) };
+		d.Run = d.Run_moving_time;
+		d.Ride = d.Ride_moving_time;
+		d.Zwift = d.VirtualRide_moving_time;
+		d.Other = d.Other_moving_time;
+		console.log(value)
+		// adding calculated data to each count in preparation for stacking
+		var y0 = 0; // keeps track of where the "previous" value "ended"
+		value.counts = ["Run", "Ride", "Zwift", "Other"].map(function(name) {
+				return { name: name,
+								 y0: y0,
+								 // add this count on to the previous "end" to create a range,
+								//  and update the "previous end" for the next iteration
+								 y1: y0 += +d[name]
+							 };
+		});
+		// quick way to get the total from the previous calculations
+		value.total = value.counts[value.counts.length - 1].y1;
+		return value;
+	}
 }).directive( 'dir1', [
   function () {
     return {
@@ -10,271 +35,161 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
       link: activeHours
     };
 		function activeHours(scope, element) {
-			// -----------------------------------------------------------//
-			// Create the canvas for the plot (no need to wait for data)  //
-			// -----------------------------------------------------------//
-			var margin = {top: 60, right: 230, bottom: 50, left: 50},
+			// ---------------------------------- //
+			// Variable creation while data loads //
+			// ---------------------------------- //
+			var margin = {top: 60, right: 50, bottom: 50, left: 50},
 					width = 1200 - margin.left - margin.right,
-					height = 400 - margin.top - margin.bottom;
-			// parse the date / time
-			var parseTime = d3.timeParse("%m-%d-%Y");
-			// append the svg object to the body of the page
+					height = 500 - margin.top - margin.bottom;
+			    marginOverview = { top: 480, right: margin.right, bottom: 20,  left: margin.left },
+			    heightOverview = 600 - marginOverview.top - marginOverview.bottom;
+
+			// some colours to use for the bars
+			var colour = d3.scaleOrdinal()
+			               .range(d3.schemeTableau10);
+
+			// mathematical scales for the x and y axes
+			var x = d3.scaleTime()
+			                .range([0, width]);
+			var y = d3.scaleLinear()
+			                .range([height, 0]);
+			var xOverview = d3.scaleTime()
+			                .range([0, width]);
+			var yOverview = d3.scaleLinear()
+			                .range([heightOverview, 0]);
+
+			// rendering for the x and y axes
+			var xAxis = d3.axisBottom()
+			                .scale(x)
+			var yAxis = d3.axisLeft()
+			                .scale(y)
+			var xAxisOverview = d3.axisBottom()
+			                .scale(xOverview)
+
+			// something for us to render the chart into
 			var svg = d3.select(element[0])
-				.append("svg")
-					.attr("viewBox", "0 0 1000 400")
-				.append("g")
-					.attr("transform",
-								"translate(" + margin.left + "," + margin.top + ")");
-		  // ------------------------------------------------------------------ //
-			// After data has finished loading, prepare data for plotting         //
-			// ------------------------------------------------------------------ //
+			                .append("svg") // the overall space
+			                    .attr("width", width + margin.left + margin.right)
+			                    .attr("height", height + margin.top + margin.bottom + heightOverview + marginOverview.top + marginOverview.bottom);
+			var main = svg.append("g")
+			                .attr("class", "main")
+			                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var overview = svg.append("g")
+			                    .attr("class", "overview")
+			                    .attr("transform", "translate(" + marginOverview.left + "," + marginOverview.top + ")");
+
+			// brush tool to let us zoom and pan using the overview chart
+			var brush = d3.brushX()
+			                    //.x(xOverview)
+			                    .extent([[0, 0], [width, heightOverview]])
+			                    .on("brush", brushed);
 			scope.$on("Data_Ready", function(events, data){
-				// Take a subset of columns and rename the columns for better visibility
-				var select1 = "Run_moving_time",
-						select2 = "Ride_moving_time",
-						select3 = "VirtualRide_moving_time",
-						select4 = "Other_moving_time";
-				var title1 = "Run",
-						title2 = "Cycle",
-						title3 = "Zwift",
-						title4 = "Other"
-				headerBar = ["monday"];
-				headerBar.push(title1, title2, title3, title4);
-				var data = data.map(function(d){
-						return {
-							date: d.monday,
-							monday:d.monday,
-							[title1]: d[select1],
-							[title2]: d[select2],
-							[title3]: d[select3],
-							[title4]: d[select4]
-						}
-				});
-				data["columns"] = headerBar;
-			  // format the date data
-			  data.forEach(function(d) {
-			      d.monday = parseTime(d.monday);
-			  });
-				// List of groups = header of the csv files
-				var keys = data.columns.slice(1)
-				// color palette
-				var color = d3.scaleOrdinal()
-					.domain(keys)
-					.range(d3.schemeTableau10);
-				//stack the data
-				var stackedData = d3.stack()
-					.keys(keys)
-					(data)
-				// -----//
-				// Axis //
-				// ---- //
-				// Add X axis
-				var x = d3.scaleTime()
-					.domain(d3.extent(data, function(d) { return d.monday; }))
-					.range([ 0, width ]);
-				var xAxis = svg.append("g")
-					.attr("transform", "translate(0," + height + ")")
-					.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b-%Y")))
-				// Add Y axis
-				var y = d3.scaleLinear()
-					.domain([0, 24])
-					.range([ height, 0 ]);
-				svg.append("g")
-					.call(d3.axisLeft(y).ticks(6))
-				// -------- //
-				// Brushing //
-				// -------- //
-				// Add a clipPath, outside of which no shapes are drawn
-			  var clip = svg.append("defs").append("svg:clipPath")
-			      .attr("id", "clip")
-			      .append("svg:rect")
-			      .attr("width", width)
-			      .attr("height", height)
-			      .attr("x", 0)
-			      .attr("y", 0);
-			  // Add brushing, initializing by showing the entire plot
-			  var brush = d3.brushX()
-			      .extent( [ [0,0], [width,height] ] )
-			      .on("end", updateChart)
-				// ----- //
-				// Chart //
-				// ----- //
-				// Create the area chart
-				var areaChart = svg.append('g')
-					.attr("clip-path", "url(#clip)")
-				// Area generator
-				var area = d3.area()
-					.x(function(d) { return x(d.data.monday); })
-					.y0(function(d) { return y(d[0]); })
-					.y1(function(d) { return y(d[1]); })
-					.curve(d3.curveMonotoneX) // Smooth it out a little
-				var vertical = svg.append("rect")
-					.attr("x", 100)
-					.attr("y", 0)
-					.attr("width", 1)
-					.attr("height", 290)
-					.style("fill", "var(--text-color)")
-					.style("z-index", "19")
-					.style("opacity", 0)
-					.attr("pointer-events", "none")
-				var infobox = svg.append("text")
-					.attr("id", "infobox")
-					.attr("x", 15)
-					.attr("y", 15)
-					.attr("width", 1)
-					.style("opacity", 0)
+				console.log(data)
+				// data ranges for the x and y axes
+				x.domain(d3.extent(data, function(d) { return d.monday; }));
+				y.domain([0, 22]);
+				xOverview.domain(x.domain());
+				yOverview.domain(y.domain());
+				// https://observablehq.com/@didoesdigital/22-june-2020-d3-bar-chart-brush-work-in-progress?collection=@didoesdigital/journal-getting-started-with-data-viz-collection
+				// data range for the bar colours
+				// (essentially maps attribute names to colour values)
+				colour.domain(data[0].counts);
 
-				// --------------- //
-				// HIGHLIGHT GROUP //
-				// --------------- //
-				// What to do when one group is hovered in legend
-				var highlight = function(d){
-					// reduce opacity of all groups
-					d3.selectAll(".myArea").style("opacity", .4)
-					// except the one that is hovered
-					d3.select("."+d)
-						.style("opacity", 1)
-				}
+				// draw the axes now that they are fully set up
+				main.append("g")
+						.attr("class", "x axis")
+						.attr("transform", "translate(0," + height + ")")
+						.call(xAxis);
+				main.append("g")
+						.attr("class", "y axis")
+						.call(yAxis);
+				overview.append("g")
+						.attr("class", "x axis")
+						.attr("transform", "translate(0," + heightOverview + ")")
+						.call(xAxisOverview);
 
-				// And when it is not hovered anymore in legend
-				var noHighlight = function(d){
-					d3.selectAll(".myArea")
-						.style("opacity", 1)
-					vertical.style("opacity", 0)
-					infobox.style("opacity", 0)
-				}
-
-				// What to do when one group is hovered in chart
-				var areaHighlight = function(d) {
-					d3.selectAll(".myArea").style("opacity", .4)
-					d3.select(this).style("opacity", 1)
-					vertical.style("opacity", 1)
-					infobox.style("opacity", 1)
-				}
-				// how to format hours and dates?
-				var formatHour = d3.format(".1f")
-				var formatDate = d3.timeFormat("%B %d, %Y")
-				// Vertical line and tooltip
-				var toolTip = function(d) {
-					// Invert mouse position to date
-					mousex = d3.mouse(this);
-         	mousex = mousex[0];
-					var invertedx = x.invert(mousex);
-					// Invert date to day of week
-					invertedx = d3.timeMonday(invertedx)
-					mondayx = formatDate(invertedx)
-					// Not the best way to get difference in dates...
-					rowind = Math.floor((invertedx - d[0].data.monday)/86400000/7)
-					hours = d[rowind].data[d.key] // Just need to replace 1 with proper index
-					// Fill out infobox
-					infobox.text("Week of " + mondayx)
-					infobox.append('svg:tspan')
-						.attr('x', 15)
-						.attr('dy', 20)
-						.text(d.key + " hours: " + formatHour(hours))
-					// Create vertical line
-					vertical.style("x", (mousex - 1) + "px" )
-				}
-				// Create chart. Note that brushing is applied BEFORE the actual creation of
-				// the chart and ".attr("pointer-events", "all")" is used so that the
-				// highlighting even still occurs even after brush is applied
-			// 	areaChart
-			// 		.append("g")
-			// 		.attr("class", "brush")
-			// 		.call(brush)
-			// 		.selectAll("mylayers")
-			// 		.data(stackedData)
-			// 		.enter().append("g")
-      // 		.attr("fill", function(d) { return color(d.key); })
-      // 		.selectAll("rect")
-      // 		// enter a second time = loop subgroup per subgroup to add all rectangles
-      // .data(function(d) { return d; })
-      // .enter().append("rect")
-      //   .attr("x", function(d) { return x(d.data.monday); })
-      //   .attr("y", function(d) { return y(d[1]); })
-      //   .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      //   .attr("width",6)
-			// 	.on("mouseover", areaHighlight)
-			// 	.on("mousemove", toolTip)
-			// 	.on("mouseleave", noHighlight)
-				areaChart
-					.append("g")
-					.attr("class", "brush")
-					.call(brush)
-					.selectAll("mylayers")
-					.data(stackedData)
-					.enter()
-					.append("path")
-						.attr("stroke", "var(--text-color)")
-						.attr("stroke-width", .2)
-						.attr("class", function(d) { return "myArea " + d.key })
-						.style("fill", function(d) { return color(d.key); })
-						.attr("d", area)
-						.attr("pointer-events", "all")
-						.on("mouseover", areaHighlight)
-						.on("mousemove", toolTip)
-						.on("mouseleave", noHighlight)
-				// ------------ //
-				// Update Chart //
-				// ------------ //
-				var idleTimeout
-				function idled() { idleTimeout = null; }
-				// A function that updates the chart for given boundaries
-				function updateChart() {
-					extent = d3.event.selection
-					// If no selection, back to initial coordinate. Otherwise, update X axis domain
-					if(!extent){
-						if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
-						x.domain(d3.extent(data, function(d) { return d.monday; }))
-					}else{
-						x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
-						areaChart.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
-					}
-
-					// Update axis and area position
-					xAxis.transition().duration(1000).call(d3.axisBottom(x).ticks(5))
-					areaChart
-						.selectAll("path")
-						.transition().duration(1000)
-						.attr("d", area)
-				}
-				// ------ //
-		    // LEGEND //
-		    // ------ //
-		    // Add one square in the legend for each name
-		    var size = 100
-				svg.selectAll("myrect")
-					.data(keys)
-					.enter()
+				// draw the bars
+				main.append("defs").append("clipPath")
+				.attr("id", "clip")
 					.append("rect")
-						.attr("x", function(d,i){ return 320 + i*size})
-						.attr("y", -35)
-						.attr("width", 20)
-						.attr("height", 20)
-						.style("fill", function(d){ return color(d)})
-						.on("mouseover", highlight)
-						.on("mouseleave", noHighlight)
-				// Add one label for each name
-		    svg.selectAll("mylabels")
-		      .data(keys)
-		      .enter()
-		      .append("text")
-		        .attr("y", -23)
-		        .attr("x", function(d,i){ return 345 + i*size })
-		        .style("fill", function(d){ return color(d)})
-		        .text(function(d){ return d})
-		        .attr("text-anchor", "left")
-		        .style("alignment-baseline", "middle")
-						.style("font-weight", "bold")
-				svg.append("text")
-		      .attr("text-anchor", "end")
-		      .attr("x", 140)
-		      .attr("y", -19.4 )
-		      .text("Hours per week I")
-		      .attr("text-anchor", "start")
-					.style("font-weight", "bold")
-					.style("fill", "var(--text-color)")
+				.attr("width", width)
+				.attr("height", height);
+				main.append("g")
+								.attr("clip-path", "url(#clip)")
+								.attr("class", "bars")
+						// a group for each stack of bars, positioned with the left side on the date
+						.selectAll(".bar.stack")
+						.data(data)
+						.enter().append("g")
+								.attr("class", "bar stack")
+								.attr("transform", function(d) { return "translate(" + x(d.monday) + ",0)"; })
+						// a bar for each value in the stack, positioned in the correct y positions
+						.selectAll("rect")
+						.data(function(d) { return d.counts; })
+						.enter().append("rect")
+								.attr("class", "bar")
+								.attr("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+								.attr("y", function(d) { return y(d.y1); })
+								.attr("height", function(d) { return y(d.y0) - y(d.y1); })
+								.style("fill", function(d) { return colour(d.name); });
+				overview.append("g")
+										.attr("class", "bars")
+						.selectAll(".bar")
+						.data(data)
+						.enter().append("rect")
+								.attr("class", "bar")
+								.attr("x", function(d) { return xOverview(d.monday) - 3; })
+								.attr("width", 10)
+								.attr("y", function(d) { return yOverview(d.total); })
+								.attr("height", function(d) { return heightOverview - yOverview(d.total); });
+
+				// add the brush target area on the overview chart
+				overview.append("g")
+						.attr("class", "x brush")
+						.call(brush)
+						.selectAll("rect")
+								// -6 is magic number to offset positions for styling/interaction to feel right
+								.attr("y", -6)
+								// need to manually set the height because the brush has
+								// no y scale, i.e. we should see the extent being marked
+								// over the full height of the overview chart
+								.attr("height", heightOverview + 7);  // +7 is magic number for styling
+				var size = 20
+				svg.selectAll("myrect")
+						.data(["Run", "Ride", "Zwift", "Other"])
+						.enter()
+						.append("rect")
+							.attr("x", function(d,i){ return 440 + i*size*5})
+							.attr("y", 27)
+							.attr("width", size)
+							.attr("height", size)
+							.style("fill", function(d){ return colour(d)})
+				svg.selectAll("mylabels")
+						.data(["Run", "Ride", "Zwift", "Other"])
+						.enter()
+						.append("text")
+							.attr("y", 38.8)
+							.attr("x", function(d,i){ return 465 + i*size*5 })
+							.style("fill", function(d){ return colour(d)})
+							.text(function(d){ return d})
+							.attr("text-anchor", "left")
+							.style("alignment-baseline", "middle")
+
 			})
+
+			// zooming/panning behaviour for overview chart
+			function brushed() {
+					// update the main chart's x axis data range
+					x.domain(d3.event.selection === null ? xOverview.domain() : d3.event.selection.map(xOverview.invert))
+				// 604800000 is the number of milliseconds in a week
+				// redraw the bars on the main chart
+					main.selectAll(".bar.stack")
+									.attr("transform", function(d) { return "translate(" + x(d.monday) + ",0)"; })
+					main.selectAll(".bar")
+									.attr("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+					// redraw the x axis of the main chart
+					main.select(".x.axis").call(xAxis);
+			}
 		}
 	}
 ]);

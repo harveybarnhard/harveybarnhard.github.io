@@ -140,22 +140,22 @@
 					    // no y scale, i.e. we should see the extent being marked
 					    // over the full height of the overview chart
 					    .attr("height", heightOverview + 7);  // +7 is magic number for styling
-			var size = 100
+			var size = 20
 			svg.selectAll("myrect")
 					.data(["Run", "Ride", "Zwift", "Other"])
 					.enter()
 					.append("rect")
-						.attr("x", function(d,i){ return 320 + i*size})
-						.attr("y", 0)
-						.attr("width", 20)
-						.attr("height", 20)
+						.attr("x", function(d,i){ return 440 + i*size*5})
+						.attr("y", 27)
+						.attr("width", size)
+						.attr("height", size)
 						.style("fill", function(d){ return colour(d)})
 			svg.selectAll("mylabels")
 					.data(["Run", "Ride", "Zwift", "Other"])
 					.enter()
 					.append("text")
-						.attr("y", 12)
-						.attr("x", function(d,i){ return 345 + i*size })
+						.attr("y", 38.8)
+						.attr("x", function(d,i){ return 465 + i*size*5 })
 						.style("fill", function(d){ return colour(d)})
 						.text(function(d){ return d})
 						.attr("text-anchor", "left")
