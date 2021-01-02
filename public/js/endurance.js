@@ -6,14 +6,12 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 	// by habit, cleaning/parsing the data and return a new object to ensure/clarify data object structure
 	var parseDate = d3.timeParse("%m-%d-%Y");
 	function parse(d) {
-		console.log(d)
 		// turn the date string into a date object
 		var value = { monday: parseDate(d.monday) };
 		d.Run = d.Run_moving_time;
 		d.Ride = d.Ride_moving_time;
 		d.Zwift = d.VirtualRide_moving_time;
 		d.Other = d.Other_moving_time;
-		console.log(value)
 		// adding calculated data to each count in preparation for stacking
 		var y0 = 0; // keeps track of where the "previous" value "ended"
 		value.counts = ["Run", "Ride", "Zwift", "Other"].map(function(name) {
@@ -83,7 +81,6 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 			                    .extent([[0, 0], [width, heightOverview]])
 			                    .on("brush", brushed);
 			scope.$on("Data_Ready", function(events, data){
-				console.log(data)
 				// data ranges for the x and y axes
 				x.domain(d3.extent(data, function(d) { return d.monday; }));
 				y.domain([0, 22]);
@@ -140,7 +137,8 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 								.attr("x", function(d) { return xOverview(d.monday) - 3; })
 								.attr("width", 10)
 								.attr("y", function(d) { return yOverview(d.total); })
-								.attr("height", function(d) { return heightOverview - yOverview(d.total); });
+								.attr("height", function(d) { return heightOverview - yOverview(d.total); })
+								.attr("fill", "var(--accent-bg-color)");
 
 				// add the brush target area on the overview chart
 				overview.append("g")
