@@ -69,8 +69,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 			// something for us to render the chart into
 			var svg = d3.select(element[0])
 			                .append("svg") // the overall space
-			                    .attr("width", width + margin.left + margin.right)
-			                    .attr("height", height + margin.top + margin.bottom + heightOverview + marginOverview.top + marginOverview.bottom);
+			                    .attr("viewBox", "0 0 1200 600")
 			var main = svg.append("g")
 			                .attr("class", "main")
 			                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
