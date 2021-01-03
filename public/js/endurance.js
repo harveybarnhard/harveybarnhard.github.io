@@ -78,7 +78,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 			// brush tool to let us zoom and pan using the overview chart
 			var brush = d3.brushX()
 			                    //.x(xOverview)
-			                    .extent([[margin.left, marginOverview.top], [width + margin.right, heightOverview + marginOverview.top]])
+			                    .extent([[0, -6], [width, heightOverview]])
 			                    .on("start brush end", brushed)
 			const defaultSelection = [900, x.range()[1]];
 			// Info box
@@ -200,13 +200,11 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.call(brush)
 						.call(brush.move, defaultSelection)
 						.selectAll("rect")
-								// -6 is magic number to offset positions for styling/interaction to feel right
 								.attr("y", -6)
-								// need to manually set the height because the brush has
-								// no y scale, i.e. we should see the extent being marked
-								// over the full height of the overview chart
 								.attr("height", heightOverview + 7);  // +7 is magic number for styling
 				var size = 20
+
+				// Add the legend
 				svg.selectAll("myrect")
 						.data(["Ran", "Cycled", "Zwifted", "Other"])
 						.enter()
