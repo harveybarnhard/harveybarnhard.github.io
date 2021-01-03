@@ -627,3 +627,32 @@ span.hover-image a:hover img{
   stroke-dashoffset: -134;
   stroke-width: 6;
 }
+
+/* --------------- */
+/* CSS for tooltip */
+/* --------------- */
+.tooltip {
+    display: inline-block;
+}
+
+.tooltiptext, .tooltiptext {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 70vw;
+    max-width: 250px;
+    background: var(--second-bg-color);
+    border-radius: 6px;
+    padding: 5px 5px;
+    left: 20vw;
+    border: 1px solid var(--accent-bg-color);
+    line-height: normal;
+    text-decoration: none;
+    font-weight: none;
+    font-size: 13px;
+    text-align: left;
+}
+
+.tooltip:hover + p {
+    display: block;
+}
