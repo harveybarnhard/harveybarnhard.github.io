@@ -91,10 +91,15 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 					.style("opacity", 0)
 			// Vertical line for clarity
 			var vertical = svg.append("rect")
-					.attr("x", 100)
-					.attr("y", margin.top)
-					.attr("width", 10)
-					.attr("height", height)
+					.style("fill", "var(--text-color)")
+					.style("z-index", "19")
+					.style("opacity", 0)
+					.attr("pointer-events", "none")
+					.style("fill", "white")
+			var horizontal = svg.append("rect")
+					.style("width", width)
+					.style("height", 2)
+					.style("x", margin.left)
 					.style("fill", "var(--text-color)")
 					.style("z-index", "19")
 					.style("opacity", 0)
@@ -150,10 +155,12 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 										.style("height", height - y(d.total))
 										.style("opacity", 0.4)
 										.style("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
-										.style("fill", "white")
+						horizontal.style("y", y(d.total) + margin.top)
+											.style("opacity", 0.6)
 					}
 				var noHighlight = function(d){
 					vertical.style("opacity", 0)
+					horizontal.style("opacity", 0)
 					infobox.style("opacity", 0)
 				}
 				// draw the bars
