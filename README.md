@@ -10,7 +10,3 @@ Here is the process of how my website is deployed:
 3. The entire directory /public, and nothing else, is moved to the `gh-pages` branch using
    [this Action](https://github.com/peaceiris/actions-gh-pages).
 4. The website is then deployed from the `gh-pages` branch.
-
-# Style
-I heavily modified a [clean blog](http://startbootstrap.com/template-overviews/clean-blog/)
-template under MIT open license.
