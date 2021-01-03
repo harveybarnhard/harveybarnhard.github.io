@@ -8,13 +8,13 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 	function parse(d) {
 		// turn the date string into a date object
 		var value = { monday: parseDate(d.monday) };
-		d.Run = d.Run_moving_time;
-		d.Ride = d.Ride_moving_time;
-		d.Zwift = d.VirtualRide_moving_time;
+		d.Ran = d.Run_moving_time;
+		d.Cycled = d.Ride_moving_time;
+		d.Zwifted = d.VirtualRide_moving_time;
 		d.Other = d.Other_moving_time;
 		// adding calculated data to each count in preparation for stacking
 		var y0 = 0; // keeps track of where the "previous" value "ended"
-		value.counts = ["Run", "Ride", "Zwift", "Other"].map(function(name) {
+		value.counts = ["Ran", "Cycled", "Zwifted", "Other"].map(function(name) {
 				return { name: name,
 								 y0: y0,
 								 // add this count on to the previous "end" to create a range,
@@ -58,11 +58,11 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 
 			// rendering for the x and y axes
 			var xAxis = d3.axisBottom()
-			                .scale(x)
+			                .scale(x).ticks(5)
 			var yAxis = d3.axisLeft()
 			                .scale(y)
 			var xAxisOverview = d3.axisBottom()
-			                .scale(xOverview)
+			                .scale(xOverview).ticks(5)
 
 			// something for us to render the chart into
 			var svg = d3.select(element[0])
@@ -78,8 +78,30 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 			// brush tool to let us zoom and pan using the overview chart
 			var brush = d3.brushX()
 			                    //.x(xOverview)
-			                    .extent([[0, 0], [width, heightOverview]])
-			                    .on("brush", brushed);
+			                    .extent([[margin.left, marginOverview.top], [width + margin.right, heightOverview + marginOverview.top]])
+			                    .on("start brush end", brushed)
+			const defaultSelection = [900, x.range()[1]];
+			// Info box
+			var heightInfobox = 42
+			var infobox = svg.append("text")
+					.attr("id", "infobox")
+					.attr("x", 40)
+					.attr("y", heightInfobox)
+					.attr("width", 1)
+					.style("opacity", 0)
+			// Vertical line for clarity
+			var vertical = svg.append("rect")
+					.attr("x", 100)
+					.attr("y", margin.top)
+					.attr("width", 10)
+					.attr("height", height)
+					.style("fill", "var(--text-color)")
+					.style("z-index", "19")
+					.style("opacity", 0)
+					.attr("pointer-events", "none")
+			// How to format date and hour strings?
+			var formatDate = d3.timeFormat("%B %d, %Y")
+			var formatHour = d3.format(".1f")
 			scope.$on("Data_Ready", function(events, data){
 				// data ranges for the x and y axes
 				x.domain(d3.extent(data, function(d) { return d.monday; }));
@@ -103,7 +125,37 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.attr("class", "x axis")
 						.attr("transform", "translate(0," + heightOverview + ")")
 						.call(xAxisOverview);
-
+				var toolTip = function(d) {
+						// Fill out infobox
+						infobox.text("During the week of " + formatDate(d.monday) + ", Harvey")
+						infobox.append('svg:tspan')
+							.attr('x', 480)
+							.attr('y', heightInfobox)
+							.text(formatHour(d.counts[0].y1 - d.counts[0].y0) + "hrs")
+						infobox.append('svg:tspan')
+							.attr('x', 660)
+							.attr('y', heightInfobox)
+							.text(formatHour(d.counts[1].y1 - d.counts[1].y0) + "hrs")
+						infobox.append('svg:tspan')
+							.attr('x', 826)
+							.attr('y', heightInfobox)
+							.text(formatHour(d.counts[2].y1 - d.counts[2].y0) + "hrs")
+						infobox.append('svg:tspan')
+							.attr('x', 973)
+							.attr('y', heightInfobox)
+							.text(formatHour(d.counts[3].y1 - d.counts[3].y0) + "hrs")
+						infobox.style("opacity", 1)
+						vertical.style("x", x(d.monday) + 50)
+										.style("y", y(d.total) + margin.top)
+										.style("height", height - y(d.total))
+										.style("opacity", 0.4)
+										.style("width", x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+										.style("fill", "white")
+					}
+				var noHighlight = function(d){
+					vertical.style("opacity", 0)
+					infobox.style("opacity", 0)
+				}
 				// draw the bars
 				main.append("defs").append("clipPath")
 				.attr("id", "clip")
@@ -119,6 +171,8 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 						.enter().append("g")
 								.attr("class", "bar stack")
 								.attr("transform", function(d) { return "translate(" + x(d.monday) + ",0)"; })
+								.on("mousemove", toolTip)
+								.on("mouseleave", noHighlight)
 						// a bar for each value in the stack, positioned in the correct y positions
 						.selectAll("rect")
 						.data(function(d) { return d.counts; })
@@ -144,6 +198,7 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 				overview.append("g")
 						.attr("class", "x brush")
 						.call(brush)
+						.call(brush.move, defaultSelection)
 						.selectAll("rect")
 								// -6 is magic number to offset positions for styling/interaction to feel right
 								.attr("y", -6)
@@ -153,20 +208,20 @@ app.controller('enduranceCtrl', function($rootScope,$scope,$http) {
 								.attr("height", heightOverview + 7);  // +7 is magic number for styling
 				var size = 20
 				svg.selectAll("myrect")
-						.data(["Run", "Ride", "Zwift", "Other"])
+						.data(["Ran", "Cycled", "Zwifted", "Other"])
 						.enter()
 						.append("rect")
-							.attr("x", function(d,i){ return 440 + i*size*5})
+							.attr("x", function(d,i){ return 420 + i*size*8})
 							.attr("y", 27)
 							.attr("width", size)
 							.attr("height", size)
 							.style("fill", function(d){ return colour(d)})
 				svg.selectAll("mylabels")
-						.data(["Run", "Ride", "Zwift", "Other"])
+						.data(["Ran", "Cycled", "Zwifted", "Other"])
 						.enter()
 						.append("text")
 							.attr("y", 38.8)
-							.attr("x", function(d,i){ return 465 + i*size*5 })
+							.attr("x", function(d,i){ return 445 + i*size*8 })
 							.style("fill", function(d){ return colour(d)})
 							.text(function(d){ return d})
 							.attr("text-anchor", "left")
