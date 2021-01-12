@@ -1,6 +1,12 @@
 <div class="main-content">
-  <div>
-    <div class="category fade-anim" id="projects-programming">
+  <div class="sidebar">
+    <button class="barlink" style="font-size:20px; cursor: auto;">Sections</button>
+    <button class="barlink-item bar-active" onclick="openLink(event, 'blog-posts')">Blog Posts</button>
+    <button class="barlink-item" onclick="openLink(event, 'blog-books')">Books</button>
+  </div>
+  
+  <div class="main-content-previews">
+    <div class="category fade-anim" id="blog-posts">
       <h1>Blog Posts</h1>
       <div class="post-preview tag-statistics tag-efficiency">
         <a class="post-title" href="#/blog/calculating-diagonal-of-hat-matrix">Calculating the Diagonal of the Hat Matrix</a><br>
@@ -17,6 +23,26 @@
         <span class="post-date">November 22, 2020</span>
         <ul class="tag-list">
           <li class="tag">statistics</li>
+        </ul>
+      </div>
+    </div>
+    <div class="category fade-anim" id="blog-books" style="display:none">
+      <h1>Books I've Read</h1>
+      <div class="post-preview tag-Chicago tag-race">
+        <a class="post-title" href="https://www.goodreads.com/book/show/25663734-the-south-side">The South Side</a><br>
+        <p class="post-description">A Portrait of Chicago and American Segregation</p>
+        <span class="post-author">by Natalie Y. Moore</span>
+        <ul class="tag-list">
+          <li class="tag">Chicago</li>
+          <li class="tag">race</li>
+        </ul>
+      </div>
+      <div class="post-preview tag-test">
+        <a class="post-title" href="nan">Test</a><br>
+        <p class="post-description">SubTest</p>
+        <span class="post-author">by AuthorTest</span>
+        <ul class="tag-list">
+          <li class="tag">test</li>
         </ul>
       </div>
     </div>
