@@ -6,13 +6,24 @@ from dominate.util import raw
 # File to write
 outputHTML   = open("../public/blog.html", "w")
 
+# Create sidebar
+sidebar = raw(
+  """
+  <div class="sidebar">
+    <button class="barlink" style="font-size:20px; cursor: auto;">Sections</button>
+    <button class="barlink-item bar-active" onclick="openLink(event, 'blog-posts')">Blog Posts</button>
+    <button class="barlink-item" onclick="openLink(event, 'blog-books')">Books</button>
+  </div>
+  """
+)
+
 # Create outer div
 outHTML = div(cls="main-content")
-main = div()
+main = div(cls="main-content-previews")
 
-# Create blog div, post by post
+# Create blog post div, post by post
 file_blog = pd.read_csv("../posts/blog_posts.csv")
-div_blog = div(id="projects-programming", cls="category fade-anim")
+div_blog = div(id="blog-posts", cls="category fade-anim")
 div_blog += h1("Blog Posts")
 for index, row in file_blog.iterrows():
     # Parse tags
@@ -30,10 +41,30 @@ for index, row in file_blog.iterrows():
     div_item += div_tags
     div_blog += div_item
 
+# Create books div, book by book
+file_book = pd.read_csv('https://raw.githubusercontent.com/harveybarnhard/personal-goals/main/data/raw/books.csv')
+div_book = div(id="blog-books", cls="category fade-anim", style="display:none")
+div_book += h1("Books I've Read")
+for index, row in file_book.iterrows():
+    # Parse tags
+    tags = str.split(row['tags'])
+    tags_class = "" # Initialize string of classes for future filtering
+    div_tags = ul(cls="tag-list") # Initialize list of tags
+    for tag in tags:
+        div_tags += li(tag, cls="tag")
+        tags_class += " tag-" + tag
+    div_item = div(cls="post-preview" + tags_class)
+    div_item += a(row['title'], cls="post-title", href=row['gr_link'])
+    div_item += br()
+    div_item += p(row['subtitle'], cls="post-description")
+    div_item += span("by " + row['author'], cls="post-author")
+    div_item += div_tags
+    div_book += div_item
 # Add blog div to main div
 main += div_blog
-
+main += div_book
 # Append sidebar and main content
+outHTML += sidebar
 outHTML += main
 print(outHTML)
 
