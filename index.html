@@ -56,10 +56,10 @@
               </button>
             </a>
           </li>
-          <li ng-class="{ active: isActive('/endurance')}"><a href="#/endurance">endurance</a></li>
-          <li ng-class="{ active: isActive('/blog')}"><a href="#/blog">blog</a></li>
-          <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">projects</a></li>
-          <li ng-class="{ active: isActive('/about')}"><a href="#/about">about</a></li>
+          <li ng-class="{ active: isActive('/endurance')}"><a href="#/endurance" onclick="mobileMenu();getElementById('menu-icon').classList.toggle('opened');getElementById('menu-icon').setAttribute('aria-expanded', getElementById('menu-icon').classList.contains('opened'))">endurance</a></li>
+          <li ng-class="{ active: isActive('/blog')}"><a href="#/blog" onclick="mobileMenu();getElementById('menu-icon').classList.toggle('opened');getElementById('menu-icon').setAttribute('aria-expanded', getElementById('menu-icon').classList.contains('opened'))">blog</a></li>
+          <li ng-class="{ active: isActive('/projects')}"><a href="#/projects" onclick="mobileMenu();getElementById('menu-icon').classList.toggle('opened');getElementById('menu-icon').setAttribute('aria-expanded', getElementById('menu-icon').classList.contains('opened'))">projects</a></li>
+          <li ng-class="{ active: isActive('/about')}"><a href="#/about" onclick="mobileMenu();getElementById('menu-icon').classList.toggle('opened');getElementById('menu-icon').setAttribute('aria-expanded', getElementById('menu-icon').classList.contains('opened'))">about</a></li>
         </ul>
         <a href="javascript:void(0);" id="menu-icon" onclick="mobileMenu();this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))">
           <svg width="30" height="30" viewBox="0 0 100 100">
