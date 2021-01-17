@@ -11,7 +11,6 @@ outputHTML   = open("../public/blog.html", "w")
 sidebar = raw(
   """
   <div class="sidebar" id="sidebar-blog">
-    <button class="barlink" style="font-size:20px; cursor: auto;">Sections</button>
     <button class="barlink-item bar-active" onclick="openLink(event, 'blog-posts')"><i class="fas fa-pencil-alt"></i> Blog Posts</button>
     <button class="barlink-item" onclick="openLink(event, 'blog-books')"><i class="fas fa-book"></i> Books</button>
   </div>

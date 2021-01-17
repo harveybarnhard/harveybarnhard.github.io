@@ -10,7 +10,6 @@ outputHTML   = open("../public/projects.html", "w")
 sidebar = raw(
   """
   <div class="sidebar">
-    <button class="barlink" style="font-size:20px; cursor: auto;">Categories</button>
     <button class="barlink-item bar-active" onclick="openLink(event, 'projects-programming')"><i class="fas fa-code"></i> Programming</button>
     <button class="barlink-item" onclick="openLink(event, 'projects-papers')"><i class="fas fa-scroll"></i> Papers</button>
   </div>
