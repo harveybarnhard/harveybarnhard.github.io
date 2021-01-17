@@ -40,7 +40,9 @@ for index, row in file_prog.iterrows():
         div_item += a("[Blog Post]", href=row['Blog Link'], cls="link-blog")
     div_item += br()
     div_item += p(row['Description'], cls="post-description")
-    div_item += span(row['Author']  + ",", cls="post-author")
+    div_item += raw("""<i class="fas fa-user-edit"></i>""")
+    div_item += span(row['Author'], cls="post-author")
+    div_item += raw("""&nbsp;&nbsp;<i class="far fa-calendar-alt"></i>""")
     div_item += span(row['Date'], cls="post-date")
     div_item += div_tags
     div_prog += div_item
@@ -55,7 +57,9 @@ for index, row in file_papers.iterrows():
     div_item += a("[PDF]", href=row['PDF Link'], cls="link-pdf")
     div_item += br()
     div_item += p(row['Description'], cls="post-description")
+    div_item += raw("""<i class="fas fa-user-edit"></i>""")
     div_item += span(row['Author']  + ",", cls="post-author")
+    div_item += raw("""&nbsp;&nbsp;<i class="far fa-calendar-alt"></i>""")
     div_item += span(row['Date'], cls="post-date")
     div_item += span("(" + row['Context'] + ")", cls="post-context")
     div_paper += div_item
