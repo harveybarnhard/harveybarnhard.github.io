@@ -20,6 +20,10 @@ app.config(function ($routeProvider){
     templateUrl: 'posts/calculating-diagonal-of-hat-matrix.html',
     controller: 'mathRender'
   })
+  .when('/blog/delta-method',{
+    templateUrl: 'posts/delta-method.html',
+    controller: 'mathRender'
+  })
   .when('/projects',{
     templateUrl: 'projects.html',
   })
