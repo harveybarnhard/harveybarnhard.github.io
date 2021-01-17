@@ -367,13 +367,16 @@ text {
 /* ------------------ */
 .sidebar {
   top: 150px;
-  width: 130px;
+  width: 180px;
   height: 100%;
   margin-right: 30px;
   background-color: none;
   position: fixed;
   color: var(--text-color);
   box-sizing: border-box;
+}
+#sidebar-blog {
+  width: 150px;
 }
 .barlink {
   font-size:20px;
@@ -389,20 +392,23 @@ text {
 	border: none;
 	background-color: transparent;
 	outline: none;
-  color: var(--text-color);
+  color: #949494;
   cursor: pointer;
 }
-.barlink-item:before {
-  content: "\00a0 \00a0 ";
+.barlink-item i {
+  color: #949494;
 }
 .barlink-item:hover{
-  color: var(--link-hover-color);
+  before: " ";
 }
-.barlink:hover {
-  cursor: pointer;
+.barlink-item:hover:before {
+   content: "\00a0 \00a0"
 }
-.bar-active:before {
-  content: "| ";
+.bar-active {
+  color: var(--text-color);
+}
+.bar-active i {
+  color: var(--text-color);
 }
 @media only screen and (max-width: 700px) {
   .sidebar {
@@ -410,14 +416,13 @@ text {
     width: 100%;
     position: relative;
   }
-  .barlink-item:before {
-    content: "";
+  #sidebar-blog {
+    top: 0px;
+    width: 100%;
+    position: relative;
   }
-  .bar-active:before {
-    content: "";
-  }
-  .bar-active {
-    text-decoration: underline;
+  .barlink-item:hover:before {
+     content: ""
   }
 }
 .fade-anim{animation:opac 0.8s}
