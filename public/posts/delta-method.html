@@ -32,7 +32,7 @@
     <img src="../img/blog/delta-method/tsla.svg" alt=""  style="max-height: 250px;">
   </div>
 	<p>
-		If instead we used the transformation \(f(x)=\log(x)\) to transform dollars
+		If instead we used the transformation \(g(x)=\log(x)\) to transform dollars
 		into log-dollars, then regressed log-dollars on the same dates, then the
 		predicted share price on January 15, 2030 would be 8.198 log-dollars ($3,632.76)&mdash;more than four times
 		the current price.
@@ -51,8 +51,8 @@
 	dollars.
 	</p>
 	<p>
-		The estimate is easy enough convert, just apply the inverse of the transformation
-		to the estimate in log dollars.
+		The estimate is easy enough convert, just evaluate the inverse of the log
+    transformation at the estimate in log dollars.
 		In this case the inverse of \(\log(x)\) is \(e^x\) so \(e^{8.198}=\) $3,632.76
 		is our predicted share price in dollars. Transforming the standard errors
 		into dollars isn't so simple, and it's easy to convert them incorrectly.
@@ -85,13 +85,13 @@
 		lower bounds of the confidence interval to the interpretable units:
 		\[
 			[f(\hat{\mu}_n - \hat{\sigma}_{\hat{\mu}_n}),\
-			 f(\hat{\mu}_n + z_\alpha\hat{\sigma}_{\hat{\mu}_n})]
+			 f(\hat{\mu}_n + \hat{\sigma}_{\hat{\mu}_n})]
 		\]
 		and then divide the transformed confidence interval by two to (incorrectly)
 		calculate the transformed standard error:
 		\[
 		\hat{\sigma}_{f(\hat{\mu}_n)}^{\text{WRONG}} =
-		\frac{f(\hat{\mu}_n - \hat{\sigma}_{\hat{\mu}_n})-f(\hat{\mu}_n + z_\alpha\hat{\sigma}_{\hat{\mu}_n})}{2}
+		\frac{f(\hat{\mu}_n - \hat{\sigma}_{\hat{\mu}_n})-f(\hat{\mu}_n + \hat{\sigma}_{\hat{\mu}_n})}{2}
 		\]
 	</p>
 	<p>
@@ -116,10 +116,26 @@
 			\sqrt{n}(f(\hat{\mu}_n) - f(\mu)) \rightarrow N(0, (f'(\mu)\sigma)^2)
 		\]
 		So the plug-in estimator for \(\sigma_{f(\hat{\mu}_n)}\) is
-		\(f'(\hat{\mu}_n)\hat{\sigma}_{\hat{\mu}_n}\)
 	</p>
+  <div style="text-align: center;">
+    <div style="border: 2px solid red; width: fit-content; padding: 5px; padding-top: 5px; margin-top: 5px; margin-bottom: 5px; display: inline-block;">
+      \[
+        \hat{\sigma}_{f(\hat{\mu}_n)}^{\text{delta}}
+        =f'(\hat{\mu}_n)\hat{\sigma}_{\hat{\mu}_n}
+      \]
+    </div>
+  </div>
+  <p>
+    In the Tesla share price example, \(f(x)=e^x\) so \(f'(x)=e^x\) and
+    the transformed standard error is calculated as
+    \[
+    \hat{\sigma}_{f(\hat{\mu}_n)}^{\text{delta}}
+    = f'(\hat{\mu}_n)\hat{\sigma}_{\hat{\mu}_n}
+    = e^{8.198}\cdot 0.541 = $1,962
+    \]
+  </p>
 	<p>
-		Not only is this method pretty easy to, but the same proof that shows
+		Not only is this method pretty easy to use, but the same proof that shows
 		that \(\hat{\sigma}_{f(\hat{\mu}_n)}^{\text{delta}}\) is consistent
 		shows that \(\hat{\sigma}_{f(\hat{\mu}_n)}^{\text{WRONG}}\) is inconsistent
 		(and therefore shouldn't be used).
@@ -134,7 +150,7 @@
 		derivative.
 	</p>
 	<p>
-		If finite differences proves too difficult, or you have reason to believe
+		If finite differences prove too difficult, or you have reason to believe
 		that the central limit theorem won't kick in for the delta method to be
 		a good approximation, then the best (though more time-consuming) method is
 		then to construct bootstrap standard errors. This is achieved by creating
@@ -146,9 +162,28 @@
 	<h2>A Broken Clock is Right Twice a Day</h2>
 	<p>
 		If, however, \(f\) is an affine transformation of the form \(f(x)=a + bx\)
-		for some constants \(a\) and \(b\) then the wrong method of transforming
-		standard errors will happen to perfectly line up with the delta method.
+		for some constants \(a\) and \(b\), then the wrong method of transforming
+		standard errors will correspond exactly with the delta method.
 	</p>
+  <div class="proof">
+    <button onclick="hideElement('proofhii')"> Show Proof </button>
+    <p id="proofhii" style="display: none;">
+      Suppose that \(f\) is affine, then the derivative of \(f\)
+      is constant, so in particular
+      \[
+      f(x) = f'(\hat{\mu}_n)x + f(0)
+      \]
+      Then
+      \begin{align}
+      \hat{\sigma}_{f(\hat{\mu}_n)}^{\text{WRONG}}
+      &= \frac{f(\hat{\mu}_n + \hat{\sigma}_{\hat{\mu}_n}) - f(\hat{\mu}_n - \hat{\sigma}_{\hat{\mu}_n})}{2}\\
+      &= \frac{f'(\hat{\mu}_n)(\hat{\mu}_n + \hat{\sigma}_{\hat{\mu}_n}) - f'(\hat{\mu}_n)(\hat{\mu}_n - \hat{\sigma}_{\hat{\mu}_n})}{2}\\
+      &= \frac{2f'(\hat{\mu}_n)\hat{\sigma}_{\hat{\mu}_n}}{2}\\
+      &= f'(\hat{\mu}_n)\hat{\sigma}_{\hat{\mu}_n}\\
+      &= \hat{\sigma}_{f(\hat{\mu}_n)}^{\text{delta}}
+      \end{align}
+    </p>
+  </div>
 	<p>
 		An example of when the wrong method happens to produce the correct results
 		is if instead of transforming dollars into log-dollars intially, you instead
