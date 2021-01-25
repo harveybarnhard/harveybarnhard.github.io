@@ -24,6 +24,10 @@ app.config(function ($routeProvider){
     templateUrl: 'posts/delta-method.html',
     controller: 'mathRender'
   })
+  .when('/blog/weighted-variance',{
+    templateUrl: 'posts/weighted-variance.html',
+    controller: 'mathRender'
+  })
   .when('/projects',{
     templateUrl: 'projects.html',
   })

@@ -1,0 +1,328 @@
+<div class="main-content" elem-ready="loadMath()" style="max-width: 700px;">
+  <div class="blog-info">
+    <h1 class="blog-title">Calcuating the Weighted Sample Variance</h1>
+    <span class="blog-author"> Harvey Barnhard</span>
+    <span class="blog-date"> January 24, 2021</span>
+  </div>
+  <div class="main-content-blog">
+      <p>
+        In this blog post I show how to calculate the unbiased weighted sample variance
+        of a random variable. I was
+        motivated to write this post upon discovering the controversy
+        that unraveled in the relevant stackexchange posts
+        <a href="https://stats.stackexchange.com/questions/47325/bias-correction-in-weighted-variance">here</a>
+        and
+        <a href="https://stats.stackexchange.com/questions/61225/correct-equation-for-weighted-unbiased-sample-covariance">here</a>.
+        Some of the answers use heuristic arguments that lead to incorrect
+        conclusions, misinforming readers about
+        which formulas are biased and which formulas are unbiased.
+        \[
+          \hat{\sigma}_{\text{unbiased}}^2
+          =\frac{1}{1-\sum_{i=1}^n w_i^2}\sum_{i=1}^n w_i(X_i - \bar{X})^2
+        \]
+      </p>
+      <h2>Setup and Notation</h2>
+      <p>
+        Suppose we want to estimate the variance of the random variable \(X\)
+        using independent and identically distributed observations
+        \(X_1, \ldots, X_n \). Moreover, suppose we want an unbiased estimate
+        of the variance so that
+        \[
+          \text{Goal:}\quad \mathbb{E}\left[\hat{\sigma}^2\right]
+          = \sigma^2
+        \]
+      </p>
+      <h2>The Naive Unweighted Formula</h2>
+      <p>
+        The naive way of estimating the variance of \(X\) is to just
+        take the average deviation of \(X_i\) from the observed mean:
+        \[
+          \hat{\sigma}_{\text{Naive}}^2
+          = \frac{1}{n}\sum_{i=1}^n \left(X_i - \bar{X}\right)^2
+        \]
+        where
+        \[
+        \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+        \]
+      </p>
+      <p>
+        This estimator, however, is biased by a factor of \(B_n\) in the
+        sense that
+        \[
+          \mathbb{E}\left[\hat{\sigma}_{\text{Naive}}^2\right] = B_n\sigma^2
+        \]
+        where
+        \[
+          B_n = \frac{n-1}{n}
+        \]
+      </p>
+      <div class="proof">
+        <button onclick="hideElement('proofunweighted')"> Show Proof </button>
+        <p id="proofunweighted" style="display: none;">
+          Start by taking the expectation of the naive estimate.
+          \begin{align*}
+             \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right]
+             &= \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\left(X_i - \bar{X}\right)^2\right]\\
+          \end{align*}
+          Expanding the term in the expectation,
+          \begin{align*}
+          \mathbb{E}\left[\left(X_i - \bar{X}\right)^2\right]
+          &= \mathbb{E}\left[X_i^2 - 2X_i\bar{X} + \bar{X}^2\right]\\
+          &= \underbrace{\mathbb{E}\left[X_i^2\right]}_{(1)} - 2\underbrace{\mathbb{E}\left[X_i\bar{X}\right]}_{(2)} +  \underbrace{\mathbb{E}\left[\bar{X}^2\right]}_{(3)}\\
+          \end{align*}
+          We can write (1) using the helpful identity for the variance
+          \[
+          \mathbb{E}\left[X_i^2\right] = \mathrm{Var}(X) + \mathbb{E}[X]^2
+          \]
+          Expanding (2),
+          \begin{align*}
+            \mathbb{E}\left[X_i \bar{X}\right]
+            &=\mathbb{E}\left[\frac{1}{n}\sum_{j=1}^nX_i X_j\right]\\
+            &=\frac{1}{n}\sum_{j=1}^n\mathbb{E}\left[X_i X_j\right]\\
+          \end{align*}
+          Recall the helpful identity for the covariance between two random variables
+          is
+          \[
+            \mathrm{Cov}(X_i, X_j) = \mathbb{E}[X_iX_j] - \mathbb{E}[X_i]\mathbb{E}[X_j]
+          \]
+          So we get
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Cov}(X_i, X_j) + \mathbb{E}[X_i]\mathbb{E}[X_j]
+          \]
+          and because \(X_i\) and \(X_j\) have the same mean,
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Cov}(X_i, X_j) + \mathbb{E}[X]^2
+          \]
+          Moreover, because \(X_i\) and \(X_j\) are assumed to be independent,
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Var}(X)\delta_{ij} + \mathbb{E}[X]^2
+          \]
+          where \(\delta_{ij}=1\) if \(i=j\) and  \(\delta_{ij}=0\) otherwise.
+          So (2) can be written as
+          \begin{align*}
+            \frac{1}{n}\sum_{j=1}^n\mathbb{E}\left[X_i X_j\right]
+            &= \frac{1}{n}\mathrm{Var}(X) + \frac{1}{n}\sum_{j=1}^n\mathbb{E}\left[X\right]^2\\
+            &= \frac{1}{n}\mathrm{Var}(X) + \mathbb{E}\left[X\right]^2\\
+          \end{align*}
+          Similarly, we can expand (3) as follows.
+          \begin{align*}
+            \mathbb{E}\left[\bar{X}^2\right]
+            &= \frac{1}{n^2}\sum_{i,j}\mathbb{E}\left[X_iX_j\right]\\
+            &= \frac{1}{n}\mathrm{Var}(X) + \mathbb{E}\left[X\right]^2\\
+          \end{align*}
+          Putting (1), (2), and (3) back together,
+          \[
+          \mathrm{Var}(X) + \mathbb{E}[X]^2
+          -\frac{2}{n}\mathrm{Var}(X) -2\mathbb{E}[X]^2
+          + \frac{1}{n}\mathrm{Var}(X) + \mathbb{E}[X]^2
+          \]
+          After cancelling out all the \(\mathbb{E}[X]^2\) terms,
+          \[
+          \mathrm{Var}(X)
+          -\frac{2}{n}\mathrm{Var}(X)
+          + \frac{1}{n}\mathrm{Var}(X)
+          = \mathrm{Var}(X)\left(1 - \frac{1}{n}\right)
+          \]
+          Then putting this expression for \(\mathbb{E}[(X_i - \bar{X})^2]\)
+          back where we found it in the beginning,
+          \[
+          \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right] = \frac{1}{n}\sum_{i=1}^n \mathrm{Var}(X)\left(1 - \frac{1}{n}\right)
+          \]
+          Taking the average of a constant value,
+          \[
+          \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right] = \mathrm{Var}(X)\left(1 - \frac{1}{n}\right)
+          \]
+          Or
+          \[
+          \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right] = \mathrm{Var}(X)B_n
+          \]
+        </p>
+      </div>
+      <p>
+        Although this estimator is biased, it is consistent because
+        \[
+        \lim_{n \to \infty} B_n = 1
+        \]
+      </p>
+      <h2>The Unbiased Unweighted Formula</h2>
+      The formula for the unbiased variance is given by dividing both sides
+      by \(B_n\)
+      \[
+        \hat{\sigma}_{\text{unbiased}}^2 = B_n^{-1}\hat{\sigma}_{\text{naive}}^2
+      \]
+      Or the more familiar form, known as Bessel's correction:
+      \[
+        \hat{\sigma}_{\text{unbiased}}^2 =\frac{1}{n-1}\sum_{i=1}^n(X_i - \bar{X})^2
+      \]
+      <!-- <h2>Example: Weighting due to Importance</h2>
+      <p>
+        We might estimate a weighted variance have some prior belief about the importance of each
+        \(X_i\). For example, maybe \(i=1,\ldots, n\) index state governments
+        and \(X_i\) represents the number of COVID-19 vaccines the federal
+        government distributed
+        to the \(i\)th state. Suppose the federal government foolishly
+        planned on distributing
+        the same number of vaccines to each state in order to provide a topical,
+        yet simple example of when to construct a weighted variance.
+
+        \[
+          \mathbb{E}[X_i] =
+        \]
+      </p>
+      <h2>Example: Weighting due to Unequal Variance</h2>
+      Unequal variance (heteroscedasticity) -->
+      <h2>The Naive weighted Formula</h2>
+      Oftentimes, there are situations where you will want to assign weights
+      to observations when estimating the variance. There are three general
+      categories of why you may want to do this:
+      <ol type="1">
+        <li>Correcting for unequal variance</li>
+        <li>Handling repeated observations</li>
+        <li>Assigning importance to certain groups over others</li>
+      </ol>
+      Assume we assign each obsevation \(X_i\) a weight \(w_i\) for one of the
+      above reasons. Moreover, assume that we have already normalized the weights
+      so that
+      \[
+        \sum_{i=1}w_i = 1
+      \]
+      If that isn't the case, then just update each weight by dividing each
+      individual weight by the sum of all \(n\) weights.
+      \[
+      w_i := \frac{w_i}{ \sum_{i=1}w_i}
+      \]
+      Then the naive, biased formula is nearly the same as in the unweighted case,
+      \[
+      \hat{\sigma}_{\text{naive}}^2 = \sum_{i=1}w_i\left(X_i- \bar{X}\right)^2
+      \]
+      where the sample mean of the observations is now weighted:
+      \[
+        \bar{X} = \sum_{i=1}w_i X_i
+      \]
+      Note that this formula is the same as in the naive unweighted case when you
+      set all weights equal to each other (i.e. \(w_i = n^{-1}\)).
+      However, this estimator is biased by a different factor \(\tilde{B}_n\)
+      in the sense that
+      \[
+        \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right] = \tilde{B}_n\sigma^2
+      \]
+      where
+      \[
+        \tilde{B}_n = 1 - \sum_{i=1}^n w_i^2
+      \]
+      <div class="proof">
+        <button onclick="hideElement('proofweighted')"> Show Proof </button>
+        <p id="proofweighted" style="display: none;">
+          This proof is modified from the proof for the unweighted case.
+          The goal is to determine the bias factor \(\tilde{B}_n\).
+          \begin{align*}
+             \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right]
+             &= \sum_{i=1}^nw_i\mathbb{E}\left[\left(X_i - \bar{X}\right)^2\right]\\
+          \end{align*}
+          Expanding the term in the expectation,
+          \begin{align*}
+          \mathbb{E}\left[\left(X_i - \bar{X}\right)^2\right]
+          &= \mathbb{E}\left[X_i^2 - 2X_i\bar{X} + \bar{X}^2\right]\\
+          &= \underbrace{\mathbb{E}\left[X_i^2\right]}_{(1)} - 2\underbrace{\mathbb{E}\left[X_i\bar{X}\right]}_{(2)} +  \underbrace{\mathbb{E}\left[\bar{X}^2\right]}_{(3)}\\
+          \end{align*}
+          We can write (1) using the helpful identity for the variance
+          \[
+          \mathbb{E}\left[X_i^2\right] = \mathrm{Var}(X) + \mathbb{E}[X]^2
+          \]
+          Expanding (2),
+          \begin{align*}
+            \mathbb{E}\left[X_i \bar{X}\right]
+            &=\mathbb{E}\left[\sum_{j=1}^nw_iX_i X_j\right]\\
+            &=\sum_{j=1}^nw_i\mathbb{E}\left[X_i X_j\right]\\
+          \end{align*}
+          Recall the helpful identity for the covariance between two random variables
+          is
+          \[
+            \mathrm{Cov}(X_i, X_j) = \mathbb{E}[X_iX_j] - \mathbb{E}[X_i]\mathbb{E}[X_j]
+          \]
+          So we get
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Cov}(X_i, X_j) + \mathbb{E}[X_i]\mathbb{E}[X_j]
+          \]
+          and because \(X_i\) and \(X_j\) have the same mean,
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Cov}(X_i, X_j) + \mathbb{E}[X]^2
+          \]
+          Moreover, because \(X_i\) and \(X_j\) are assumed to be independent,
+          \[
+            \mathbb{E}\left[X_i X_j\right] = \mathrm{Var}(X)\delta_{ij} + \mathbb{E}[X]^2
+          \]
+          where \(\delta_{ij}=1\) if \(i=j\) and  \(\delta_{ij}=0\) otherwise.
+          So (2) can be written as
+          \begin{align*}
+            \sum_{j=1}^nw_i\mathbb{E}\left[X_i X_j\right]
+            &= w_i\mathrm{Var}(X) + \sum_{j=1}^nw_i\mathbb{E}\left[X\right]^2\\
+            &= w_i\mathrm{Var}(X) + \mathbb{E}\left[X\right]^2\\
+          \end{align*}
+          Similarly, we can expand (3) as follows.
+          \begin{align*}
+            \mathbb{E}\left[\bar{X}^2\right]
+            &= \sum_{i,j}w_iw_j\mathbb{E}\left[X_iX_j\right]\\
+            &= \sum_{i=1}^nw_i^2\mathrm{Var}(X) + \mathbb{E}\left[X\right]^2\sum_{i,j}w_iw_j\\
+            &= \mathrm{Var}(X)\sum_{i=1}^nw_i^2 + \mathbb{E}\left[X\right]^2\sum_{i,j}w_iw_j\\
+          \end{align*}
+          Putting (1), (2), and (3) back together,
+          \[
+          \mathrm{Var}(X) + \mathbb{E}[X]^2
+          -2w_i\mathrm{Var}(X) -2\mathbb{E}[X]^2
+          + \mathrm{Var}(X)\sum_{i=1}^nw_i^2 + \mathbb{E}[X]^2\sum_{i,j}w_iw_j
+          \]
+          After cancelling out some of the \(\mathbb{E}[X]^2\) terms,
+          \[
+          \mathrm{Var}(X)
+          -2w_i\mathrm{Var}(X) -\mathbb{E}[X]^2
+          + \mathrm{Var}(X)\sum_{i=1}^nw_i^2  + \mathbb{E}[X]^2\sum_{i,j}w_iw_j
+          \]
+          Putting like terms together,
+          \[
+          \mathrm{Var}(X)\left(1-2w_i + \sum_{i=1}^nw_i^2 \right) - \mathbb{E}[X]^2\left(1-\sum_{i,j}w_iw_j\right)
+          \]
+          Then by the difference of squares formula, the second term vanishes
+          \begin{align*}
+          \left(1-\sum_{i,j}w_iw_j\right)
+          &= \left(1 + \sum_{i=1}^n w_i\right)\left(1 - \sum_{i=1}^n w_i\right)\\
+          &= 2\cdot 0\\
+          &= 0
+          \end{align*}
+          So we are left with
+          \[
+          \mathrm{Var}(X)\left(1-2w_i + \sum_{i=1}^nw_i^2 \right)
+          \]
+          Then putting this expression for \(\mathbb{E}[(X_i - \bar{X})^2]\)
+          back where we found it in the beginning,
+          \begin{align*}
+          \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right]
+          &= \sum_{i=1}^n w_i\mathrm{Var}(X)\left(1-2w_i + \sum_{i=1}^nw_i^2 \right)\\
+          &= \mathrm{Var}(X)\sum_{i=1}^n w_i\left(1-2w_i + \sum_{i=1}^nw_i^2 \right)\\
+          &= \mathrm{Var}(X)\sum_{i=1}^n (w_i-2w_i^2 + w_i\sum_{i=1}^nw_i^2 )\\
+          &= \mathrm{Var}(X)\left(1 -2\sum_{i=1}^nw_i^2 + \sum_{i=1}^nw_i^2\right)\\
+          &= \mathrm{Var}(X)\left(1 - \sum_{i=1}^nw_i^2\right)\\
+          \end{align*}
+          Or
+          \[
+          \mathbb{E}\left[\hat{\sigma}_{\text{naive}}^2\right] = \mathrm{Var}(X)\tilde{B}_n
+          \]
+        </p>
+      </div>
+      Once again, our sanity check passes when we replace \(w_i\) with \(n^{-1}\)
+      because
+      \[
+      1 - \sum_{i=1}^n n^{-2} = \frac{1}{n}\left(n - \sum_{i=1}^n n^{2}\right)
+      = \frac{n-1}{n}
+      \]
+      Note now that \(\hat{\sigma}_{\text{naive}}^2\) is only consistent if
+      all weights go to zero as \(n \to \infty\).
+      <h2>The Unbiased Weighted Formula</h2>
+      From the proof above, the unbiased estimate for the weighted sample variance
+      is
+      \[
+        \hat{\sigma}_{\text{unbiased}}^2
+        =\frac{1}{1-\sum_{i=1}^n w_i^2}\sum_{i=1}^n w_i(X_i - \bar{X})^2
+      \]
+	</div>
+</div>
