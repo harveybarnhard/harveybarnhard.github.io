@@ -166,7 +166,7 @@
   where \(h_{ii}\) is the \(i\)th diagonal of the hat matrix \(H\)
   from the original regression.
   \[
-  H = X(X^\top X)^{-1}X^\top Y
+  H = X(X^\top X)^{-1}X^\top
   \]
 If you instead wanted to know the leave-out prediction value,
 you can just add the prediction error to the original value.
@@ -227,7 +227,7 @@ line of best fit.
 <h2>Putting the Theory to Work</h2>
 In practice, calculating the hat matrix by explicitly calculating
 \[
-H = X(X^\top X)^{-1}X^\top Y
+H = X(X^\top X)^{-1}X^\top
 \]
 is computationally expensive and can potentially lead to numerical
 innacuracies. In my <a href="#/blog/calculating-diagonal-of-hat-matrix">next blog post</a>
