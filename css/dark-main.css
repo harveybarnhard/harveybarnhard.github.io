@@ -1,7 +1,7 @@
 /* Default dark theme colors */
 :root {
   --main-bg-color: #333333;
-  --main-bg-color-trans: rgba(68,68,68,0.5);
+  --main-bg-color-trans: rgba(68,68,68,0.98);
 	--accent-bg-color: #e3e3e3;
   --second-bg-color: #444444;
 	--text-color: #e3e3e3;
@@ -95,7 +95,7 @@ body {
 	display: block;
 	color: var(--accent-bg-color);
 	text-align: center;
-	padding: 7px 20px;
+	padding: 7px 20px 7px 20px;
 	text-decoration: none;
 }
 
@@ -331,7 +331,7 @@ body {
 	color: var(--link-hover-color);
 }
 #img-headshot {
-	height: 180px;
+	height: 280px;
 	width: auto;
 	float: left;
 	margin-top: 0px;
@@ -672,9 +672,11 @@ span.hover-image a:hover img{
 #home-page p {
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 19px;
 }
 
 #about-page p {
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 16.7px;
 }
