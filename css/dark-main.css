@@ -344,6 +344,15 @@ body {
 /* Images */
 /* ------ */
 
+/* Side-by-side images */
+.column2 {
+  flex: 50.00%;
+  padding: 5px;
+}
+.row {
+  display: flex;
+}
+
 g .tick text {
   fill: var(--text-color);
   font-size: 15px;
@@ -669,6 +678,10 @@ span.hover-image a:hover img{
     display: block;
 }
 
+.tooltip:active + p {
+    display: block;
+}
+
 #home-page p {
   padding-left: 10px;
   padding-right: 10px;
@@ -676,7 +689,11 @@ span.hover-image a:hover img{
 }
 
 #about-page p {
+  padding-top: 30px;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 16.7px;
+}
+#about-image img {
+  max-width: 250px;
 }
