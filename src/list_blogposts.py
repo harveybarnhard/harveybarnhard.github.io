@@ -5,7 +5,7 @@ from dominate.util import raw
 import datetime
 
 # File to write
-outputHTML   = open("../public/blog.html", "w")
+outputHTML   = open("/public/blog.html", "w")
 
 # Create sidebar
 sidebar = raw(
@@ -22,7 +22,7 @@ outHTML = div(cls="main-content")
 main = div(cls="main-content-previews")
 
 # Create blog post div, post by post
-file_blog = pd.read_csv("../posts/blog_posts.csv")
+file_blog = pd.read_csv("/posts/blog_posts.csv")
 file_blog['Date'] = pd.to_datetime(file_blog['Date'])
 file_blog['Date'] = file_blog['Date'].dt.strftime('%B %d, %Y')
 div_blog = div(id="blog-posts", cls="category fade-anim")

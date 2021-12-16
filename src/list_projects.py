@@ -4,7 +4,7 @@ from dominate.tags import *
 from dominate.util import raw
 
 # File to write
-outputHTML   = open("../public/projects.html", "w")
+outputHTML   = open("/public/projects.html", "w")
 
 # Create sidebar
 sidebar = raw(
@@ -21,7 +21,7 @@ outHTML = div(cls="main-content")
 main = div(cls="main-content-previews")
 
 # Create Programming div
-file_prog = pd.read_csv("../posts/programming.csv")
+file_prog = pd.read_csv("/posts/programming.csv")
 div_prog = div(id="projects-programming", cls="category fade-anim")
 div_prog += h1("Programming")
 for index, row in file_prog.iterrows():
@@ -47,7 +47,7 @@ for index, row in file_prog.iterrows():
     div_prog += div_item
 
 # Create Papers div
-file_papers = pd.read_csv("../posts/papers.csv")
+file_papers = pd.read_csv("/posts/papers.csv")
 div_paper = div(id="projects-papers", cls="category fade-anim", style="display:none")
 div_paper += h1("Papers")
 for index, row in file_papers.iterrows():
