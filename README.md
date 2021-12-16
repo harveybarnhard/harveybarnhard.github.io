@@ -1,5 +1,7 @@
 # [harveybarnhard.com](https://harveybarnhard.com)
 
+[![Deploy Website to gh-pages branch](https://github.com/harveybarnhard/harveybarnhard.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/harveybarnhard/harveybarnhard.github.io/actions/workflows/deploy.yml)
+
 # How the Website is Deployed
 Here is the process of how my website is deployed:
 1. I make some changes and push these changes to the `master` branch of the repository.
