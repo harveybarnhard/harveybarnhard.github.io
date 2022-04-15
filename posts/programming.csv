@@ -1,4 +1,0 @@
-﻿Name,Author,Date,Subtitle,GitHub Link,Blog Link,Description,Tags
-endur,Harvey Barnhard,20-Dec,Personalized Endurance Reports,https://github.com/harveybarnhard/endur,none,Python scripts to pull and clean Strava data for creating personalized reports for endurance activities., python fitness
-looperr,Harvey Barnhard,20-Nov,Fast Grouped Regressions and Evaluating Prediction Error,https://github.com/harveybarnhard/looperr,#/blog/calculating-diagonal-of-hat-matrix, An R package for quickly running many regressions by group. Additional functionality includes quickly running local linear regressions and evaluating prediction error., R C++ statistics
-smoov,Harvey Barnhard,20-Nov,Making Mapping Easier,https://github.com/harveybarnhard/smoov,none,"An R package for making mapping of basic United States geographies, such as census tracts, fast and easy.", R visualization
