@@ -63,7 +63,7 @@
   <meta name="description" content="d3.csv(&#34;https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv&#34;).then(function(data) {var parseDate = d3.timeParse(&#34;%m-%d-%Y&#34;);// Format the datadata.forEach(function(d) {// turn the date string into a date objectvar value = { monday: parseDate(d." />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://harveybarnhard.github.io/endurance/" />
+  <link rel="alternate" hreflang="en-us" href="https://harveybarnhard.com/endurance/" />
 
   
   
@@ -276,7 +276,7 @@
   <link rel="icon" type="image/png" href="/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_32x32_fill_lanczos_center_3.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_180x180_fill_lanczos_center_3.png" />
 
-  <link rel="canonical" href="https://harveybarnhard.github.io/endurance/" />
+  <link rel="canonical" href="https://harveybarnhard.com/endurance/" />
 
   
   
@@ -299,10 +299,10 @@
   <meta property="twitter:card" content="summary" />
   
   <meta property="og:site_name" content="Harvey Barnhard" />
-  <meta property="og:url" content="https://harveybarnhard.github.io/endurance/" />
+  <meta property="og:url" content="https://harveybarnhard.com/endurance/" />
   <meta property="og:title" content="Endurance | Harvey Barnhard" />
-  <meta property="og:description" content="d3.csv(&#34;https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv&#34;).then(function(data) {var parseDate = d3.timeParse(&#34;%m-%d-%Y&#34;);// Format the datadata.forEach(function(d) {// turn the date string into a date objectvar value = { monday: parseDate(d." /><meta property="og:image" content="https://harveybarnhard.github.io/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png" />
-    <meta property="twitter:image" content="https://harveybarnhard.github.io/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  <meta property="og:description" content="d3.csv(&#34;https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv&#34;).then(function(data) {var parseDate = d3.timeParse(&#34;%m-%d-%Y&#34;);// Format the datadata.forEach(function(d) {// turn the date string into a date objectvar value = { monday: parseDate(d." /><meta property="og:image" content="https://harveybarnhard.com/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://harveybarnhard.com/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
       <meta
@@ -480,17 +480,10 @@
               
             
             
-              
-              
-              
-                
-              
-              
-            
           
 
           <li class="nav-item">
-            <a class="nav-link " href="/#featured"><span>Papers</span></a>
+            <a class="nav-link " href="/publication"><span>Research</span></a>
           </li>
 
           
@@ -794,7 +787,7 @@
  											.call(xAxisOverview);
  									var toolTip = function(d) {
  											// Fill out infobox
- 											infobox.text("During the week of " + formatDate(d.value.monday) + ", Harvey")
+ 											infobox.text("Week of " + formatDate(d.value.monday) + ": ")
  											infobox.append('svg:tspan')
  												.attr('x', 480)
  												.attr('y', heightInfobox)

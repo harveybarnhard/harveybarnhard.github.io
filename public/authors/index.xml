@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors | Harvey Barnhard</title>
-    <link>https://harveybarnhard.github.io/authors/</link>
-      <atom:link href="https://harveybarnhard.github.io/authors/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://harveybarnhard.com/authors/</link>
+      <atom:link href="https://harveybarnhard.com/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://harveybarnhard.github.io/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png</url>
+      <url>https://harveybarnhard.com/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png</url>
       <title>Authors</title>
-      <link>https://harveybarnhard.github.io/authors/</link>
+      <link>https://harveybarnhard.com/authors/</link>
     </image>
     
   </channel>

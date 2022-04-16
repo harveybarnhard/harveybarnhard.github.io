@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Harvey Barnhard</title>
-    <link>https://harveybarnhard.github.io/author/harvey-barnhard/</link>
-      <atom:link href="https://harveybarnhard.github.io/author/harvey-barnhard/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://harveybarnhard.com/author/harvey-barnhard/</link>
+      <atom:link href="https://harveybarnhard.com/author/harvey-barnhard/index.xml" rel="self" type="application/rss+xml" />
     <description>Harvey Barnhard</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://harveybarnhard.github.io/author/harvey-barnhard/avatar_huc249ff7bb7ea61154077307f1f837121_157934_270x270_fill_q75_lanczos_center.jpg</url>
+      <url>https://harveybarnhard.com/author/harvey-barnhard/avatar_huc249ff7bb7ea61154077307f1f837121_157934_270x270_fill_q75_lanczos_center.jpg</url>
       <title>Harvey Barnhard</title>
-      <link>https://harveybarnhard.github.io/author/harvey-barnhard/</link>
+      <link>https://harveybarnhard.com/author/harvey-barnhard/</link>
     </image>
     
     <item>
       <title>Ordinal Classification with probability constraints</title>
-      <link>https://harveybarnhard.github.io/publication/preprint/</link>
+      <link>https://harveybarnhard.com/publication/preprint/</link>
       <pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate>
-      <guid>https://harveybarnhard.github.io/publication/preprint/</guid>
+      <guid>https://harveybarnhard.com/publication/preprint/</guid>
       <description></description>
     </item>
     
