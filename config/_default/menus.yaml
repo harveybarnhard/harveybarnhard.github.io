@@ -6,10 +6,10 @@
 main:
   - name: CV
     url: 'cv'
-    weight: 20
+    weight: 10
   - name: Research
     url: 'publication'
-    weight: 30
+    weight: 20
   - name: Endurance
     url: 'endurance'
-    weight: 40
+    weight: 30
