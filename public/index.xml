@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Harvey Barnhard</title>
+    <link>https://harveybarnhard.github.io/</link>
+      <atom:link href="https://harveybarnhard.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <description>Harvey Barnhard</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://harveybarnhard.github.io/media/icon_huc1aebc5f07ff390cb5df4d3b0463ddae_13022_512x512_fill_lanczos_center_3.png</url>
+      <title>Harvey Barnhard</title>
+      <link>https://harveybarnhard.github.io/</link>
+    </image>
+    
+    <item>
+      <title>CV</title>
+      <link>https://harveybarnhard.github.io/cv/</link>
+      <pubDate>Sat, 16 Apr 2022 00:00:00 +0100</pubDate>
+      <guid>https://harveybarnhard.github.io/cv/</guid>
+      <description>
+
+&lt;div id=&#34;adobe-dc-view&#34; style=&#34;width: 800px;&#34;&gt;&lt;/div&gt;
+&lt;script src=&#34;https://documentcloud.adobe.com/view-sdk/main.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34;&gt;
+	document.addEventListener(&#34;adobe_dc_view_sdk.ready&#34;, function(){ 
+		var adobeDCView = new AdobeDC.View({clientId: &#34;11b63b23cecc43a99e8669ed7d8d47a3&#34;, divId: &#34;adobe-dc-view&#34;});
+		adobeDCView.previewFile({
+			content:{location: {url: &#34;uploads/cv-harvey-barnhard.pdf&#34;}},
+			metaData:{fileName: &#34;cv-harvey-barnhard.pdf&#34;}
+		}, {embedMode: &#34;IN_LINE&#34;});
+	});
+&lt;/script&gt;
+
+
+</description>
+    </item>
+    
+    <item>
+      <title>Endurance</title>
+      <link>https://harveybarnhard.github.io/endurance/</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0100</pubDate>
+      <guid>https://harveybarnhard.github.io/endurance/</guid>
+      <description>
+
+&lt;div id=&#34;active_time&#34;&gt;&lt;/div&gt;
+ &lt;!-- Load d3.js --&gt;
+ &lt;script src=&#34;https://d3js.org/d3.v5.js&#34;&gt;&lt;/script&gt;
+ &lt;script&gt;
+ 	d3.csv(&#34;https://raw.githubusercontent.com/harveybarnhard/endur/main/data/strava_activities_sub.csv&#34;)
+ 	  .then(function(data) {
+ 					var parseDate = d3.timeParse(&#34;%m-%d-%Y&#34;);
+ 					// Format the data
+ 					data.forEach(function(d) {
+ 						// turn the date string into a date object
+ 						var value = { monday: parseDate(d.monday) };
+ 						d.Ran = d.Run_moving_time;
+ 						d.Cycled = d.Ride_moving_time;
+ 						d.Zwifted = d.VirtualRide_moving_time;
+ 						d.Other = d.Other_moving_time;
+ 						// adding calculated data to each count in preparation for stacking
+ 						var y0 = 0; // keeps track of where the &#34;previous&#34; value &#34;ended&#34;
+ 						value.counts = [&#34;Ran&#34;, &#34;Cycled&#34;, &#34;Zwifted&#34;, &#34;Other&#34;].map(function(name) {
+ 								return { name: name,
+ 												 y0: y0,
+ 												 // add this count on to the previous &#34;end&#34; to create a range,
+ 												//  and update the &#34;previous end&#34; for the next iteration
+ 												 y1: y0 += +d[name]
+ 											 };
+ 						});
+ 						// quick way to get the total from the previous calculations
+ 						value.total = value.counts[value.counts.length - 1].y1;
+ 						d.value = value
+ 					});
+ 								// ---------------------------------- //
+ 								// Variable creation while data loads //
+ 								// ---------------------------------- //
+ 								var margin = {top: 60, right: 50, bottom: 50, left: 50},
+ 										width = 1200 - margin.left - margin.right,
+ 										height = 500 - margin.top - margin.bottom;
+ 								    marginOverview = { top: 480, right: margin.right, bottom: 20,  left: margin.left },
+ 								    heightOverview = 600 - marginOverview.top - marginOverview.bottom;
+ 								// some colours to use for the bars
+ 								var colour = d3.scaleOrdinal()
+ 								               .range(d3.schemeTableau10);
+
+ 								// mathematical scales for the x and y axes
+ 								var x = d3.scaleTime()
+ 								                .range([0, width]);
+ 								var y = d3.scaleLinear()
+ 								                .range([height, 0]);
+ 								var xOverview = d3.scaleTime()
+ 								                .range([0, width]);
+ 								var yOverview = d3.scaleLinear()
+ 								                .range([heightOverview, 0]);
+
+ 								// rendering for the x and y axes
+ 								var xAxis = d3.axisBottom()
+ 								                .scale(x).ticks(5)
+ 								var yAxis = d3.axisLeft()
+ 								                .scale(y)
+ 								var xAxisOverview = d3.axisBottom()
+ 								                .scale(xOverview).ticks(5)
+
+ 								// something for us to render the chart into
+ 								var svg = d3.select(&#34;#active_time&#34;)
+ 								                .append(&#34;svg&#34;) // the overall space
+ 								                    .attr(&#34;viewBox&#34;, &#34;0 0 1200 600&#34;)
+ 								var main = svg.append(&#34;g&#34;)
+ 								                .attr(&#34;class&#34;, &#34;main&#34;)
+ 								                .attr(&#34;transform&#34;, &#34;translate(&#34; + margin.left + &#34;,&#34; + margin.top + &#34;)&#34;);
+ 								var overview = svg.append(&#34;g&#34;)
+ 								                    .attr(&#34;class&#34;, &#34;overview&#34;)
+ 								                    .attr(&#34;transform&#34;, &#34;translate(&#34; + marginOverview.left + &#34;,&#34; + marginOverview.top + &#34;)&#34;);
+ 								// brush tool to let us zoom and pan using the overview chart
+ 								function brushed() {
+ 										// update the main chart&#39;s x axis data range
+ 										x.domain(d3.event.selection === null ? xOverview.domain() : d3.event.selection.map(xOverview.invert))
+ 									// 604800000 is the number of milliseconds in a week
+ 									// redraw the bars on the main chart
+ 										main.selectAll(&#34;.bar.stack&#34;)
+ 														.attr(&#34;transform&#34;, function(d) { return &#34;translate(&#34; + x(d.value.monday) + &#34;,0)&#34;; })
+ 										main.selectAll(&#34;.bar&#34;)
+ 														.attr(&#34;width&#34;, x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+ 										// redraw the x axis of the main chart
+ 										main.select(&#34;.x.axis&#34;).call(xAxis);
+ 								}
+ 								var brush = d3.brushX()
+ 								                    //.x(xOverview)
+ 								                    .extent([[0, -6], [width, heightOverview]])
+ 								                    .on(&#34;start brush end&#34;, brushed)
+ 								const defaultSelection = [900, x.range()[1]];
+ 								// Info box
+ 								var heightInfobox = 42
+ 								var infobox = svg.append(&#34;text&#34;)
+ 										.attr(&#34;id&#34;, &#34;infobox&#34;)
+ 										.attr(&#34;x&#34;, 40)
+ 										.attr(&#34;y&#34;, heightInfobox)
+ 										.attr(&#34;width&#34;, 1)
+ 										.style(&#34;opacity&#34;, 0)
+ 								// Vertical line for clarity
+ 								var vertical = svg.append(&#34;rect&#34;)
+ 										.style(&#34;fill&#34;, &#34;var(--text-color)&#34;)
+ 										.style(&#34;z-index&#34;, &#34;19&#34;)
+ 										.style(&#34;opacity&#34;, 0)
+ 										.attr(&#34;pointer-events&#34;, &#34;none&#34;)
+ 										.style(&#34;fill&#34;, &#34;white&#34;)
+ 								var horizontal = svg.append(&#34;rect&#34;)
+ 										.style(&#34;width&#34;, width)
+ 										.style(&#34;height&#34;, 2)
+ 										.style(&#34;x&#34;, margin.left)
+ 										.style(&#34;fill&#34;, &#34;var(--text-color)&#34;)
+ 										.style(&#34;z-index&#34;, &#34;19&#34;)
+ 										.style(&#34;opacity&#34;, 0)
+ 										.attr(&#34;pointer-events&#34;, &#34;none&#34;)
+ 								// How to format date and hour strings?
+ 								var formatDate = d3.timeFormat(&#34;%B %d, %Y&#34;)
+ 								var formatHour = d3.format(&#34;.1f&#34;)
+ 					d3
+ 					  .select(&#34;.target&#34;)  // select the elements that have the class &#39;target&#39;
+ 					  .style(&#34;stroke-width&#34;, 8) // change their style: stroke width is not equal to 8 pixels
+ 									// data ranges for the x and y axes
+ 									x.domain(d3.extent(data, function(d) { return d.value.monday; }));
+ 									y.domain([0, 22]);
+ 									xOverview.domain(x.domain());
+ 									yOverview.domain(y.domain());
+ 									// https://observablehq.com/@didoesdigital/22-june-2020-d3-bar-chart-brush-work-in-progress?collection=@didoesdigital/journal-getting-started-with-data-viz-collection
+ 									// data range for the bar colours
+ 									// (essentially maps attribute names to colour values)
+ 									colour.domain(data[0].value.counts);
+
+ 									// draw the axes now that they are fully set up
+ 									main.append(&#34;g&#34;)
+ 											.attr(&#34;class&#34;, &#34;x axis&#34;)
+ 											.attr(&#34;transform&#34;, &#34;translate(0,&#34; + height + &#34;)&#34;)
+ 											.call(xAxis);
+ 									main.append(&#34;g&#34;)
+ 											.attr(&#34;class&#34;, &#34;y axis&#34;)
+ 											.call(yAxis);
+ 									overview.append(&#34;g&#34;)
+ 											.attr(&#34;class&#34;, &#34;x axis&#34;)
+ 											.attr(&#34;transform&#34;, &#34;translate(0,&#34; + heightOverview + &#34;)&#34;)
+ 											.call(xAxisOverview);
+ 									var toolTip = function(d) {
+ 											// Fill out infobox
+ 											infobox.text(&#34;During the week of &#34; + formatDate(d.value.monday) + &#34;, Harvey&#34;)
+ 											infobox.append(&#39;svg:tspan&#39;)
+ 												.attr(&#39;x&#39;, 480)
+ 												.attr(&#39;y&#39;, heightInfobox)
+ 												.text(formatHour(d.value.counts[0].y1 - d.value.counts[0].y0) + &#34;hrs&#34;)
+ 											infobox.append(&#39;svg:tspan&#39;)
+ 												.attr(&#39;x&#39;, 660)
+ 												.attr(&#39;y&#39;, heightInfobox)
+ 												.text(formatHour(d.value.counts[1].y1 - d.value.counts[1].y0) + &#34;hrs&#34;)
+ 											infobox.append(&#39;svg:tspan&#39;)
+ 												.attr(&#39;x&#39;, 826)
+ 												.attr(&#39;y&#39;, heightInfobox)
+ 												.text(formatHour(d.value.counts[2].y1 - d.value.counts[2].y0) + &#34;hrs&#34;)
+ 											infobox.append(&#39;svg:tspan&#39;)
+ 												.attr(&#39;x&#39;, 973)
+ 												.attr(&#39;y&#39;, heightInfobox)
+ 												.text(formatHour(d.value.counts[3].y1 - d.value.counts[3].y0) + &#34;hrs&#34;)
+ 											infobox.style(&#34;opacity&#34;, 1)
+ 											vertical.style(&#34;x&#34;, x(d.value.monday) + 50)
+ 															.style(&#34;y&#34;, y(d.value.total) + margin.top)
+ 															.style(&#34;height&#34;, height - y(d.value.total))
+ 															.style(&#34;opacity&#34;, 0.4)
+ 															.style(&#34;width&#34;, x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+ 											horizontal.style(&#34;y&#34;, y(d.value.total) + margin.top)
+ 																.style(&#34;opacity&#34;, 0.6)
+ 										}
+ 									var noHighlight = function(d){
+ 										vertical.style(&#34;opacity&#34;, 0)
+ 										horizontal.style(&#34;opacity&#34;, 0)
+ 										infobox.style(&#34;opacity&#34;, 0)
+ 									}
+ 									// draw the bars
+ 									main.append(&#34;defs&#34;).append(&#34;clipPath&#34;)
+ 									.attr(&#34;id&#34;, &#34;clip&#34;)
+ 										.append(&#34;rect&#34;)
+ 									.attr(&#34;width&#34;, width)
+ 									.attr(&#34;height&#34;, height);
+ 									main.append(&#34;g&#34;)
+ 													.attr(&#34;clip-path&#34;, &#34;url(#clip)&#34;)
+ 													.attr(&#34;class&#34;, &#34;bars&#34;)
+ 											// a group for each stack of bars, positioned with the left side on the date
+ 											.selectAll(&#34;.bar.stack&#34;)
+ 											.data(data)
+ 											.enter().append(&#34;g&#34;)
+ 													.attr(&#34;class&#34;, &#34;bar stack&#34;)
+ 													.attr(&#34;transform&#34;, function(d) { return &#34;translate(&#34; + x(d.value.monday) + &#34;,0)&#34;; })
+ 													.on(&#34;mousemove&#34;, toolTip)
+ 													.on(&#34;mouseleave&#34;, noHighlight)
+ 											// a bar for each value in the stack, positioned in the correct y positions
+ 											.selectAll(&#34;rect&#34;)
+ 											.data(function(d) { return d.value.counts; })
+ 											.enter().append(&#34;rect&#34;)
+ 													.attr(&#34;class&#34;, &#34;bar&#34;)
+ 													.attr(&#34;width&#34;, x.range()[1]/((x.domain()[1] - x.domain()[0])/604800000) - 0.2)
+ 													.attr(&#34;y&#34;, function(d) { return y(d.y1); })
+ 													.attr(&#34;height&#34;, function(d) { return y(d.y0) - y(d.y1); })
+ 													.style(&#34;fill&#34;, function(d) { return colour(d.name); });
+ 									overview.append(&#34;g&#34;)
+ 															.attr(&#34;class&#34;, &#34;bars&#34;)
+ 											.selectAll(&#34;.bar&#34;)
+ 											.data(data)
+ 											.enter().append(&#34;rect&#34;)
+ 													.attr(&#34;class&#34;, &#34;bar&#34;)
+ 													.attr(&#34;x&#34;, function(d) { return xOverview(d.value.monday) - 3; })
+ 													.attr(&#34;width&#34;, 6)
+ 													.attr(&#34;y&#34;, function(d) { return yOverview(d.value.total); })
+ 													.attr(&#34;height&#34;, function(d) { return heightOverview - yOverview(d.value.total); })
+ 													.attr(&#34;fill&#34;, &#34;var(--accent-bg-color)&#34;);
+
+ 									// add the brush target area on the overview chart
+ 									overview.append(&#34;g&#34;)
+ 											.attr(&#34;class&#34;, &#34;x brush&#34;)
+ 											.call(brush)
+ 											.call(brush.move, defaultSelection)
+ 											.selectAll(&#34;rect&#34;)
+ 													.attr(&#34;y&#34;, -6)
+ 													.attr(&#34;height&#34;, heightOverview + 7);  // +7 is magic number for styling
+ 									var size = 20
+
+ 									// Add the legend
+ 									svg.selectAll(&#34;myrect&#34;)
+ 											.data([&#34;Ran&#34;, &#34;Cycled&#34;, &#34;Zwifted&#34;, &#34;Other&#34;])
+ 											.enter()
+ 											.append(&#34;rect&#34;)
+ 												.attr(&#34;x&#34;, function(d,i){ return 420 + i*size*8})
+ 												.attr(&#34;y&#34;, 27)
+ 												.attr(&#34;width&#34;, size)
+ 												.attr(&#34;height&#34;, size)
+ 												.style(&#34;fill&#34;, function(d){ return colour(d)})
+ 									svg.selectAll(&#34;mylabels&#34;)
+ 											.data([&#34;Ran&#34;, &#34;Cycled&#34;, &#34;Zwifted&#34;, &#34;Other&#34;])
+ 											.enter()
+ 											.append(&#34;text&#34;)
+ 												.attr(&#34;y&#34;, 38.8)
+ 												.attr(&#34;x&#34;, function(d,i){ return 445 + i*size*8 })
+ 												.style(&#34;fill&#34;, function(d){ return colour(d)})
+ 												.text(function(d){ return d})
+ 												.attr(&#34;text-anchor&#34;, &#34;left&#34;)
+ 												.style(&#34;alignment-baseline&#34;, &#34;middle&#34;)
+ 		})
+ &lt;/script&gt;
+
+
+</description>
+    </item>
+    
+    <item>
+      <title>Ordinal Classification with probability constraints</title>
+      <link>https://harveybarnhard.github.io/publication/preprint/</link>
+      <pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://harveybarnhard.github.io/publication/preprint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://harveybarnhard.github.io/admin/config.yml</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://harveybarnhard.github.io/admin/config.yml</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
