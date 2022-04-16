@@ -1,7 +1,7 @@
 ---
 commentable: false
 date: "2022-04-15T00:00:00+01:00"
-draft: true
+draft: false
 editable: false
 header:
   caption: ""
@@ -9,6 +9,8 @@ header:
 share: false
 title: Endurance
 ---
+
+See the {{< staticref "https://github.com/harveybarnhard/endur" "newtab" >}}GitHub repository{{< /staticref >}} for how I pull and process data from Strava to create this chart.
 
 {{< rawhtml >}}
 <div id="active_time"></div>
