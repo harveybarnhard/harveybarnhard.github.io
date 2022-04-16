@@ -19,7 +19,7 @@
       <guid>https://harveybarnhard.com/cv/</guid>
       <description>
 
-&lt;div id=&#34;adobe-dc-view&#34; style=&#34;width: 800px;&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;adobe-dc-view&#34; style=&#34;max-width: 800px;&#34;&gt;&lt;/div&gt;
 &lt;script src=&#34;https://documentcloud.adobe.com/view-sdk/main.js&#34;&gt;&lt;/script&gt;
 &lt;script type=&#34;text/javascript&#34;&gt;
 	document.addEventListener(&#34;adobe_dc_view_sdk.ready&#34;, function(){ 
