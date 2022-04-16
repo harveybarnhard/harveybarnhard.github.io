@@ -1,5 +1,0 @@
-invoke
-pandas
-requests
-datetime
-dominate
