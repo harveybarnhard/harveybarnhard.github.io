@@ -23,10 +23,16 @@
       </div>
     {% endif %}
     <i class="far fa-file-alt pub-icon" aria-hiddent="true"></i>
-    <span>{{ post.authors }}</span>
-    <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}:</span>
-    <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>,</span>
-    <span><i>{{ post.venue }}</i></span>
+    {% if post.authors %}
+      <span>{{ post.authors }}</span>
+      <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}:</span>
+    {% else %}
+      <span>{{ post.date | default: "1900-01-01" | date: "%Y-%M-%d" }}:</span>
+    {% endif %}
+    <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
+    {% if post.venue %}
+      <span>, <i>{{ post.venue }}</i></span>
+    {% endif %}
 
     <p>
     {% if post.paperurl %}

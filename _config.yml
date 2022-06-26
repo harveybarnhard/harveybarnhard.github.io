@@ -13,6 +13,7 @@ remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 plugins:
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-paginate
 
 atom_feed:
   hide: true
@@ -76,6 +77,18 @@ defaults:
       author_profile: false
       share: true
       comments: true
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      show_date: true
 
 
 # Exclude from processing.
