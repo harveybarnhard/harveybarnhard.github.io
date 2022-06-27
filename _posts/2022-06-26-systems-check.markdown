@@ -2,6 +2,7 @@
 title:  "Systems Check"
 date:   2022-06-26 09:05:02 -0400
 categories: Northern Tier 2022
+author_profile: false
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OaEgqZgwRc4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>

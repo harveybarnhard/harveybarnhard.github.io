@@ -369,6 +369,7 @@
         top: 1.25em;
         width: 0.75em;
         height: 0.125em;
+        max-height: 100%;
         line-height: 1;
         background-color: $gray;
         -webkit-transition: 0.2s ease-out;
@@ -470,7 +471,7 @@
   .nav__list input:checked ~ .nav__items {
     -webkit-transition: 0.5s ease-in-out;
     transition: 0.5s ease-in-out;
-    max-height: 9999px; /* exaggerate max-height to accommodate tall lists*/
+    max-height: 100%; /* exaggerate max-height to accommodate tall lists*/
     overflow: visible;
     opacity: 1;
     margin-top: 1em;
