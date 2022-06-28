@@ -2,7 +2,7 @@
 permalink: /endurance/
 layout: single
 classes: wide
-author_profile: false
+author_profile: true
 ---
 
 <div id="active_time"></div>
