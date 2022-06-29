@@ -27,7 +27,7 @@
       <span>{{ post.authors }}</span>
       <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}:</span>
     {% else %}
-      <span>{{ post.date | default: "1900-01-01" | date: "%Y-%M-%d" }}:</span>
+      <span>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}:</span>
     {% endif %}
     <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
     {% if post.venue %}
