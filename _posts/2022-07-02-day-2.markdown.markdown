@@ -1,6 +1,6 @@
 ---
 title:  "Day 2 Sultan to Leavenworth"
-date:   2022-07-01 09:05:02 -0400
+date:   2022-07-02 09:05:02 -0400
 categories: Northern Tier 2022
 ---
 
