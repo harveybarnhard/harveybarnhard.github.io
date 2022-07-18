@@ -120,7 +120,7 @@ author_profile: true
  					  .style("stroke-width", 8) // change their style: stroke width is not equal to 8 pixels
  									// data ranges for the x and y axes
  									x.domain(d3.extent(data, function(d) { return d.value.monday; }));
- 									y.domain([0, 24]);
+ 									y.domain([0, 45]);
  									xOverview.domain(x.domain());
  									yOverview.domain(y.domain());
  									// https://observablehq.com/@didoesdigital/22-june-2020-d3-bar-chart-brush-work-in-progress?collection=@didoesdigital/journal-getting-started-with-data-viz-collection
