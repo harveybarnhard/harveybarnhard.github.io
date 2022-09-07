@@ -5,6 +5,6 @@ permalink: /
 author_profile: true
 ---
 
-I am a pre-doctoral fellow at [Opportunity Insights](https://opportunityinsights.org/) at Harvard. 
-Starting in Fall 2022, I will attend the PhD program in economics at Harvard University.
-I graduated from the University of Chicago in 2020 with a BS in statistics and a BA in economics.
+I am an economics PhD student at Harvard University.
+After graduating from the University of Chicago in 2020 with a BS in statistics and a BA in economics,
+I worked for two years as a pre-doctroal fellow at Opportunity Insights.
