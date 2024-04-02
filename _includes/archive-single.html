@@ -22,12 +22,12 @@
           alt="">
       </div>
     {% endif %}
-    <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
+    <span><b>{{ title }}</b></span>
     {% if post.authors %}
+      <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}</span>
       <span>{{ post.authors }}</span>
-      <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}:</span>
     {% else %}
-      <span>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}:</span>
+      <span>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</span>
     {% endif %}
     
     {% if post.venue %}
