@@ -22,7 +22,7 @@
           alt="">
       </div>
     {% endif %}
-    {% if post.collections == "publications" %}
+    {% if post.authors %}
       <span><b>{{ title }}</b></span>
       <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}</span>
       {% if post.coauthors %}
@@ -34,7 +34,7 @@
     {% endif %}
     
     {% if post.venue %}
-      <span>, <i>{{ post.venue }}</i></span>
+      <div><span>, <i>{{ post.venue }}</i></span></div>
     {% endif %}
 
     <p>
