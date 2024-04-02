@@ -39,10 +39,10 @@
 
     <p>
     {% if post.paperurl %}
-      <a href=" {{ post.paperurl }} "><i class="far fa-solid fa-file-pdf"></i></a>
+      <a href=" {{ post.paperurl }} ">[PDF <i class="far fa-solid fa-file-pdf"></i>]</a>
     {% endif %}
     {% if post.papercode %}
-      <a href=" {{ post.papercode }} "><i class="fab fa-fw fa-github"></i></a>
+      <a href=" {{ post.papercode }} ">[CODE <i class="fab fa-fw fa-github"></i>]</a>
     {% endif %}
     </p>
 
