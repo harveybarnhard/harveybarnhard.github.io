@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "Publications"
+title: "Publications and Working Papers"
 permalink: /publications/
 author_profile: true
 classes: wide
