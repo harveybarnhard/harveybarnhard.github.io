@@ -38,10 +38,10 @@
 
     <p>
     {% if post.paperurl %}
-      <a href=" {{ post.paperurl }} " style="text-decoration: none;"><i class="far fa-solid fa-file-pdf"></i> Paper</a>
+      <span style="font-size: 0.9em;"><a href=" {{ post.paperurl }} " style="text-decoration: none;"><i class="far fa-solid fa-file-pdf"></i> Paper</a></span>
     {% endif %}
     {% if post.papercode %}
-      <a href=" {{ post.papercode }} " style="text-decoration: none;">Code <i class="fab fa-fw fa-github"></i> Code</a>
+      <span style="font-size: 0.9em;"><a href=" {{ post.papercode }} " style="text-decoration: none;"><i class="fab fa-fw fa-github"></i> Code</a></span>
     {% endif %}
     </p>
 
