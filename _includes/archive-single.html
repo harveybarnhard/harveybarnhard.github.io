@@ -22,7 +22,7 @@
           alt="">
       </div>
     {% endif %}
-    {% if post.authors and post.include =="yes" %}
+    {% if post.authors %}
       <span><b>{{ title }} {{ post.date | default: "1900-01-01" | date: "(%Y)" }}</b></span>
       {% if post.coauthors %}
         <span> with {{ post.coauthors }}</span>
@@ -32,15 +32,15 @@
       <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span></div>
     {% endif %}
     
-    {% if post.venue and post.include =="yes" %}
+    {% if post.venue%}
       <div><span><i>{{ post.venue }}</i></span></div>
     {% endif %}
 
     <p>
-    {% if post.paperurl and post.include =="yes" %}
+    {% if post.paperurl %}
       <span style="font-size: 0.9em;"><a href=" {{ post.paperurl }} " style="text-decoration: none;"><i class="far fa-solid fa-file-pdf"></i> Paper</a></span>
     {% endif %}
-    {% if post.papercode and post.include =="yes" %}
+    {% if post.papercode %}
       <span style="font-size: 0.9em;"><a href=" {{ post.papercode }} " style="text-decoration: none;"><i class="fab fa-fw fa-github"></i> Code</a></span>
     {% endif %}
     </p>
