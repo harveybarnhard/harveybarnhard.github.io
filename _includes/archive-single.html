@@ -23,14 +23,13 @@
       </div>
     {% endif %}
     {% if post.authors %}
-      <span><b>{{ title }}</b></span>
-      <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}</span>
+      <span><b>{{ title }} {{ post.date | default: "1900-01-01" | date: "(%Y)" }}</b></span>
       {% if post.coauthors %}
         <span> with {{ post.coauthors }}</span>
       {% endif %}
     {% else %}
       <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
-      <span>, {{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</span>
+      <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span><div>
     {% endif %}
     
     {% if post.venue %}
@@ -39,10 +38,10 @@
 
     <p>
     {% if post.paperurl %}
-      <a href=" {{ post.paperurl }} ">[PDF <i class="far fa-solid fa-file-pdf"></i>]</a>
+      <a href=" {{ post.paperurl }} " style="text-decoration: none;"><i class="far fa-solid fa-file-pdf"></i> Paper</a>
     {% endif %}
     {% if post.papercode %}
-      <a href=" {{ post.papercode }} ">[CODE <i class="fab fa-fw fa-github"></i>]</a>
+      <a href=" {{ post.papercode }} " style="text-decoration: none;">Code <i class="fab fa-fw fa-github"></i> Code</a>
     {% endif %}
     </p>
 
