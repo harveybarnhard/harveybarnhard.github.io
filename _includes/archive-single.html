@@ -29,7 +29,7 @@
       {% endif %}
     {% else %}
       <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
-      <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span></article>div>
+      <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span></div>
     {% endif %}
     
     {% if post.venue %}
