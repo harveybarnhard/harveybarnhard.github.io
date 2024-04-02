@@ -22,11 +22,14 @@
           alt="">
       </div>
     {% endif %}
-    <span><b>{{ title }}</b></span>
-    {% if post.authors %}
+    {% if post.collections == "publications" %}
+      <span><b>{{ title }}</b></span>
       <span>{{ post.date | default: "1900-01-01" | date: "(%Y)" }}</span>
-      <span>{{ post.authors }}</span>
+      {% if post.coauthors %}
+        <span> with {{ post.coauthors }}</span>
+      {% endif %}
     {% else %}
+      <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
       <span>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</span>
     {% endif %}
     
