@@ -29,7 +29,7 @@
       {% endif %}
     {% else %}
       <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
-      <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span><div>
+      <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span></article>div>
     {% endif %}
     
     {% if post.venue %}
@@ -44,9 +44,9 @@
       <span style="font-size: 0.9em;"><a href=" {{ post.papercode }} " style="text-decoration: none;"><i class="fab fa-fw fa-github"></i> Code</a></span>
     {% endif %}
     </p>
-    
+
     {% if post.abstract %}
       <p>{{ post.abstract }}</p>
     {% endif %}
-  </div>
+  </article>
 </div>
