@@ -44,6 +44,9 @@
       <span style="font-size: 0.9em;"><a href=" {{ post.papercode }} " style="text-decoration: none;"><i class="fab fa-fw fa-github"></i> Code</a></span>
     {% endif %}
     </p>
-
-  </article>
+    
+    {% if post.abstract %}
+      <p>{{ post.abstract }}</p>
+    {% endif %}
+  </div>
 </div>
