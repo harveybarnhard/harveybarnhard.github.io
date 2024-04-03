@@ -145,8 +145,8 @@ author_profile: true
  											infobox.append('svg:rect')
  												.attr('x', 460)
  												.attr('y', heightInfobox - 10)
- 												.attr('width', 10)
- 												.attr('height', 10)
+ 												.attr('width', 30)
+ 												.attr('height', 30)
  												.style('fill', 'black') // changed from d.colour[0] to 'black'
  											infobox.append('svg:tspan')
  												.attr('x', 480)
