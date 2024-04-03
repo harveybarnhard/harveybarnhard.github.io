@@ -142,6 +142,12 @@ author_profile: true
  									var toolTip = function(d) {
  											// Fill out infobox
  											infobox.text("Week of " + formatDate(d.value.monday) + ": ")
+ 											infobox.append('svg:rect')
+ 												.attr('x', 460)
+ 												.attr('y', heightInfobox - 10)
+ 												.attr('width', 10)
+ 												.attr('height', 10)
+ 												.style('fill', d.colour[0])
  											infobox.append('svg:tspan')
  												.attr('x', 480)
  												.attr('y', heightInfobox)
