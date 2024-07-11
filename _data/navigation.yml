@@ -1,9 +1,0 @@
-main:
-  - title: "CV"
-    url: /cv/
-  - title: "Research"
-    url: /publications/
-  - title: "Endurance"
-    url: /endurance/
-  - title: "Blog"
-    url: /posts/

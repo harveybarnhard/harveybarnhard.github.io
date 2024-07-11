@@ -1,17 +1,11 @@
 ---
+layout: cv
 permalink: /cv/
-layout: single
+title: cv
+nav: true
+nav_order: 5
+cv_pdf: example_pdf.pdf
+description: This is a description of the page. You can modify it in '_pages/cv.md'. You can also change or remove the top pdf download button.
+toc:
+  sidebar: left
 ---
-
-
-<div id="adobe-dc-view" style="max-width: 800px;"></div>
-<script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script>
-<script type="text/javascript">
-	document.addEventListener("adobe_dc_view_sdk.ready", function(){
-		var adobeDCView = new AdobeDC.View({clientId: "11b63b23cecc43a99e8669ed7d8d47a3", divId: "adobe-dc-view"});
-		adobeDCView.previewFile({
-			content:{location: {url: "https://harveybarnhard.com/assets/cv-harvey-barnhard.pdf"}},
-			metaData:{fileName: "cv-harvey-barnhard.pdf"}
-		}, {embedMode: "IN_LINE"});
-	});
-</script>
