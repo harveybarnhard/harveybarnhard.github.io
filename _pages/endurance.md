@@ -18,11 +18,10 @@ author_profile: true
  						var value = { monday: parseDate(d.monday) };
  						d.Ran = d.Run_moving_time;
  						d.Cycled = d.Ride_moving_time;
- 						d.Zwifted = d.VirtualRide_moving_time;
  						d.Other = d.Other_moving_time;
  						// adding calculated data to each count in preparation for stacking
  						var y0 = 0; // keeps track of where the "previous" value "ended"
- 						value.counts = ["Ran", "Cycled", "Zwifted", "Other"].map(function(name) {
+ 						value.counts = ["Ran", "Cycled", "Other"].map(function(name) {
  								return { name: name,
  												 y0: y0,
  												 // add this count on to the previous "end" to create a range,
@@ -204,7 +203,7 @@ author_profile: true
  									var size = 20
  									// Add the legend
  									svg.selectAll("myrect")
- 											.data(["Ran", "Cycled", "Zwifted", "Other"])
+ 											.data(["Ran", "Cycled", "Other"])
  											.enter()
  											.append("rect")
  												.attr("x", function(d,i){ return 420 + i*size*8})
@@ -213,7 +212,7 @@ author_profile: true
  												.attr("height", size)
  												.style("fill", function(d){ return colour(d)})
  									svg.selectAll("mylabels")
- 											.data(["Ran", "Cycled", "Zwifted", "Other"])
+ 											.data(["Ran", "Cycled", "Other"])
  											.enter()
  											.append("text")
  												.attr("y", 38.8)
