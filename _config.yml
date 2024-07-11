@@ -5,7 +5,6 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "harveybarnhard.com" # the base hostname & protocol for your site, e.g. http://example.com
 repository: harveybarnhard/harveybarnhard.github.io
-twitter_username: harveybarnhard
 github_username:  harveybarnhard
 
 # Build settings
@@ -24,15 +23,11 @@ author:
   bio    : "Economics, Harvard University"
   location: "Cambridge, MA"
   github: "harveybarnhard"
-  twitter: "harveybarnhard"
   strava: "16562005"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/harveybarnhard"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter"
-      url: "https://twitter.com/harveybarnhard"
     - label: "Strava"
       icon: "fab fa-fw fa-strava"
       url: "https://www.strava.com/athletes/16562005"
@@ -44,9 +39,6 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/harveybarnhard"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter"
-      url: "https://twitter.com/harveybarnhard"
     - label: "Strava"
       icon: "fab fa-fw fa-strava"
       url: "https://www.strava.com/athletes/16562005"
