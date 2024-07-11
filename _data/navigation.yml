@@ -3,7 +3,5 @@ main:
     url: /cv/
   - title: "Research"
     url: /publications/
-  - title: "Endurance"
-    url: /endurance/
-  - title: "Misc"
-    url: /posts/
+  - title: "Projects"
+    url: /projects/

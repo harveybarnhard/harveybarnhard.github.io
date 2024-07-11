@@ -16,6 +16,9 @@ plugins:
 atom_feed:
   hide: true
 
+custom_sass:
+  - "_sass/_custom.scss"
+
 # Author
 author:
   name   : "Harvey Barnhard"

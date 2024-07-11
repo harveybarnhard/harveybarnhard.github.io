@@ -1,8 +1,7 @@
 ---
-permalink: /endurance/
+permalink: /volume/
 layout: single
-classes: wide
-author_profile: true
+author_profile: false
 ---
 
 <div id="active_time"></div>
