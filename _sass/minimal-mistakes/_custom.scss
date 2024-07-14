@@ -90,7 +90,7 @@
 
 .lightbox-portfolio {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 15px;
     justify-content: center;
     margin-top: 20px;
@@ -114,9 +114,6 @@
     transition: filter 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
 }
-.lightbox-portfolio {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
 
 .lightbox-portfolio .portfolio-item:hover img {
     filter: none;
@@ -124,7 +121,7 @@
 
 @media (max-width: 375px) {
     .portfolio {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 10px;
     }
 }
