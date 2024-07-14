@@ -1,8 +1,13 @@
 ---
+title: "Training Volume"
 permalink: /volume/
 layout: single
 author_profile: false
 ---
+
+This interactive figure shows my weekly training volume in hours across running, cycling,
+and other activities (e.g. hiking, canoeing).
+See the [GitHub Repository](https://github.com/harveybarnhard/endur) for how I pull and process data from Strava to create this chart.
 
 <div id="active_time"></div>
  <!-- Load d3.js -->
@@ -222,5 +227,3 @@ author_profile: false
  												.style("alignment-baseline", "middle")
  		})
  </script>
-
-See the [GitHub Repository](https://github.com/harveybarnhard/endur) for how I pull and process data from Strava to create this chart.
