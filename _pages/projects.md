@@ -10,8 +10,8 @@ author_profile: false
             <div class="portfolio">
                 <div class="portfolio-item">
                     <a href="/volume/">
-                        <img src="/images/photos/sprocket.jpg" alt="Volume">
-                        <div class="overlay">Volume</div>
+                        <img src="/images/photos/sprocket.jpg" alt="Training Volume">
+                        <div class="overlay">Training Volume</div>
                     </a>
                 </div>
                 <div class="portfolio-item">

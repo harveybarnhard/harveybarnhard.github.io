@@ -208,6 +208,19 @@ author_profile: false
     document.addEventListener('DOMContentLoaded', function() {
         renderPortfolio().then(() => handleHashChange());
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the current URL
+        const currentUrl = window.location.href;
+
+        // Check if the URL contains the specific page path
+        if (currentUrl.includes('photography')) {
+            // Add the photography class to the .page element
+            const pageElement = document.querySelector('.page');
+            if (pageElement) {
+                pageElement.classList.add('nopadding');
+            }
+        }
+    });
 
     window.addEventListener('hashchange', handleHashChange);
 </script>

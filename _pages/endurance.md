@@ -123,7 +123,7 @@ See the [GitHub Repository](https://github.com/harveybarnhard/endur) for how I p
  					  .style("stroke-width", 8) // change their style: stroke width is not equal to 8 pixels
  									// data ranges for the x and y axes
  									x.domain(d3.extent(data, function(d) { return d.value.monday; }));
- 									y.domain([0, 45]);
+ 									y.domain([0, 55]);
  									xOverview.domain(x.domain());
  									yOverview.domain(y.domain());
  									// https://observablehq.com/@didoesdigital/22-june-2020-d3-bar-chart-brush-work-in-progress?collection=@didoesdigital/journal-getting-started-with-data-viz-collection
@@ -192,7 +192,7 @@ See the [GitHub Repository](https://github.com/harveybarnhard/endur) for how I p
  											.enter().append("rect")
  													.attr("class", "bar")
  													.attr("x", function(d) { return xOverview(d.value.monday) - 3; })
- 													.attr("width", 6)
+ 													.attr("width", 3.5)
  													.attr("y", function(d) { return yOverview(d.value.total); })
  													.attr("height", function(d) { return heightOverview - yOverview(d.value.total); })
  													.attr("fill", "var(--accent-bg-color)");
