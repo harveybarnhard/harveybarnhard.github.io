@@ -23,6 +23,7 @@ author_profile: false
 <div id="myModal" class="custom-modal" onclick="closeModal(event)">
         <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
         <span class="next" onclick="changeSlide(1)">&#10095;</span>
+        <span class="close" onclick="closeModal(event)">&times;</span>
         <div class="custom-modal-content" onclick="event.stopPropagation()">
             <img id="modal-image" src="">
             <div id="modal-caption" class="custom-modal-caption">
@@ -124,11 +125,13 @@ author_profile: false
         } else {
             console.error('Modal elements not found.');
         }
+        // Add event listener for keyboard navigation
+        document.addEventListener('keydown', handleKeydown);
     }
-    function closeModal() {
-        if(event.target.id === 'myModal') {
-            const modal = document.getElementById('myModal');
-            const masthead = document.querySelector('.masthead');
+    function closeModal(event) {
+        const modal = document.getElementById('myModal');
+        const masthead = document.querySelector('.masthead');
+        if(modal || event.target.id === 'myModal') {
             const pagefooter = document.getElementById('footer');
             if (modal) {
                 modal.style.display = 'none';
@@ -139,6 +142,8 @@ author_profile: false
             } else {
                 console.error('Modal element not found.');
             }
+            // Remove event listener for keyboard navigation
+            document.removeEventListener('keydown', handleKeydown);
         }
     }
     function changeSlide(direction) {
@@ -160,20 +165,23 @@ author_profile: false
     function setModalPadding(img) {
             img.onload = function () {
                 const modal = document.getElementById('myModal');
+                const caption = document.querySelector('.custom-modal-caption');
                 const aspectRatio = img.naturalWidth / img.naturalHeight;
                 const modalWidth = modal.clientWidth - 80; // Subtracting 40px padding from both sides
-                const modalHeight = modal.clientHeight - 80; // Subtracting 40px padding from top and bottom
+                const modalHeight = modal.clientHeight - 160; // Subtracting 40px padding from top and bottom
 
                 let paddingTop, paddingSides;
                 if (modalWidth / aspectRatio <= modalHeight) {
                     paddingSides = 40; // Minimum horizontal padding
                     paddingTop = (modalHeight - (modalWidth / aspectRatio)) / 2;
                 } else {
-                    paddingTop = 40; // Minimum vertical padding
+                    paddingTop = 80; // Minimum vertical padding
                     paddingSides = (modalWidth - (modalHeight * aspectRatio)) / 2;
                 }
 
                 modal.style.padding = `${paddingTop}px ${paddingSides}px`;
+                imgWidth = img.offsetWidth;
+                caption.style.width = `${imgWidth}px`;
             };
     }
     function handleHashChange() {
@@ -182,6 +190,18 @@ author_profile: false
             filterPortfolio(hash);
         } else {
             filterPortfolio('places');
+        }
+    }
+
+    function handleKeydown(event) {
+
+        if (event.key === 'ArrowLeft') {
+            changeSlide(-1);
+        } else if (event.key === 'ArrowRight') {
+            changeSlide(1);
+        } else if(event.key === 'Escape') {
+            const modal = document.getElementById('myModal');
+            closeModal({ target: modal });
         }
     }
     // Initialize with showing places
