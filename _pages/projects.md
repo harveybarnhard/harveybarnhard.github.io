@@ -42,17 +42,17 @@ author_profile: false
                         <img src="/images/photos/bonfire.jpg" alt="People">
                         <div class="overlay">People</div>
                     </a>
-                </div>
-                <div class="portfolio-item">
-                    <a href="/photography/#animals">
-                        <img src="/images/photos/winter_longhorns.jpg" alt="Animals">
-                        <div class="overlay">Animals</div>
-                    </a>
                 </div> -->
                 <div class="portfolio-item">
                     <a href="/photography/#things">
                         <img src="/images/photos/firepit.jpg" alt="Things">
                         <div class="overlay">Things</div>
+                    </a>
+                </div>
+                 <div class="portfolio-item">
+                    <a href="/photography/#animals">
+                        <img src="/images/photos/winter_longhorns.jpg" alt="Animals">
+                        <div class="overlay">Animals</div>
                     </a>
                 </div>
             </div>
