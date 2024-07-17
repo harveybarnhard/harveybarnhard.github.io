@@ -9,8 +9,8 @@ author_profile: false
 <div class="filter-buttons">
         <button onclick="filterPortfolio('places')">Places</button>
         <!-- <button onclick="filterPortfolio('people')">People</button> -->
-        <!-- <button onclick="filterPortfolio('animals')">Animals</button> -->
         <button onclick="filterPortfolio('things')">Things</button>
+        <button onclick="filterPortfolio('animals')">Animals</button>
 </div>
 
 <div class="portfolio-section">
@@ -21,15 +21,15 @@ author_profile: false
 
 <!-- Modal -->
 <div id="myModal" class="custom-modal" onclick="closeModal(event)">
-        <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
-        <span class="next" onclick="changeSlide(1)">&#10095;</span>
-        <span class="close" onclick="closeModal(event)">&times;</span>
         <div class="custom-modal-content" onclick="event.stopPropagation()">
-            <img id="modal-image" src="">
+            <span class="close" onclick="closeModal(event)">&times;</span>
             <div id="modal-caption" class="custom-modal-caption">
                 <div class="modal-title"></div>
                 <div class="modal-description"></div>         
             </div>
+            <img id="modal-image" src="">
+            <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
+            <span class="next" onclick="changeSlide(1)">&#10095;</span>
         </div>
 </div>
 
@@ -115,7 +115,6 @@ author_profile: false
         if (modal && modalImg) {
             modal.style.display = 'block';
             modalImg.src = img.dataset.large;
-            setModalPadding(modalImg);
             modalTitle.innerHTML = img.dataset.title;
             modalDescription.innerHTML = img.dataset.description;
             if (masthead && pagefooter) {
@@ -158,31 +157,8 @@ author_profile: false
         const modalTitle = document.querySelector('.modal-title');
         const modalDescription = document.querySelector('.modal-description');
         modalImg.src = photos[currentIndex].url_h;
-        setModalPadding(modalImg);
         modalTitle.innerHTML = photos[currentIndex].title;
         modalDescription.innerHTML = photos[currentIndex].description._content;
-    }
-    function setModalPadding(img) {
-            img.onload = function () {
-                const modal = document.getElementById('myModal');
-                const caption = document.querySelector('.custom-modal-caption');
-                const aspectRatio = img.naturalWidth / img.naturalHeight;
-                const modalWidth = modal.clientWidth - 80; // Subtracting 40px padding from both sides
-                const modalHeight = modal.clientHeight - 160; // Subtracting 40px padding from top and bottom
-
-                let paddingTop, paddingSides;
-                if (modalWidth / aspectRatio <= modalHeight) {
-                    paddingSides = 40; // Minimum horizontal padding
-                    paddingTop = (modalHeight - (modalWidth / aspectRatio)) / 2;
-                } else {
-                    paddingTop = 80; // Minimum vertical padding
-                    paddingSides = (modalWidth - (modalHeight * aspectRatio)) / 2;
-                }
-
-                modal.style.padding = `${paddingTop}px ${paddingSides}px`;
-                imgWidth = img.offsetWidth;
-                caption.style.width = `${imgWidth}px`;
-            };
     }
     function handleHashChange() {
         const hash = window.location.hash.substring(1);
