@@ -91,6 +91,9 @@
 .portfolio-item:hover img {
     filter: none;
 }
+.portfolio-item a, .portfolio-item img {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
 .lightbox-portfolio {
     display: grid;
