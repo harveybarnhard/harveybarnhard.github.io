@@ -11,15 +11,12 @@ between low and elite levels of VO<sub>2</sub> max is greater than the hazard ra
 of end stage renal disease. In simple terms, a great VO<sub>2</sub> max is more associated
 with living a longer life than having healthy kidneys.
 
-This interactive figure uses my Garmin's estimate of my VO<sub>2</sub> max and extremely
+This interactive figure uses Garmin's estimate of my VO<sub>2</sub> max and extremely
 back-of-the-envelope calculations to estimate my life expectancy and how it changes with
 my training.
-See the [GitHub Repository](https://github.com/harveybarnhard/vo2max_longevity) for how I pull and process data from Strava to create this chart.
+See the [GitHub Repository](https://github.com/harveybarnhard/vo2max_longevity) for how I process data from Garmin to create this chart.
 
 <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
         .line {
             fill: none;
             stroke: steelblue;
@@ -32,12 +29,11 @@ See the [GitHub Repository](https://github.com/harveybarnhard/vo2max_longevity) 
         .tooltip {
             position: absolute;
             text-align: left;
-            font: 12px sans-serif;
             background-color: rgb(255, 255, 255, 0.95);
             border: 0px;
             pointer-events: none;
             text-align: left;
-            font-size: 0.6em;
+            font-size: 0.5em;
             border: 1px solid #ccc;
             padding: 3px;
             box-shadow: 0 0 5px rgba(0,0,0,0.3);
@@ -121,6 +117,7 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
 
     // Add the X Axis
     svg.append("g")
+        .attr("class", "axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
 
@@ -132,7 +129,7 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
     // Add the Y2 Axis
     svg.append("g")
         .attr("class", "axisRed")
-        .attr("transform", "translate(" + width + " ,0)")   
+        .attr("transform", "translate(" + width + " ,0)")
         .call(d3.axisRight(y2));
 
     // Add the Y1 Axis Label
@@ -227,6 +224,32 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
     console.log(error);
 });
 
-
-
 </script>
+
+Here is the back-of-the-envelope math that is used to create this figure. First, I take my VO<sub>2</sub> max estimates
+from Garmin in units of mL/(kg $\cdot$ min). Garmin estimates VO<sub>2</sub> max using wrist-based and cheststrap-based
+heart rate measurements during exercise and recovery. Wrist-based heartrate measurements are not very reliable. Nevertheless,
+<a href="https://assets.firstbeat.com/firstbeat/uploads/2017/06/white_paper_VO2max_30.6.2017.pdf">Garmin VO<sub>2</sub> estimates have been validated to accurately predict VO<sub>2</sub> estimates from gold-standard laboratory tests</a>. I then take a rolling average
+of VO<sub>2</sub> estimates to smooth out any irregularities.
+
+Each estimated value of VO<sub>2</sub> max corresponds to a mortality hazard ratio relative to the median individual.
+For example, individuals with a high VO<sub>2</sub> max will have a low hazard ratio (relatively less likely to die) while
+individuals with a low VO<sub>2</sub> max will have a high hazard ratio (relatively more likely to die). The
+relationship between VO<sub>2</sub> and hazard ratios are taken from 
+[Mandsager et al. (2018)](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2707428). The
+most important figure from this paper is shown below.
+I model the relationship between VO<sub>2</sub> and hazard ratios as a natural cubic spline so that each
+estimate of VO<sub>2</sub> corresponds to an estimated hazard ratio.
+
+<img src="/images/projects/vo2_figure.jpg" alt="Fig" />
+
+The next step is to use the hazard ratios to modify survival curves in order to estimate life expectancy.
+Mortality data by age and gender was taken from [CDC Wonder](https://wonder.cdc.gov/) from 2018-2021 in the United States (note that mortality was higher in 2020-2021 during the COVID-19 pandemic). These mortality data allow for the construction of survival curves from any age. Because
+this chart is taken over many years, this survival curve will be different in 2018 when I was 22 years old vs in 2023 when
+I was 27 years old. These baseline survival curves correspond to a hazard ratio equal to one for the average individual in the United
+States. Using the proportional hazards assumption, these survival curves will be pushed inward (less survival) or outwards (more survival) depending on whether the hazard ratio is greater than one or less than one.
+
+
+Period life expectancy is calculated by integrating the survival curve. Higher VO<sub>2</sub> max estimates correspond to a hazard ratio of
+less than one, and therefore more area under the survival curve. Therefore, higher VO<sub>2</sub> max estimates correspond to greater life
+expectancy estimates.
