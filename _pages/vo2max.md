@@ -31,15 +31,16 @@ See the [GitHub Repository](https://github.com/harveybarnhard/vo2max_longevity) 
         }
         .tooltip {
             position: absolute;
-            text-align: center;
-            width: 60px;
-            height: 28px;
-            padding: 2px;
+            text-align: left;
             font: 12px sans-serif;
-            background: lightsteelblue;
+            background-color: rgb(255, 255, 255, 0.95);
             border: 0px;
-            border-radius: 8px;
             pointer-events: none;
+            text-align: left;
+            font-size: 0.6em;
+            border: 1px solid #ccc;
+            padding: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
 </style>
 
@@ -180,16 +181,7 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
         .style("pointer-events", "none");
 
     var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0)
-        .style("position", "absolute")
-        .style("background", "#fff")
-        .style("border", "1px solid #ccc")
-        .style("padding", "10px")
-        .style("border-radius", "5px")
-        .style("box-shadow", "0 0 5px rgba(0,0,0,0.3)")
-        .style("width", "220px")
-        .style("height", "80px");
+        .attr("class", "tooltip");
 
     // Create an overlay for capturing mouse movements
     svg.append("rect")
@@ -227,8 +219,8 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
         var tooltipX = mouseX + margin.left;
         var tooltipY = mouseY + margin.top;
 
-        tooltip.style("left", tooltipX + "px")
-               .style("top", tooltipY + "px");
+        tooltip.style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY + 10) + "px");
     }
 
 }).catch(function(error) {
