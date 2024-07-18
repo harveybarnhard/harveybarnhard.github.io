@@ -21,15 +21,15 @@ author_profile: false
 
 <!-- Modal -->
 <div id="myModal" class="custom-modal" onclick="closeModal(event)">
-        <div class="custom-modal-content" onclick="event.stopPropagation()">
+        <div class="custom-modal-content">
             <span class="close" onclick="closeModal(event)">&times;</span>
             <div id="modal-caption" class="custom-modal-caption">
                 <div class="modal-title"></div>
                 <div class="modal-description"></div>         
             </div>
-            <img id="modal-image" src="">
-            <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
-            <span class="next" onclick="changeSlide(1)">&#10095;</span>
+            <img id="modal-image" src=""  onclick="event.stopPropagation()">
+            <span class="prev" onclick="changeSlide(-1)"><span class="change-button">&#10094;</span></span>
+            <span class="next" onclick="changeSlide(1)"><span class="change-button">&#10095;</span></span>
         </div>
 </div>
 

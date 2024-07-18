@@ -141,7 +141,9 @@
     overflow: hidden;
     background-color: rgba(25, 25, 25, 1);
     box-sizing: border-box;
-    padding: 50px 0px;
+    padding: 20px 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 .custom-modal-content {
     width: 100%;
@@ -155,7 +157,7 @@
     padding: 0px 0px;
 }
 .custom-modal-content img {
-    max-width: 1500px;
+    max-width: 1000px;
     max-height: 100%;
     width: 100%;
     object-fit: contain;
@@ -171,31 +173,45 @@
     user-select: none;
 }
 .custom-modal .prev, .custom-modal .next {
-    top: 50%;
+    top: calc(50% - 25px);
     display: inline;
-    background-color: rgba(25, 25, 25, 0.2);
-    padding: 0px 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .custom-modal .prev {
     left: 10px;
+    padding-left: 0px;
+    padding-right: 20px;
 }
 .custom-modal .next {
     right: 10px;
+    padding-left: 20px;
+    padding-right: 0px;
 }
 .custom-modal .close {
-    right: 20px; /* Align close button above the image */
-    top: -40px;
+    z-index: 10005;
+    right: 0px;
+    top: -20px;
     padding: 10px;
 }
 
+.change-button {
+    background-color: rgba(25, 25, 25, 0.5);
+    padding: 5px 5px;
+}
+
 .custom-modal-caption {
+    z-index: 10000;
+    position: absolute;
+    top: 0px;
     color: #fff;
     text-align: left; /* Left align the text */
     width: 100%; /* Ensure it takes the full width of the modal */
     max-width: 100%; /* Ensure it aligns with the image width */
     padding: 10px 10px;
     box-sizing: border-box; /* Include padding in the element's total width */
+    background-color: rgba(25, 25, 25, 0.5);
 }
 
 .modal-title {
