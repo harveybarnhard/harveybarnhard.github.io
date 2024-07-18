@@ -5,7 +5,7 @@ layout: single
 author_profile: false
 ---
 
-[Mandsager et al. (2018)](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2707428) reveal a strong relationship between VO<sub>2</sub> max (an measurement of endurance
+[Mandsager et al. (2018)](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2707428) quantify the strong relationship between VO<sub>2</sub> max (a measurement of endurance
 fitness) and life expectancy. The relationship is so strong, in fact, that the hazard ratio
 between low and elite levels of VO<sub>2</sub> max is greater than the hazard ratio
 of end stage renal disease. In simple terms, a great VO<sub>2</sub> max is more associated
@@ -50,7 +50,6 @@ See the [GitHub Repository](https://github.com/harveybarnhard/vo2max_longevity) 
 var margin = { top: 40, right: 60, bottom: 30, left: 50 },
     width = 1200 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
-
 // Parse the date / time
 var parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -141,7 +140,8 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
         .attr("y", -10)
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
-        .text("Life Expectancy");
+        .text("Life Expectancy")
+        .style("color", "steelblue");
 
     // Add the Y2 Axis Label
     svg.append("text")
@@ -150,6 +150,21 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .text("Estimated VO2max");
+
+    // Add colored squares next to axis labels
+    svg.append("rect")
+        .attr("x", width / 4 - 78)
+        .attr("y", -23.5)
+        .attr("width", 15)
+        .attr("height", 15)
+        .style("fill", "steelblue");
+
+    svg.append("rect")
+        .attr("x", (3 * width) / 4 -89.5)
+        .attr("y", -23.5)
+        .attr("width", 15)
+        .attr("height", 15)
+        .style("fill", "red");
 
     // Add tooltip elements
     var focus = svg.append("g")
@@ -209,16 +224,8 @@ d3.csv("https://raw.githubusercontent.com/harveybarnhard/vo2max_longevity/main/d
         var mouseX = d3.pointer(event, svg.node())[0];
         var mouseY = d3.pointer(event, svg.node())[1];
 
-        var tooltipX = mouseX + margin.left + 30;
-        var tooltipY = mouseY + margin.top - 30;
-
-        if (tooltipX + tooltipWidth > width) {
-            tooltipX = mouseX + margin.left - tooltipWidth - 30;
-        }
-
-        if (tooltipY + tooltipHeight > height) {
-            tooltipY = mouseY + margin.top - tooltipHeight - 30;
-        }
+        var tooltipX = mouseX + margin.left;
+        var tooltipY = mouseY + margin.top;
 
         tooltip.style("left", tooltipX + "px")
                .style("top", tooltipY + "px");
