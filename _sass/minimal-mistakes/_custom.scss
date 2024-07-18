@@ -237,10 +237,10 @@
 
 .profile-pic {
     max-width: 200px;
+    padding: 2px;
     width: 200px;
     height: 200px;
     object-fit: cover;
-    border-right: 2px solid #f4f4f4;
 }
 
 .about-text {
@@ -270,8 +270,6 @@ p {
     .profile-pic {
         width: 100%;
         height: auto;
-        border-right: none;
-        border-bottom: 2px solid #f4f4f4;
         margin: 0 auto;
     }
 
