@@ -3,6 +3,12 @@
     width: calc(100% + 0px);
 }
 
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 .filter-buttons {
     margin: 20px 0;
