@@ -4,7 +4,7 @@
 
 .masthead {
   position: relative;
-  border-bottom: 1px solid $border-color;
+  //border-bottom: 1px solid $border-color;
   -webkit-animation: $intro-transition;
   animation: $intro-transition;
   -webkit-animation-delay: 0.15s;
@@ -49,7 +49,8 @@
   display: flex;
   -ms-flex-item-align: center;
   align-self: center;
-  font-weight: bold;
+  font-weight: 200;
+  font-size: 22px;
   // z-index: 20;
 }
 
@@ -67,7 +68,7 @@
 
   .site-nav {
     margin-left: 0;
-
+    font-weight: 100;
     @include breakpoint($small) {
       float: right;
     }
@@ -82,6 +83,7 @@
 }
 
 .masthead__menu-item {
+  font-size: 15px;
   display: block;
   list-style-type: none;
   white-space: nowrap;

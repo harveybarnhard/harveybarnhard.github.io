@@ -2,7 +2,7 @@
 layout: single
 title: "Publications and Working Papers"
 permalink: /publications/
-author_profile: true
+author_profile: false
 classes: wide
 ---
 

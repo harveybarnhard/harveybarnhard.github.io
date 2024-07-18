@@ -39,20 +39,13 @@
 .section-title {
     text-align: left;
     font-size: 1.5em;
-    color: gray;
+    font-weight: 300;
     margin: 0 0 10px 0;
 }
-.section-title::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: gray;
-    margin-top: 5px;
-}
+
 .portfolio {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
     justify-content: center;
     margin-top: 20px;
@@ -65,7 +58,7 @@
     width: 100%;
     height: auto;
     display: block;
-    filter: grayscale(100%);
+    filter: grayscale(90%);
     transition: filter 0.3s ease;
 }
 .portfolio-item a {
@@ -84,9 +77,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5em;
+    font-size: 1.4em;
+    font-weight: 200;
     color: white;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Added text shadow */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9); /* Added text shadow */
 }
 .portfolio-item:hover img {
     filter: none;
@@ -94,7 +88,7 @@
 
 .lightbox-portfolio {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
     justify-content: center;
     margin-top: 20px;
@@ -123,10 +117,16 @@
     filter: none;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 650px) {
     .portfolio {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
         gap: 10px;
+    }
+}
+
+@media (pointer:coarse) {
+    .lightbox-portfolio .portfolio-item img {
+        filter: saturate(100%);
     }
 }
 /* Modal styles */
@@ -221,4 +221,59 @@
 .modal-description {
     font-size: 0.7em; /* Adjust the font size for the description */
     margin-top: 5px; /* Add some spacing between the title and description */
+}
+
+
+
+/* About Page */
+.about-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    margin: 0px;
+    text-align: left;
+}
+
+.profile-pic {
+    max-width: 200px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-right: 2px solid #f4f4f4;
+}
+
+.about-text {
+    padding-left: 20px;
+    padding-right: 20px;
+    flex: 1;
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .profile-pic {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid #f4f4f4;
+        margin: 0 auto;
+    }
+
+    .about-text {
+        padding: 20px;
+    }
 }
