@@ -55,7 +55,7 @@ author_profile: false
             }
     }
     async function fetchPhotos(photosetId) {
-            const url = `https://www.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${photosetId}&user_id=${userId}&format=json&nojsoncallback=1&extras=url_h,url_z,url_s,description`;
+            const url = `https://www.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${photosetId}&user_id=${userId}&format=json&nojsoncallback=1&extras=url_h,url_w,description`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
@@ -80,7 +80,7 @@ author_profile: false
                 const portfolioItem = document.createElement('div');
                 portfolioItem.className = `portfolio-item ${photoset.title._content.toLowerCase()}`;
                 portfolioItem.innerHTML = `
-                            <img src="${photo.url_z}" alt="${photo.title}" data-large="${photo.url_h}" data-title="${photo.title}" data-description="${photo.description._content}" onclick="openModal(this, ${photos.indexOf(photo)})" loading="lazy" onerror="this.onerror=null; this.src='default.jpg';">
+                            <img src="${photo.url_w}" alt="${photo.title}" data-large="${photo.url_h}" data-title="${photo.title}" data-description="${photo.description._content}" onclick="openModal(this, ${photos.indexOf(photo)})" loading="lazy" onerror="this.onerror=null; this.src='default.jpg';">
                         </a>
                     `;
                 portfolioContainer.appendChild(portfolioItem);
