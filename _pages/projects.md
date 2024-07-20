@@ -45,7 +45,7 @@ author_profile: false
                 </div> -->
                 <div class="portfolio-item">
                     <a href="/photography/#things">
-                        <img src="/images/photos/firepit.jpg" alt="Things">
+                        <img src="/images/photos/flower_buds.jpg" alt="Things">
                         <div class="overlay">Things</div>
                     </a>
                 </div>
