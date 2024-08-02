@@ -31,10 +31,6 @@
       <span><a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a></span>
       <div><span><i>{{ post.date | default: "1900-01-01" | date: "%Y-%m-%d" }}</i></span></div>
     {% endif %}
-    
-    {% if post.venue%}
-      <div><span><i>{{ post.venue }}</i></span></div>
-    {% endif %}
 
     <p>
     {% if post.paperurl %}

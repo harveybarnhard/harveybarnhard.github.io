@@ -6,6 +6,7 @@ author_profile: false
 classes: wide
 ---
 
-{% for post in site.publications reversed %}
+{% assign researchpapers = site.publications | where: 'include', 'yes' %}
+{% for post in researchpapers reversed %}
   {% include archive-single.html %}
 {% endfor %}

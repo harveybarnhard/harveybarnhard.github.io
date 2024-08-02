@@ -6,5 +6,5 @@ date: 2018-11-21
 venue: 'Published by the University of Chicago Mathematics Department'
 authors: Harvey Barnhard
 paperurl: 'http://math.uchicago.edu/~may/REU2018/REUPapers/Barnhard.pdf'
-include: 'yes'
+include: 'no'
 ---
